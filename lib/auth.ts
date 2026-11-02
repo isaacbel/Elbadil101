@@ -25,10 +25,11 @@ export function verifyPassword(password: string, storedHash: string): boolean {
 export interface AdminSession {
   email: string;
   role: 'super_admin' | 'admin';
+  mustChangePassword?: boolean;
   exp: number;
 }
 
-export function signToken(data: { email: string; role: string }, maxAgeSec = 60 * 60 * 12): string {
+export function signToken(data: { email: string; role: string; mustChangePassword?: boolean }, maxAgeSec = 60 * 60 * 12): string {
   const secret = process.env.SESSION_SECRET || 'fallback-dev-secret-replace-in-production-long-random';
   const exp = Math.floor(Date.now() / 1000) + maxAgeSec;
   const payload = Buffer.from(JSON.stringify({ ...data, exp })).toString('base64url');
@@ -65,13 +66,13 @@ export async function getSession(): Promise<AdminSession | null> {
   }
 }
 
-export async function authenticateAdmin(email: string, password: string): Promise<{ email: string; role: string } | null> {
+export async function authenticateAdmin(email: string, password: string): Promise<{ email: string; role: string; mustChangePassword?: boolean } | null> {
   await initDb();
   const db = getDb();
 
   // First check database admin_users table
   const userResult = await db.execute({
-    sql: 'SELECT email, role, password_hash FROM admin_users WHERE email = ?',
+    sql: 'SELECT email, role, password_hash, must_change_password FROM admin_users WHERE email = ?',
     args: [email.toLowerCase().trim()],
   });
 
@@ -82,6 +83,7 @@ export async function authenticateAdmin(email: string, password: string): Promis
       return {
         email: String(user.email),
         role: String(user.role || 'admin'),
+        mustChangePassword: Boolean(user.must_change_password),
       };
     }
     return null;
@@ -94,10 +96,10 @@ export async function authenticateAdmin(email: string, password: string): Promis
 
   if (envEmail && email.toLowerCase().trim() === envEmail.toLowerCase().trim()) {
     if (envHash && verifyPassword(password, envHash)) {
-      return { email: envEmail, role: 'super_admin' };
+      return { email: envEmail, role: 'super_admin', mustChangePassword: false };
     }
     if (envPassword && password === envPassword) {
-      return { email: envEmail, role: 'super_admin' };
+      return { email: envEmail, role: 'super_admin', mustChangePassword: true };
     }
   }
 

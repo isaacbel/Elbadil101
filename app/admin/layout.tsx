@@ -9,7 +9,11 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const session = await getSession();
 
   return (
-    <AdminLayoutClient userEmail={session?.email} userRole={session?.role}>
+    <AdminLayoutClient
+      userEmail={session?.email}
+      userRole={session?.role}
+      mustChangePassword={Boolean(session?.mustChangePassword)}
+    >
       {children}
     </AdminLayoutClient>
   );

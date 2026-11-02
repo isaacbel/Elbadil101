@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Menu, ShieldCheck, User, LogOut } from 'lucide-react';
+import { Menu, ShieldCheck, User, LogOut, KeyRound } from 'lucide-react';
 
 interface HeaderProps {
   title: string;
   userEmail?: string;
   userRole?: string;
   onOpenMobileSidebar?: () => void;
+  onOpenPasswordModal?: () => void;
 }
 
 export default function AdminHeader({
@@ -15,6 +16,7 @@ export default function AdminHeader({
   userEmail = 'admin@candidate.dz',
   userRole = 'admin',
   onOpenMobileSidebar,
+  onOpenPasswordModal,
 }: HeaderProps) {
   const handleLogout = async () => {
     await fetch('/api/admin/logout', { method: 'POST' });
@@ -51,6 +53,19 @@ export default function AdminHeader({
           <User className="w-3.5 h-3.5 text-teal" />
           <span className="max-w-[140px] sm:max-w-[200px] truncate">{userEmail}</span>
         </div>
+
+        {/* Change password button */}
+        {onOpenPasswordModal && (
+          <button
+            type="button"
+            onClick={onOpenPasswordModal}
+            className="p-2 rounded-lg text-muted hover:text-teal hover:bg-sand/60 transition-colors"
+            title="Change password"
+            aria-label="Change password"
+          >
+            <KeyRound className="w-4 h-4" />
+          </button>
+        )}
 
         {/* Quick logout */}
         <button

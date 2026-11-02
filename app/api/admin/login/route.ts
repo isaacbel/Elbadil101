@@ -1,37 +1,58 @@
 import { NextResponse } from 'next/server';
 import { authenticateAdmin, signToken } from '@/lib/auth';
-import { hashIp, checkHashedRateLimit } from '@/lib/rate-limit';
+import {
+  hashIp,
+  checkLoginLockout,
+  recordFailedLogin,
+  clearFailedLogin,
+} from '@/lib/rate-limit';
 
 export async function POST(req: Request) {
   try {
     const rawIp = req.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1';
     const hashedIp = hashIp(`login_${rawIp}`);
-    const rateCheck = checkHashedRateLimit(hashedIp, 5, 10 * 60 * 1000);
 
-    if (!rateCheck.allowed) {
+    // Check lockout on failed attempts (5 attempts, 10 minutes)
+    const lockout = checkLoginLockout(hashedIp, 5, 10 * 60 * 1000);
+    if (lockout.locked) {
       return NextResponse.json(
-        { error: 'Too many login attempts. Please wait 10 minutes.' },
+        { error: 'Too many failed login attempts. Please wait 10 minutes.' },
         { status: 429 }
       );
     }
 
-    const { email, password } = await req.json();
+    const body = await req.json().catch(() => null);
+    const email = body?.email;
+    const password = body?.password;
 
     if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
-      return NextResponse.json({ error: 'Email and password are required.' }, { status: 400 });
+      recordFailedLogin(hashedIp, 5, 10 * 60 * 1000);
+      return NextResponse.json({ error: 'Incorrect email or password.' }, { status: 401 });
     }
 
     const admin = await authenticateAdmin(email, password);
 
     if (!admin) {
-      return NextResponse.json({ error: 'Invalid email or password.' }, { status: 401 });
+      recordFailedLogin(hashedIp, 5, 10 * 60 * 1000);
+      return NextResponse.json({ error: 'Incorrect email or password.' }, { status: 401 });
     }
 
-    const token = signToken({ email: admin.email, role: admin.role });
+    // Clear failed attempts on valid login
+    clearFailedLogin(hashedIp);
+
+    const token = signToken({
+      email: admin.email,
+      role: admin.role,
+      mustChangePassword: admin.mustChangePassword,
+    });
 
     const res = NextResponse.json({
       ok: true,
-      user: { email: admin.email, role: admin.role },
+      user: {
+        email: admin.email,
+        role: admin.role,
+        mustChangePassword: admin.mustChangePassword,
+      },
     });
 
     res.cookies.set('admin_session', token, {

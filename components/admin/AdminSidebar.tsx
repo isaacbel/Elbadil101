@@ -9,6 +9,7 @@ import {
   Inbox,
   ShieldAlert,
   Lightbulb,
+  KeyRound,
   LogOut,
   ExternalLink,
   X,
@@ -18,9 +19,15 @@ interface SidebarProps {
   mobileOpen?: boolean;
   onCloseMobile?: () => void;
   userRole?: string;
+  onOpenPasswordModal?: () => void;
 }
 
-export default function AdminSidebar({ mobileOpen = false, onCloseMobile, userRole = 'admin' }: SidebarProps) {
+export default function AdminSidebar({
+  mobileOpen = false,
+  onCloseMobile,
+  userRole = 'admin',
+  onOpenPasswordModal,
+}: SidebarProps) {
   const pathname = usePathname();
 
   const navItems = [
@@ -86,6 +93,22 @@ export default function AdminSidebar({ mobileOpen = false, onCloseMobile, userRo
 
       {/* Bottom Actions */}
       <div className="pt-4 border-t border-white/10 space-y-2">
+        {onOpenPasswordModal && (
+          <button
+            type="button"
+            onClick={() => {
+              if (onCloseMobile) onCloseMobile();
+              onOpenPasswordModal();
+            }}
+            className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs text-sand/80 hover:bg-white/10 hover:text-sand transition-colors"
+          >
+            <span className="flex items-center gap-2.5">
+              <KeyRound className="w-3.5 h-3.5 text-wheat" />
+              <span>Change Password</span>
+            </span>
+          </button>
+        )}
+
         <a
           href="/"
           target="_blank"

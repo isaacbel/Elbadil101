@@ -29,7 +29,7 @@ export default function AdminLoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setErrorMsg(data.error || 'Invalid email or password.');
+        setErrorMsg(data.error || 'Incorrect email or password.');
         setStatus('error');
         return;
       }

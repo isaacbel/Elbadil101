@@ -91,6 +91,7 @@ export async function initDb(): Promise<void> {
       email TEXT UNIQUE NOT NULL,
       role TEXT NOT NULL DEFAULT 'admin',
       password_hash TEXT NOT NULL,
+      must_change_password INTEGER DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now'))
     );`,
     `CREATE TABLE IF NOT EXISTS internal_notes (
@@ -116,6 +117,13 @@ export async function initDb(): Promise<void> {
     `CREATE INDEX IF NOT EXISTS idx_submissions_created ON submissions(created_at);`,
     `CREATE INDEX IF NOT EXISTS idx_support_phone ON support_registrations(phone);`
   ], 'write');
+
+  // Non-destructive column addition for existing databases
+  try {
+    await db.execute('ALTER TABLE admin_users ADD COLUMN must_change_password INTEGER DEFAULT 0;');
+  } catch {
+    // Column already exists
+  }
 
   initialized = true;
 }
