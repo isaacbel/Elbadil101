@@ -14,6 +14,14 @@ import {
   Loader2,
   Tag,
 } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
+import {
+  ADMIN_STATUS_LABELS,
+  ADMIN_PRIORITY_LABELS,
+  ADMIN_TYPE_LABELS,
+  ADMIN_COMPLAINT_CATEGORY_LABELS,
+  formatAdminDate,
+} from '@/lib/admin-labels';
 import ConfirmDialog from './ConfirmDialog';
 
 interface SubmissionDrawerProps {
@@ -29,6 +37,7 @@ export default function SubmissionDrawer({
   onUpdated,
   userRole = 'admin',
 }: SubmissionDrawerProps) {
+  const { t } = useI18n();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [newNote, setNewNote] = useState('');
@@ -148,32 +157,29 @@ export default function SubmissionDrawer({
     }
   };
 
-  // Check if string contains Arabic characters for RTL-aware rendering in admin
-  const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text || '');
-
   return (
     <>
-      <div className="fixed inset-0 z-50 overflow-hidden">
+      <div className="fixed inset-0 z-50 overflow-hidden font-naskh">
         {/* Backdrop */}
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={onClose} />
 
-        <div className="fixed inset-y-0 right-0 max-w-2xl w-full bg-white shadow-2xl flex flex-col z-10 border-l border-line animate-fade-in">
+        <div className="fixed inset-y-0 end-0 max-w-2xl w-full bg-white shadow-2xl flex flex-col z-10 border-s border-line animate-fade-in text-start">
           {/* Header */}
           <div className="p-5 px-6 bg-teal text-sand flex items-center justify-between border-b border-white/10">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="font-mono text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white/20 text-sand">
-                  {data?.referenceId || 'Loading...'}
+                  <bdi dir="ltr">{data?.referenceId || t('admin.drawer.loadingRecord')}</bdi>
                 </span>
                 {data?.type && (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-wheat text-teal capitalize">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-wheat text-teal">
                     <Tag className="w-3 h-3" />
-                    {data.type}
+                    <span>{ADMIN_TYPE_LABELS[data.type] || data.type}</span>
                   </span>
                 )}
               </div>
-              <div className="text-sm font-serif font-bold text-sand truncate max-w-md">
-                {data?.subject || 'Submission Details'}
+              <div className="text-sm font-serif font-bold text-sand truncate max-w-md" dir="auto">
+                {data?.subject || t('admin.drawer.title')}
               </div>
             </div>
 
@@ -181,7 +187,7 @@ export default function SubmissionDrawer({
               type="button"
               onClick={onClose}
               className="p-1.5 rounded-lg bg-white/10 text-sand hover:bg-white/20 transition-colors"
-              aria-label="Close drawer"
+              aria-label={t('admin.drawer.close')}
             >
               <X className="w-5 h-5" />
             </button>
@@ -191,8 +197,8 @@ export default function SubmissionDrawer({
           <div className="flex-1 overflow-y-auto p-6 space-y-8 text-ink">
             {loading || !data ? (
               <div className="flex items-center justify-center py-20 text-muted">
-                <Loader2 className="w-6 h-6 animate-spin mr-2" />
-                <span>Loading record...</span>
+                <Loader2 className="w-6 h-6 animate-spin ms-2" />
+                <span>{t('admin.drawer.loadingRecord')}</span>
               </div>
             ) : (
               <>
@@ -200,26 +206,30 @@ export default function SubmissionDrawer({
                 <div className="p-4 rounded-2xl bg-sand/40 border border-line flex flex-wrap items-center justify-between gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-ink/70 uppercase tracking-wider mb-1">
-                      Status
+                      {t('admin.drawer.statusLabel')}
                     </label>
                     <div className="inline-flex rounded-xl bg-white p-1 border border-line shadow-sm">
-                      {['Pending', 'In Progress', 'Resolved'].map((st) => (
+                      {[
+                        { key: 'Pending', label: ADMIN_STATUS_LABELS['Pending'] },
+                        { key: 'In Progress', label: ADMIN_STATUS_LABELS['In Progress'] },
+                        { key: 'Resolved', label: ADMIN_STATUS_LABELS['Resolved'] },
+                      ].map((st) => (
                         <button
-                          key={st}
+                          key={st.key}
                           type="button"
                           disabled={statusUpdating}
-                          onClick={() => handleStatusChange(st)}
+                          onClick={() => handleStatusChange(st.key)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                            data.status === st
-                              ? st === 'Resolved'
+                            data.status === st.key
+                              ? st.key === 'Resolved'
                                 ? 'bg-teal text-sand shadow-sm'
-                                : st === 'In Progress'
+                                : st.key === 'In Progress'
                                 ? 'bg-amber-600 text-white shadow-sm'
                                 : 'bg-deep text-sand shadow-sm'
                               : 'text-ink/70 hover:bg-sand/40'
                           }`}
                         >
-                          {st}
+                          {st.label}
                         </button>
                       ))}
                     </div>
@@ -227,16 +237,16 @@ export default function SubmissionDrawer({
 
                   <div>
                     <label className="block text-[11px] font-bold text-ink/70 uppercase tracking-wider mb-1">
-                      Priority
+                      {t('admin.drawer.priorityLabel')}
                     </label>
                     <select
                       value={data.priority}
                       onChange={(e) => handlePriorityChange(e.target.value)}
                       className="px-3 py-1.5 text-xs font-semibold rounded-xl border border-line bg-white focus:outline-none focus:ring-1 focus:ring-teal"
                     >
-                      <option value="Low">Low</option>
-                      <option value="Medium">Medium</option>
-                      <option value="High">High</option>
+                      <option value="Low">{ADMIN_PRIORITY_LABELS['Low']}</option>
+                      <option value="Medium">{ADMIN_PRIORITY_LABELS['Medium']}</option>
+                      <option value="High">{ADMIN_PRIORITY_LABELS['High']}</option>
                     </select>
                   </div>
                 </div>
@@ -245,11 +255,11 @@ export default function SubmissionDrawer({
                 <div className="p-5 rounded-2xl bg-white border border-line shadow-sm space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold uppercase tracking-wider text-teal">
-                      Submission Overview
+                      {t('admin.drawer.overviewTitle')}
                     </span>
-                    <span className="text-[11px] font-mono text-muted flex items-center gap-1">
+                    <span className="text-[11px] text-muted flex items-center gap-1 font-kreon">
                       <Calendar className="w-3.5 h-3.5 text-muted" />
-                      {new Date(data.createdAt).toLocaleDateString()}
+                      {formatAdminDate(data.createdAt, true)}
                     </span>
                   </div>
 
@@ -257,9 +267,9 @@ export default function SubmissionDrawer({
                     <div className="flex items-center gap-2 p-2.5 rounded-xl bg-sand/30 border border-line/60">
                       <MapPin className="w-4 h-4 text-green-brand flex-shrink-0" />
                       <div>
-                        <div className="text-[10px] text-muted">Fixed Wilaya &amp; Commune</div>
+                        <div className="text-[10px] text-muted">{t('admin.drawer.fixedLocation')}</div>
                         <div className="font-semibold text-teal">
-                          {data.wilaya || '18 - جيجل (Jijel)'} · {data.commune || 'الطاهير (Taher)'}
+                          18 - جيجل (Jijel) · الطاهير (Taher)
                         </div>
                       </div>
                     </div>
@@ -267,9 +277,9 @@ export default function SubmissionDrawer({
                     <div className="flex items-center gap-2 p-2.5 rounded-xl bg-sand/30 border border-line/60">
                       <Building className="w-4 h-4 text-teal flex-shrink-0" />
                       <div>
-                        <div className="text-[10px] text-muted">Entity / Organization</div>
-                        <div className="font-semibold text-ink">
-                          {data.organization || 'Individual Citizen (Anonymous)'}
+                        <div className="text-[10px] text-muted">{t('admin.drawer.organization')}</div>
+                        <div className="font-semibold text-ink" dir="auto">
+                          {data.organization || t('admin.drawer.individualCitizen')}
                         </div>
                       </div>
                     </div>
@@ -281,25 +291,29 @@ export default function SubmissionDrawer({
                   <div className="p-5 rounded-2xl bg-sand/50 border border-line space-y-3">
                     <div className="flex items-center gap-2 text-xs font-bold text-red-600 uppercase">
                       <ShieldAlert className="w-4 h-4 text-red-600" />
-                      <span>Complaint Specific Details</span>
+                      <span>{t('admin.drawer.complaintDetails')}</span>
                     </div>
                     <div className="grid grid-cols-2 gap-3 text-xs">
                       <div>
-                        <span className="text-muted">Category:</span>
+                        <span className="text-muted">{t('admin.drawer.category')}</span>
                         <div className="font-semibold text-ink mt-0.5">
-                          {data.complaintDetails.category || 'General'}
+                          {ADMIN_COMPLAINT_CATEGORY_LABELS[data.complaintDetails.category] ||
+                            data.complaintDetails.category ||
+                            t('admin.drawer.notSpecified')}
                         </div>
                       </div>
                       <div>
-                        <span className="text-muted">Concerned Department:</span>
-                        <div className="font-semibold text-ink mt-0.5">
-                          {data.complaintDetails.concernedParty || 'Not specified'}
+                        <span className="text-muted">{t('admin.drawer.concernedDepartment')}</span>
+                        <div className="font-semibold text-ink mt-0.5" dir="auto">
+                          {data.complaintDetails.concernedParty || t('admin.drawer.notSpecified')}
                         </div>
                       </div>
                       <div>
-                        <span className="text-muted">Incident Date:</span>
+                        <span className="text-muted">{t('admin.drawer.incidentDate')}</span>
                         <div className="font-semibold text-ink mt-0.5">
-                          {data.complaintDetails.incidentDate || 'Not specified'}
+                          {data.complaintDetails.incidentDate
+                            ? formatAdminDate(data.complaintDetails.incidentDate)
+                            : t('admin.drawer.notSpecified')}
                         </div>
                       </div>
                     </div>
@@ -311,19 +325,19 @@ export default function SubmissionDrawer({
                   <div className="p-5 rounded-2xl bg-sand/50 border border-line space-y-3">
                     <div className="flex items-center gap-2 text-xs font-bold text-teal uppercase">
                       <Lightbulb className="w-4 h-4 text-green-brand" />
-                      <span>Suggestion Specific Details</span>
+                      <span>{t('admin.drawer.suggestionDetails')}</span>
                     </div>
                     <div className="text-xs space-y-2">
                       <div>
-                        <span className="text-muted">Proposal Title:</span>
-                        <div className="font-semibold text-ink mt-0.5">
+                        <span className="text-muted">{t('admin.drawer.proposalTitle')}</span>
+                        <div className="font-semibold text-ink mt-0.5" dir="auto">
                           {data.suggestionDetails.title}
                         </div>
                       </div>
                       {data.suggestionDetails.expectedImprovement && (
                         <div>
-                          <span className="text-muted">Expected Improvement:</span>
-                          <div className="text-ink/80 mt-0.5">
+                          <span className="text-muted">{t('admin.drawer.expectedImprovement')}</span>
+                          <div className="text-ink/80 mt-0.5" dir="auto">
                             {data.suggestionDetails.expectedImprovement}
                           </div>
                         </div>
@@ -332,16 +346,14 @@ export default function SubmissionDrawer({
                   </div>
                 )}
 
-                {/* Main Written Description (RTL-aware) */}
+                {/* Main Written Description (dir="auto") */}
                 <div className="space-y-2">
                   <h4 className="text-xs font-bold text-ink/70 uppercase tracking-wider">
-                    Written Request Content
+                    {t('admin.drawer.writtenContent')}
                   </h4>
                   <div
-                    className={`p-5 rounded-2xl bg-sand/30 border border-line text-sm leading-relaxed whitespace-pre-wrap ${
-                      isArabic(data.description) ? 'font-naskh text-start' : 'text-start'
-                    }`}
-                    dir={isArabic(data.description) ? 'rtl' : 'ltr'}
+                    className="p-5 rounded-2xl bg-sand/30 border border-line text-sm leading-relaxed whitespace-pre-wrap text-start"
+                    dir="auto"
                   >
                     {data.description}
                   </div>
@@ -351,10 +363,10 @@ export default function SubmissionDrawer({
                 <div className="space-y-4 pt-4 border-t border-line">
                   <div className="flex items-center justify-between">
                     <h4 className="font-serif font-bold text-base text-teal">
-                      Internal Administrative Notes
+                      {t('admin.drawer.internalNotes')}
                     </h4>
                     <span className="text-xs text-muted">
-                      Private to campaign staff
+                      {t('admin.drawer.internalNotesSub')}
                     </span>
                   </div>
 
@@ -364,8 +376,9 @@ export default function SubmissionDrawer({
                       rows={2}
                       value={newNote}
                       onChange={(e) => setNewNote(e.target.value)}
-                      placeholder="Add an internal note or action update..."
+                      placeholder={t('admin.drawer.addNotePlaceholder')}
                       className="w-full p-3 text-xs rounded-xl border border-line focus:outline-none focus:ring-1 focus:ring-teal bg-white"
+                      dir="auto"
                     />
                     <div className="flex justify-end">
                       <button
@@ -378,7 +391,7 @@ export default function SubmissionDrawer({
                         ) : (
                           <Send className="w-3.5 h-3.5" />
                         )}
-                        <span>Save Note</span>
+                        <span>{t('admin.drawer.saveNote')}</span>
                       </button>
                     </div>
                   </form>
@@ -392,15 +405,15 @@ export default function SubmissionDrawer({
                           className="p-3 rounded-xl bg-white border border-line text-xs space-y-1 shadow-2xs"
                         >
                           <div className="flex items-center justify-between text-muted text-[10px]">
-                            <span className="font-semibold text-teal">{note.authorEmail}</span>
-                            <span>{new Date(note.createdAt).toLocaleString()}</span>
+                            <span className="font-semibold text-teal" dir="ltr">{note.authorEmail}</span>
+                            <span className="font-kreon">{formatAdminDate(note.createdAt, true)}</span>
                           </div>
-                          <p className="text-ink/80 whitespace-pre-wrap">{note.body}</p>
+                          <p className="text-ink/80 whitespace-pre-wrap" dir="auto">{note.body}</p>
                         </div>
                       ))
                     ) : (
                       <div className="text-xs text-muted italic py-2">
-                        No administrative notes recorded yet.
+                        {t('admin.drawer.noNotes')}
                       </div>
                     )}
                   </div>
@@ -410,7 +423,7 @@ export default function SubmissionDrawer({
                 <div className="space-y-3 pt-4 border-t border-line">
                   <h4 className="font-serif font-bold text-base text-teal flex items-center gap-2">
                     <Clock className="w-4 h-4 text-green-brand" />
-                    <span>Audit Trail &amp; Status History</span>
+                    <span>{t('admin.drawer.auditTrail')}</span>
                   </h4>
                   <div className="space-y-2">
                     {data.statusHistory && data.statusHistory.length > 0 ? (
@@ -421,18 +434,18 @@ export default function SubmissionDrawer({
                         >
                           <div>
                             <span className="font-semibold text-ink">
-                              {hist.previousStatus} → {hist.newStatus}
+                              {ADMIN_STATUS_LABELS[hist.previousStatus] || hist.previousStatus} ← {ADMIN_STATUS_LABELS[hist.newStatus] || hist.newStatus}
                             </span>
-                            <span className="text-muted ml-2">by {hist.changedBy}</span>
+                            <span className="text-muted ms-2" dir="ltr">({hist.changedBy})</span>
                           </div>
-                          <span className="text-[10px] text-muted">
-                            {new Date(hist.createdAt).toLocaleDateString()}
+                          <span className="text-[10px] text-muted font-kreon">
+                            {formatAdminDate(hist.createdAt, true)}
                           </span>
                         </div>
                       ))
                     ) : (
                       <div className="text-xs text-muted italic">
-                        Initial record created.
+                        {t('admin.drawer.initialCreated')}
                       </div>
                     )}
                   </div>
@@ -446,7 +459,7 @@ export default function SubmissionDrawer({
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
-                    <span>Delete Submission</span>
+                    <span>{t('admin.drawer.deleteSubmission')}</span>
                   </button>
                 </div>
               </>
@@ -458,8 +471,12 @@ export default function SubmissionDrawer({
       {/* Delete Confirmation Dialog */}
       <ConfirmDialog
         isOpen={deleteDialogOpen}
-        title="Delete Submission Record"
-        message={`Are you sure you want to permanently delete submission ${data?.referenceId}? All associated notes and audit history will be permanently deleted.`}
+        title={t('admin.submissions.deleteConfirmTitle')}
+        message={t('admin.submissions.deleteConfirmMsg', {
+          ref: data?.referenceId || '',
+        })}
+        confirmLabel={t('admin.submissions.confirmDeleteBtn')}
+        cancelLabel={t('admin.submissions.cancelBtn')}
         onConfirm={handleDelete}
         onCancel={() => setDeleteDialogOpen(false)}
         isLoading={deleting}

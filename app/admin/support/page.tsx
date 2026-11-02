@@ -11,8 +11,15 @@ import {
   Loader2,
 } from 'lucide-react';
 import { wilayasList } from '@/lib/wilayas';
+import { useI18n } from '@/lib/i18n';
+import {
+  ADMIN_VOTING_INTENTION_LABELS,
+  ADMIN_PARTICIPATION_LABELS,
+  formatAdminDate,
+} from '@/lib/admin-labels';
 
 export default function AdminSupportPage() {
+  const { t } = useI18n();
   const [items, setItems] = useState<any[]>([]);
   const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
   const [loading, setLoading] = useState(true);
@@ -73,14 +80,14 @@ export default function AdminSupportPage() {
         <div>
           <div className="flex items-center gap-2">
             <h2 className="font-serif text-2xl font-bold text-teal">
-              Supporters &amp; Volunteer Directory
+              {t('admin.support.title')}
             </h2>
             <span className="px-2.5 py-0.5 rounded-full bg-teal/10 text-teal font-semibold text-xs">
-              Grassroots Movement
+              {t('admin.support.badge')}
             </span>
           </div>
           <p className="text-xs text-muted mt-0.5">
-            Verified supporter registrations with contact info and participation preferences
+            {t('admin.support.subtitle')}
           </p>
         </div>
 
@@ -92,7 +99,7 @@ export default function AdminSupportPage() {
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-teal hover:bg-deep text-sand text-xs font-semibold shadow-sm transition-transform active:scale-95"
           >
             <Download className="w-4 h-4" />
-            <span>Export CSV</span>
+            <span>{t('admin.support.exportCsv')}</span>
           </button>
         </div>
       </div>
@@ -109,10 +116,10 @@ export default function AdminSupportPage() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              placeholder="Search name, phone, commune..."
-              className="w-full pl-9 pr-4 py-2 rounded-xl border border-line text-xs bg-sand/20 focus:outline-none focus:ring-1 focus:ring-teal"
+              placeholder={t('admin.support.searchPlaceholder')}
+              className="w-full ps-9 pe-4 py-2 rounded-xl border border-line text-xs bg-sand/20 focus:outline-none focus:ring-1 focus:ring-teal"
             />
-            <Search className="w-4 h-4 text-muted absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-muted absolute start-3 top-2.5" />
           </div>
 
           {/* Wilaya Filter */}
@@ -125,10 +132,10 @@ export default function AdminSupportPage() {
               }}
               className="w-full px-3 py-2 rounded-xl border border-line text-xs bg-sand/20 focus:outline-none focus:ring-1 focus:ring-teal"
             >
-              <option value="">All Wilayas</option>
+              <option value="">{t('admin.support.allWilayas')}</option>
               {wilayasList.map((w) => (
                 <option key={w.code} value={w.fr}>
-                  {w.code} - {w.fr}
+                  {w.code} - {w.ar} ({w.fr})
                 </option>
               ))}
             </select>
@@ -144,11 +151,11 @@ export default function AdminSupportPage() {
               }}
               className="w-full px-3 py-2 rounded-xl border border-line text-xs bg-sand/20 focus:outline-none focus:ring-1 focus:ring-teal"
             >
-              <option value="">All Voting Intentions</option>
-              <option value="definitely">Will definitely vote</option>
-              <option value="leaning">Leaning toward voting</option>
-              <option value="learn_more">Want to learn more</option>
-              <option value="undecided">Don't know yet</option>
+              <option value="">{t('admin.support.allIntentions')}</option>
+              <option value="definitely">{ADMIN_VOTING_INTENTION_LABELS.definitely}</option>
+              <option value="leaning">{ADMIN_VOTING_INTENTION_LABELS.leaning}</option>
+              <option value="learn_more">{ADMIN_VOTING_INTENTION_LABELS.learn_more}</option>
+              <option value="undecided">{ADMIN_VOTING_INTENTION_LABELS.undecided}</option>
             </select>
           </div>
 
@@ -162,11 +169,11 @@ export default function AdminSupportPage() {
               }}
               className="w-full px-3 py-2 rounded-xl border border-line text-xs bg-sand/20 focus:outline-none focus:ring-1 focus:ring-teal"
             >
-              <option value="">All Participation Types</option>
-              <option value="support">Symbolic support</option>
-              <option value="share">Share campaign</option>
-              <option value="volunteer">Volunteer</option>
-              <option value="field_outreach">Field outreach</option>
+              <option value="">{t('admin.support.allParticipations')}</option>
+              <option value="support">{ADMIN_PARTICIPATION_LABELS.support}</option>
+              <option value="share">{ADMIN_PARTICIPATION_LABELS.share}</option>
+              <option value="volunteer">{ADMIN_PARTICIPATION_LABELS.volunteer}</option>
+              <option value="field_outreach">{ADMIN_PARTICIPATION_LABELS.field_outreach}</option>
             </select>
           </div>
         </div>
@@ -179,7 +186,7 @@ export default function AdminSupportPage() {
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line hover:bg-sand/40 text-xs font-semibold text-ink transition-colors"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset Filters</span>
+              <span>{t('admin.support.resetFilters')}</span>
             </button>
           </div>
         )}
@@ -191,14 +198,14 @@ export default function AdminSupportPage() {
           <table className="w-full text-start text-xs">
             <thead>
               <tr className="bg-sand/40 border-b border-line text-ink/70 uppercase font-bold tracking-wider">
-                <th className="py-3.5 px-4 text-start">Supporter Name</th>
-                <th className="py-3.5 px-4 text-start">Wilaya</th>
-                <th className="py-3.5 px-4 text-start">Commune</th>
-                <th className="py-3.5 px-4 text-start">Phone Number</th>
-                <th className="py-3.5 px-4 text-start">Voting Intention</th>
-                <th className="py-3.5 px-4 text-start">Participation</th>
-                <th className="py-3.5 px-4 text-start">Message</th>
-                <th className="py-3.5 px-4 text-end">Date</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.support.tableName')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.support.tableWilaya')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.support.tableCommune')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.support.tablePhone')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.support.tableIntention')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.support.tableParticipation')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.support.tableMessage')}</th>
+                <th className="py-3.5 px-4 text-end">{t('admin.support.tableDate')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-line/60">
@@ -230,35 +237,35 @@ export default function AdminSupportPage() {
                         dir="ltr"
                       >
                         <Phone className="w-3 h-3 text-muted" />
-                        <span>{row.phone}</span>
+                        <bdi dir="ltr">{row.phone}</bdi>
                       </a>
                     </td>
 
                     <td className="py-3.5 px-4 whitespace-nowrap">
                       <span className="px-2.5 py-0.5 rounded-full bg-sand text-ink font-medium">
-                        {row.intention || '—'}
+                        {ADMIN_VOTING_INTENTION_LABELS[row.intention] || row.intention || '—'}
                       </span>
                     </td>
 
                     <td className="py-3.5 px-4 whitespace-nowrap">
                       <span className="px-2.5 py-0.5 rounded-full bg-teal/5 text-teal font-semibold">
-                        {row.participation || '—'}
+                        {ADMIN_PARTICIPATION_LABELS[row.participation] || row.participation || '—'}
                       </span>
                     </td>
 
-                    <td className="py-3.5 px-4 max-w-[200px] truncate text-ink/70" title={row.message}>
+                    <td className="py-3.5 px-4 max-w-[200px] truncate text-ink/70" title={row.message} dir="auto">
                       {row.message || '—'}
                     </td>
 
                     <td className="py-3.5 px-4 text-end text-muted whitespace-nowrap">
-                      {new Date(row.createdAt).toLocaleDateString()}
+                      {formatAdminDate(row.createdAt)}
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td colSpan={8} className="py-12 text-center text-muted italic">
-                    No supporters registered yet.
+                    {t('admin.support.noSupporters')}
                   </td>
                 </tr>
               )}
@@ -269,8 +276,12 @@ export default function AdminSupportPage() {
         {/* Pagination */}
         {pagination.totalPages > 1 && (
           <div className="p-4 bg-sand/30 border-t border-line flex items-center justify-between text-xs text-ink/70">
-            <div>
-              Page {pagination.page} of {pagination.totalPages} ({pagination.total} total)
+            <div className="font-kreon">
+              {t('admin.support.page', {
+                page: String(pagination.page),
+                totalPages: String(pagination.totalPages),
+                total: String(pagination.total),
+              })}
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -278,16 +289,18 @@ export default function AdminSupportPage() {
                 disabled={page <= 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 className="p-1.5 rounded-lg border border-line bg-white hover:bg-sand/40 disabled:opacity-40 transition-colors"
+                title={t('admin.common.prev')}
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4" />
               </button>
               <button
                 type="button"
                 disabled={page >= pagination.totalPages}
                 onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
                 className="p-1.5 rounded-lg border border-line bg-white hover:bg-sand/40 disabled:opacity-40 transition-colors"
+                title={t('admin.common.next')}
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronLeft className="w-4 h-4" />
               </button>
             </div>
           </div>

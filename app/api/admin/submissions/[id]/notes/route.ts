@@ -8,14 +8,14 @@ export async function POST(
 ) {
   const session = await getSession();
   if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'غير مصرح به' }, { status: 401 });
   }
 
   const { id } = await params;
   const { body } = await req.json();
 
   if (!body || typeof body !== 'string' || body.trim().length === 0) {
-    return NextResponse.json({ error: 'Note text cannot be empty' }, { status: 400 });
+    return NextResponse.json({ error: 'لا يمكن أن يكون نص الملاحظة فارغاً' }, { status: 400 });
   }
 
   await initDb();
@@ -27,7 +27,7 @@ export async function POST(
   });
 
   if (subRes.rows.length === 0) {
-    return NextResponse.json({ error: 'Submission not found' }, { status: 404 });
+    return NextResponse.json({ error: 'المراسلة غير موجودة' }, { status: 404 });
   }
 
   const subId = Number(subRes.rows[0].id);

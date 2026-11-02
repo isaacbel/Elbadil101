@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { getDb, initDb } from '@/lib/db';
+import { normalizeArabicText } from '@/lib/admin-labels';
+
+function normalizeSqlColumn(col: string): string {
+  return `REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(${col}, 'أ', 'ا'), 'إ', 'ا'), 'آ', 'ا'), 'ٱ', 'ا'), 'ة', 'ه'), 'ى', 'ي'), 'َ', ''), 'ُ', ''), 'ِ', '')`;
+}
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
@@ -24,9 +29,12 @@ export async function GET(req: NextRequest) {
   const args: any[] = [];
 
   if (search) {
-    conditions.push('(first_name LIKE ? OR last_name LIKE ? OR phone LIKE ? OR commune LIKE ?)');
-    const q = `%${search}%`;
-    args.push(q, q, q, q);
+    const rawPattern = `%${search}%`;
+    const normPattern = `%${normalizeArabicText(search)}%`;
+    conditions.push(
+      `(${normalizeSqlColumn('first_name')} LIKE ? OR ${normalizeSqlColumn('last_name')} LIKE ? OR ${normalizeSqlColumn('commune')} LIKE ? OR phone LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR commune LIKE ?)`
+    );
+    args.push(normPattern, normPattern, normPattern, rawPattern, rawPattern, rawPattern, rawPattern);
   }
 
   if (wilaya) {

@@ -5,7 +5,7 @@ import { getDb, initDb } from '@/lib/db';
 export async function GET() {
   const session = await getSession();
   if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'غير مصرح به' }, { status: 401 });
   }
 
   await initDb();

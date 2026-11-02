@@ -33,7 +33,7 @@ export async function POST(req: Request) {
   try {
     const session = await getSession();
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'غير مصرح به' }, { status: 401 });
     }
 
     const body = await req.json().catch(() => null);
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
     if (!currentPassword || !newPassword || typeof currentPassword !== 'string' || typeof newPassword !== 'string') {
       return NextResponse.json(
-        { error: 'Current password and new password are required.' },
+        { error: 'كلمة المرور الحالية وكلمة المرور الجديدة مطلوبتان.' },
         { status: 400 }
       );
     }
@@ -56,33 +56,33 @@ export async function POST(req: Request) {
     });
 
     if (userResult.rows.length === 0) {
-      return NextResponse.json({ error: 'User account not found.' }, { status: 404 });
+      return NextResponse.json({ error: 'حساب المستخدم غير موجود.' }, { status: 404 });
     }
 
     const currentHash = String(userResult.rows[0].password_hash);
     if (!verifyPassword(currentPassword, currentHash)) {
-      return NextResponse.json({ error: 'Incorrect current password.' }, { status: 400 });
+      return NextResponse.json({ error: 'كلمة المرور الحالية غير صحيحة.' }, { status: 400 });
     }
 
     // Password strength rules
     const minLength = process.env.NODE_ENV === 'production' ? 12 : 8;
     if (newPassword.length < minLength) {
       return NextResponse.json(
-        { error: `New password must be at least ${minLength} characters.` },
+        { error: `يجب ألا تقل كلمة المرور الجديدة عن ${minLength} أحرف.` },
         { status: 400 }
       );
     }
 
     if (isWeakPattern(newPassword)) {
       return NextResponse.json(
-        { error: 'New password is too common or weak. Please choose a more complex phrase.' },
+        { error: 'كلمة المرور الجديدة ضعيفة أو شائعة جداً. يرجى اختيار عبارة مرور أكثر تعقيداً.' },
         { status: 400 }
       );
     }
 
     if (currentPassword === newPassword) {
       return NextResponse.json(
-        { error: 'New password must be different from current password.' },
+        { error: 'يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور الحالية.' },
         { status: 400 }
       );
     }
@@ -103,7 +103,7 @@ export async function POST(req: Request) {
 
     const res = NextResponse.json({
       ok: true,
-      message: 'Password successfully updated.',
+      message: 'تم تحديث كلمة المرور بنجاح.',
     });
 
     res.cookies.set('admin_session', token, {
@@ -117,6 +117,6 @@ export async function POST(req: Request) {
     return res;
   } catch (err: any) {
     console.error('Password change error:', err);
-    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
+    return NextResponse.json({ error: 'حدث خطأ داخلي في الخادم.' }, { status: 500 });
   }
 }

@@ -2,9 +2,15 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Lightbulb, Search, RotateCcw, Loader2 } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
+import {
+  ADMIN_STATUS_LABELS,
+  formatAdminDate,
+} from '@/lib/admin-labels';
 import SubmissionDrawer from '@/components/admin/SubmissionDrawer';
 
 export default function AdminSuggestionsPage() {
+  const { t } = useI18n();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -43,19 +49,19 @@ export default function AdminSuggestionsPage() {
         <div>
           <div className="flex items-center gap-2">
             <h2 className="font-serif text-2xl font-bold text-teal">
-              Citizen Constructive Suggestions
+              {t('admin.suggestions.title')}
             </h2>
             <span className="px-2.5 py-0.5 rounded-full bg-teal/10 text-teal font-semibold text-xs">
-              Public Proposals
+              {t('admin.suggestions.badge')}
             </span>
           </div>
           <p className="text-xs text-muted mt-0.5">
-            Ideas, policy improvements, and municipal initiatives suggested by citizens
+            {t('admin.suggestions.subtitle')}
           </p>
         </div>
 
-        <div className="text-xs text-ink/70 bg-white px-3.5 py-2 rounded-xl border border-line shadow-2xs">
-          Total Suggestions: <span className="font-bold text-teal">{items.length}</span>
+        <div className="text-xs text-ink/70 bg-white px-3.5 py-2 rounded-xl border border-line shadow-2xs font-kreon">
+          {t('admin.suggestions.totalCount', { count: String(items.length) })}
         </div>
       </div>
 
@@ -66,10 +72,10 @@ export default function AdminSuggestionsPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search proposals, citizen name, reference..."
-            className="w-full pl-9 pr-4 py-2 rounded-xl border border-line text-xs bg-sand/20 focus:outline-none focus:ring-1 focus:ring-teal"
+            placeholder={t('admin.suggestions.searchPlaceholder')}
+            className="w-full ps-9 pe-4 py-2 rounded-xl border border-line text-xs bg-sand/20 focus:outline-none focus:ring-1 focus:ring-teal"
           />
-          <Search className="w-4 h-4 text-muted absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-muted absolute start-3 top-2.5" />
         </div>
 
         <div className="w-48">
@@ -78,10 +84,10 @@ export default function AdminSuggestionsPage() {
             onChange={(e) => setStatus(e.target.value)}
             className="w-full px-3 py-2 rounded-xl border border-line text-xs bg-sand/20 focus:outline-none focus:ring-1 focus:ring-teal"
           >
-            <option value="">All Statuses</option>
-            <option value="Pending">Pending Review</option>
-            <option value="In Progress">In Evaluation</option>
-            <option value="Resolved">Accepted / Resolved</option>
+            <option value="">{t('admin.submissions.allStatuses')}</option>
+            <option value="Pending">{ADMIN_STATUS_LABELS['Pending']}</option>
+            <option value="In Progress">{ADMIN_STATUS_LABELS['In Progress']}</option>
+            <option value="Resolved">{ADMIN_STATUS_LABELS['Resolved']}</option>
           </select>
         </div>
 
@@ -95,7 +101,7 @@ export default function AdminSuggestionsPage() {
             className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-line hover:bg-sand/40 text-xs font-semibold text-ink transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset</span>
+            <span>{t('admin.submissions.resetFilters')}</span>
           </button>
         )}
       </div>
@@ -106,11 +112,11 @@ export default function AdminSuggestionsPage() {
           <table className="w-full text-start text-xs">
             <thead>
               <tr className="bg-sand/40 border-b border-line text-ink/70 uppercase font-bold tracking-wider">
-                <th className="py-3.5 px-4 text-start">Reference ID</th>
-                <th className="py-3.5 px-4 text-start">Suggestion Title / Subject</th>
-                <th className="py-3.5 px-4 text-start">Status</th>
-                <th className="py-3.5 px-4 text-start">Date</th>
-                <th className="py-3.5 px-4 text-end">Action</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableRef')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableSubject')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableStatus')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableDate')}</th>
+                <th className="py-3.5 px-4 text-end">{t('admin.submissions.tableActions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-line/60">
@@ -128,10 +134,10 @@ export default function AdminSuggestionsPage() {
                     className="hover:bg-sand/40 cursor-pointer transition-colors"
                   >
                     <td className="py-3.5 px-4 font-mono font-bold text-teal">
-                      {row.referenceId}
+                      <bdi dir="ltr">{row.referenceId}</bdi>
                     </td>
 
-                    <td className="py-3.5 px-4 font-semibold text-ink max-w-[320px] truncate">
+                    <td className="py-3.5 px-4 font-semibold text-ink max-w-[320px] truncate" dir="auto">
                       {row.subject}
                     </td>
 
@@ -145,12 +151,12 @@ export default function AdminSuggestionsPage() {
                             : 'bg-sand text-ink'
                         }`}
                       >
-                        {row.status}
+                        {ADMIN_STATUS_LABELS[row.status] || row.status}
                       </span>
                     </td>
 
                     <td className="py-3.5 px-4 text-muted whitespace-nowrap">
-                      {new Date(row.createdAt).toLocaleDateString()}
+                      {formatAdminDate(row.createdAt)}
                     </td>
 
                     <td className="py-3.5 px-4 text-end">
@@ -162,7 +168,7 @@ export default function AdminSuggestionsPage() {
                         }}
                         className="text-teal hover:underline font-semibold"
                       >
-                        Review Proposal
+                        {t('admin.suggestions.review')}
                       </button>
                     </td>
                   </tr>
@@ -170,7 +176,7 @@ export default function AdminSuggestionsPage() {
               ) : (
                 <tr>
                   <td colSpan={5} className="py-12 text-center text-muted italic">
-                    No suggestions recorded.
+                    {t('admin.suggestions.noSuggestions')}
                   </td>
                 </tr>
               )}

@@ -17,7 +17,11 @@ interface I18nContextType {
   locale: Locale;
   dir: 'rtl' | 'ltr';
   setLocale: (l: Locale) => void;
-  t: (key: string, fallback?: string) => string;
+  t: (
+    path: string,
+    paramsOrFallback?: Record<string, string | number> | string,
+    fallback?: string
+  ) => string;
 }
 
 const I18nContext = createContext<I18nContextType>({
@@ -57,7 +61,19 @@ export function I18nProvider({
     document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr';
   };
 
-  const t = (path: string, fallback?: string): string => {
+  const t = (
+    path: string,
+    paramsOrFallback?: Record<string, string | number> | string,
+    fallback?: string
+  ): string => {
+    let params: Record<string, string | number> | undefined;
+    let defaultVal = fallback;
+    if (typeof paramsOrFallback === 'string') {
+      defaultVal = paramsOrFallback;
+    } else if (paramsOrFallback && typeof paramsOrFallback === 'object') {
+      params = paramsOrFallback;
+    }
+
     const keys = path.split('.');
     let current: any = messagesMap[locale];
 
@@ -75,11 +91,18 @@ export function I18nProvider({
             break;
           }
         }
-        return (typeof fallbackVal === 'string' ? fallbackVal : fallback) || path;
+        current = typeof fallbackVal === 'string' ? fallbackVal : defaultVal || path;
+        break;
       }
     }
 
-    return typeof current === 'string' ? current : fallback || path;
+    let result = typeof current === 'string' ? current : defaultVal || path;
+    if (params) {
+      for (const [k, v] of Object.entries(params)) {
+        result = result.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v));
+      }
+    }
+    return result;
   };
 
   const dir = locale === 'ar' ? 'rtl' : 'ltr';

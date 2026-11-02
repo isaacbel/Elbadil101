@@ -10,9 +10,16 @@ import {
   CheckCircle2,
   Users,
   TrendingUp,
-  ArrowRight,
+  ArrowLeft,
   RefreshCw,
 } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
+import {
+  ADMIN_STATUS_LABELS,
+  ADMIN_PRIORITY_LABELS,
+  ADMIN_TYPE_LABELS,
+  formatAdminDate,
+} from '@/lib/admin-labels';
 import SubmissionDrawer from '@/components/admin/SubmissionDrawer';
 
 interface StatsData {
@@ -27,6 +34,7 @@ interface StatsData {
 }
 
 export default function AdminOverviewPage() {
+  const { t } = useI18n();
   const [stats, setStats] = useState<StatsData | null>(null);
   const [recentItems, setRecentItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,10 +73,10 @@ export default function AdminOverviewPage() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-serif text-2xl font-bold text-teal">
-            Campaign &amp; Office Activity
+            {t('admin.overview.title')}
           </h2>
           <p className="text-xs text-muted mt-0.5">
-            Real-time citizen engagement, written submissions, and complaint monitoring
+            {t('admin.overview.subtitle')}
           </p>
         </div>
 
@@ -79,7 +87,7 @@ export default function AdminOverviewPage() {
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line bg-white hover:bg-sand/40 text-xs font-semibold text-ink transition-colors shadow-2xs"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-          <span>Refresh</span>
+          <span>{t('admin.overview.refresh')}</span>
         </button>
       </div>
 
@@ -88,73 +96,97 @@ export default function AdminOverviewPage() {
         {/* Total Submissions */}
         <div className="p-5 rounded-2xl bg-white border border-line shadow-card space-y-2">
           <div className="flex items-center justify-between text-teal/70">
-            <span className="text-xs font-bold uppercase tracking-wider">Submissions</span>
+            <span className="text-xs font-bold uppercase tracking-wider">
+              {t('admin.overview.totalSubmissions')}
+            </span>
             <Inbox className="w-4 h-4 text-teal" />
           </div>
           <div className="font-kreon text-2xl sm:text-3xl font-bold text-teal">
             {stats?.totalSubmissions ?? '—'}
           </div>
-          <div className="text-[11px] text-muted">All written citizen requests</div>
+          <div className="text-[11px] text-muted">
+            {t('admin.overview.totalSubmissionsSub')}
+          </div>
         </div>
 
         {/* Complaints */}
         <div className="p-5 rounded-2xl bg-white border border-line shadow-card space-y-2">
           <div className="flex items-center justify-between text-red-600">
-            <span className="text-xs font-bold uppercase tracking-wider">Complaints</span>
+            <span className="text-xs font-bold uppercase tracking-wider">
+              {t('admin.overview.complaints')}
+            </span>
             <ShieldAlert className="w-4 h-4 text-red-600" />
           </div>
           <div className="font-kreon text-2xl sm:text-3xl font-bold text-red-600">
             {stats?.totalComplaints ?? '—'}
           </div>
-          <div className="text-[11px] text-muted">Grievances filed</div>
+          <div className="text-[11px] text-muted">
+            {t('admin.overview.complaintsSub')}
+          </div>
         </div>
 
         {/* Suggestions */}
         <div className="p-5 rounded-2xl bg-white border border-line shadow-card space-y-2">
           <div className="flex items-center justify-between text-teal">
-            <span className="text-xs font-bold uppercase tracking-wider">Suggestions</span>
+            <span className="text-xs font-bold uppercase tracking-wider">
+              {t('admin.overview.suggestions')}
+            </span>
             <Lightbulb className="w-4 h-4 text-green-brand" />
           </div>
           <div className="font-kreon text-2xl sm:text-3xl font-bold text-teal">
             {stats?.totalSuggestions ?? '—'}
           </div>
-          <div className="text-[11px] text-muted">Constructive proposals</div>
+          <div className="text-[11px] text-muted">
+            {t('admin.overview.suggestionsSub')}
+          </div>
         </div>
 
         {/* Pending */}
         <div className="p-5 rounded-2xl bg-white border border-line shadow-card space-y-2">
           <div className="flex items-center justify-between text-amber-600">
-            <span className="text-xs font-bold uppercase tracking-wider">Pending</span>
+            <span className="text-xs font-bold uppercase tracking-wider">
+              {t('admin.overview.pending')}
+            </span>
             <Clock className="w-4 h-4 text-amber-500" />
           </div>
           <div className="font-kreon text-2xl sm:text-3xl font-bold text-amber-600">
             {stats?.pending ?? '—'}
           </div>
-          <div className="text-[11px] text-muted">Awaiting office review</div>
+          <div className="text-[11px] text-muted">
+            {t('admin.overview.pendingSub')}
+          </div>
         </div>
 
         {/* In Progress */}
         <div className="p-5 rounded-2xl bg-white border border-line shadow-card space-y-2">
           <div className="flex items-center justify-between text-blue-600">
-            <span className="text-xs font-bold uppercase tracking-wider">In Progress</span>
+            <span className="text-xs font-bold uppercase tracking-wider">
+              {t('admin.overview.inProgress')}
+            </span>
             <TrendingUp className="w-4 h-4 text-blue-500" />
           </div>
           <div className="font-kreon text-2xl sm:text-3xl font-bold text-blue-600">
             {stats?.inProgress ?? '—'}
           </div>
-          <div className="text-[11px] text-muted">Active investigation</div>
+          <div className="text-[11px] text-muted">
+            {t('admin.overview.inProgressSub')}
+          </div>
         </div>
 
         {/* Resolved */}
         <div className="p-5 rounded-2xl bg-white border border-line shadow-card space-y-2">
           <div className="flex items-center justify-between text-teal">
-            <span className="text-xs font-bold uppercase tracking-wider">Resolved</span>
+            <span className="text-xs font-bold uppercase tracking-wider">
+              {t('admin.overview.resolved')}
+            </span>
             <CheckCircle2 className="w-4 h-4 text-teal" />
           </div>
           <div className="font-kreon text-2xl sm:text-3xl font-bold text-teal">
             {stats?.resolved ?? '—'}
           </div>
-          <div className="text-[11px] text-muted">Completed responses</div>
+          <div className="text-[11px] text-muted">
+            {t('admin.overview.resolvedSub')}
+          </div>
         </div>
       </div>
 
@@ -166,10 +198,11 @@ export default function AdminOverviewPage() {
           </div>
           <div>
             <div className="text-xs uppercase tracking-wider text-sand/70 font-semibold">
-              Campaign Movement
+              {t('admin.overview.supportersTitle')}
             </div>
             <div className="font-serif text-2xl sm:text-3xl font-bold text-sand">
-              <span className="font-kreon text-wheat">{stats?.totalSupporters ?? 0}</span> Supporters Registered
+              <span className="font-kreon text-wheat">{stats?.totalSupporters ?? 0}</span>{' '}
+              {t('admin.overview.supportersRegistered')}
             </div>
           </div>
         </div>
@@ -178,8 +211,8 @@ export default function AdminOverviewPage() {
           href="/admin/support"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-wheat text-deep hover:bg-wheat/90 text-xs font-semibold transition-transform active:scale-95 shadow-sm"
         >
-          <span>View Directory &amp; Export CSV</span>
-          <ArrowRight className="w-3.5 h-3.5" />
+          <span>{t('admin.overview.viewSupportersBtn')}</span>
+          <ArrowLeft className="w-3.5 h-3.5" />
         </Link>
       </div>
 
@@ -187,7 +220,7 @@ export default function AdminOverviewPage() {
       {stats?.chartData && stats.chartData.length > 0 && (
         <div className="p-6 rounded-3xl bg-white border border-line shadow-card space-y-4">
           <h3 className="font-serif font-bold text-base text-teal">
-            Submissions Activity (Past 7 Days)
+            {t('admin.overview.activityChartTitle')}
           </h3>
           <div className="flex items-end gap-3 h-36 pt-4 border-b border-line/60">
             {stats.chartData.map((d) => {
@@ -199,9 +232,9 @@ export default function AdminOverviewPage() {
                   <div
                     style={{ height: `${heightPercent}%` }}
                     className="w-full max-w-[48px] rounded-t-lg bg-teal/80 hover:bg-teal transition-all"
-                    title={`${d.day}: ${d.count} submissions`}
+                    title={`${d.day}: ${d.count}`}
                   />
-                  <span className="text-[10px] text-muted truncate max-w-full">
+                  <span className="text-[10px] text-muted truncate max-w-full font-mono">
                     {d.day.slice(5)}
                   </span>
                 </div>
@@ -216,16 +249,18 @@ export default function AdminOverviewPage() {
         <div className="flex items-center justify-between pb-2 border-b border-line">
           <div>
             <h3 className="font-serif font-bold text-lg text-teal">
-              Recent Citizen Requests
+              {t('admin.overview.recentSubmissionsTitle')}
             </h3>
-            <p className="text-xs text-muted">Latest incoming correspondence</p>
+            <p className="text-xs text-muted">
+              {t('admin.overview.recentSubmissionsSub')}
+            </p>
           </div>
           <Link
             href="/admin/submissions"
             className="text-xs font-semibold text-teal hover:underline inline-flex items-center gap-1"
           >
-            <span>View All Submissions</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <span>{t('admin.overview.viewAllSubmissions')}</span>
+            <ArrowLeft className="w-3.5 h-3.5" />
           </Link>
         </div>
 
@@ -233,13 +268,13 @@ export default function AdminOverviewPage() {
           <table className="w-full text-start text-xs">
             <thead>
               <tr className="border-b border-line text-muted uppercase font-semibold">
-                <th className="py-3 px-3 text-start">Reference</th>
-                <th className="py-3 px-3 text-start">Citizen</th>
-                <th className="py-3 px-3 text-start">Type</th>
-                <th className="py-3 px-3 text-start">Subject</th>
-                <th className="py-3 px-3 text-start">Priority</th>
-                <th className="py-3 px-3 text-start">Status</th>
-                <th className="py-3 px-3 text-end">Action</th>
+                <th className="py-3 px-3 text-start">{t('admin.submissions.tableRef')}</th>
+                <th className="py-3 px-3 text-start">{t('admin.submissions.tableType')}</th>
+                <th className="py-3 px-3 text-start">{t('admin.submissions.tableSubject')}</th>
+                <th className="py-3 px-3 text-start">{t('admin.submissions.tablePriority')}</th>
+                <th className="py-3 px-3 text-start">{t('admin.submissions.tableStatus')}</th>
+                <th className="py-3 px-3 text-start">{t('admin.submissions.tableDate')}</th>
+                <th className="py-3 px-3 text-end">{t('admin.submissions.tableActions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-line/60">
@@ -251,17 +286,14 @@ export default function AdminOverviewPage() {
                     className="hover:bg-sand/40 cursor-pointer transition-colors"
                   >
                     <td className="py-3 px-3 font-mono font-semibold text-teal">
-                      {item.referenceId}
-                    </td>
-                    <td className="py-3 px-3 font-medium text-ink">
-                      {item.fullName}
+                      <bdi dir="ltr">{item.referenceId}</bdi>
                     </td>
                     <td className="py-3 px-3">
                       <span className="px-2 py-0.5 rounded-full bg-teal/5 text-teal font-semibold">
-                        {item.type}
+                        {ADMIN_TYPE_LABELS[item.type] || item.type}
                       </span>
                     </td>
-                    <td className="py-3 px-3 max-w-[200px] truncate text-ink/80">
+                    <td className="py-3 px-3 max-w-[220px] truncate text-ink/80 font-medium" dir="auto">
                       {item.subject}
                     </td>
                     <td className="py-3 px-3">
@@ -274,7 +306,7 @@ export default function AdminOverviewPage() {
                             : 'text-muted'
                         }`}
                       >
-                        {item.priority}
+                        {ADMIN_PRIORITY_LABELS[item.priority] || item.priority}
                       </span>
                     </td>
                     <td className="py-3 px-3">
@@ -287,8 +319,11 @@ export default function AdminOverviewPage() {
                             : 'bg-sand text-ink'
                         }`}
                       >
-                        {item.status}
+                        {ADMIN_STATUS_LABELS[item.status] || item.status}
                       </span>
+                    </td>
+                    <td className="py-3 px-3 text-muted whitespace-nowrap">
+                      {formatAdminDate(item.createdAt)}
                     </td>
                     <td className="py-3 px-3 text-end">
                       <button
@@ -299,7 +334,7 @@ export default function AdminOverviewPage() {
                         }}
                         className="text-teal hover:underline font-semibold"
                       >
-                        Inspect
+                        {t('admin.overview.inspect')}
                       </button>
                     </td>
                   </tr>
@@ -307,7 +342,7 @@ export default function AdminOverviewPage() {
               ) : (
                 <tr>
                   <td colSpan={7} className="py-8 text-center text-muted italic">
-                    {loading ? 'Loading submissions...' : 'No citizen submissions recorded yet.'}
+                    {loading ? t('admin.overview.loading') : t('admin.overview.noSubmissions')}
                   </td>
                 </tr>
               )}

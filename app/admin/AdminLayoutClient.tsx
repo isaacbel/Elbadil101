@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { useI18n } from '@/lib/i18n';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import AdminHeader from '@/components/admin/AdminHeader';
 import ChangePasswordModal from '@/components/admin/ChangePasswordModal';
@@ -19,30 +20,41 @@ export default function AdminLayoutClient({
   mustChangePassword?: boolean;
 }) {
   const pathname = usePathname();
+  const { t } = useI18n();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [promptDismissed, setPromptDismissed] = useState(false);
   const [hasChangedPassword, setHasChangedPassword] = useState(false);
 
-  // If on login page, render clean layout without sidebar or topbar
+  // Enforce Arabic RTL on all admin pages
+  useEffect(() => {
+    document.documentElement.lang = 'ar';
+    document.documentElement.dir = 'rtl';
+  }, []);
+
+  // If on login page, render clean layout with RTL and font-naskh
   if (pathname === '/admin/login') {
-    return <>{children}</>;
+    return (
+      <div dir="rtl" lang="ar" className="font-naskh text-start">
+        {children}
+      </div>
+    );
   }
 
   const showWeakPasswordPrompt = mustChangePassword && !promptDismissed && !hasChangedPassword;
 
   const getPageTitle = () => {
-    if (pathname === '/admin') return 'Overview & Analytics';
-    if (pathname === '/admin/submissions') return 'Citizen Submissions';
-    if (pathname === '/admin/complaints') return 'Complaints & Grievances';
-    if (pathname === '/admin/suggestions') return 'Citizen Suggestions';
-    if (pathname === '/admin/support') return 'Supporters Directory';
-    return 'Admin Dashboard';
+    if (pathname === '/admin') return t('admin.nav.dashboard');
+    if (pathname === '/admin/submissions') return t('admin.nav.submissions');
+    if (pathname === '/admin/complaints') return t('admin.nav.complaints');
+    if (pathname === '/admin/suggestions') return t('admin.nav.suggestions');
+    if (pathname === '/admin/support') return t('admin.nav.supporters');
+    return t('admin.nav.dashboard');
   };
 
   return (
-    <div className="min-h-screen bg-sand flex">
-      {/* Sidebar */}
+    <div dir="rtl" lang="ar" className="min-h-screen bg-sand flex font-naskh text-start">
+      {/* Sidebar (Appears on right side in RTL flex) */}
       <AdminSidebar
         mobileOpen={mobileSidebarOpen}
         onCloseMobile={() => setMobileSidebarOpen(false)}
@@ -66,7 +78,7 @@ export default function AdminLayoutClient({
             <div className="flex items-center gap-2.5">
               <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
               <span>
-                <strong>Security Alert:</strong> You are currently using a default or development password. Please change your password to a secure phrase.
+                <strong>{t('admin.securityAlert.title')}</strong> {t('admin.securityAlert.message')}
               </span>
             </div>
             <div className="flex items-center gap-2 self-end sm:self-auto">
@@ -76,14 +88,14 @@ export default function AdminLayoutClient({
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal hover:bg-deep text-sand font-semibold transition-colors shadow-xs"
               >
                 <KeyRound className="w-3.5 h-3.5 text-wheat" />
-                <span>Change Password</span>
+                <span>{t('admin.securityAlert.changePasswordBtn')}</span>
               </button>
               <button
                 type="button"
                 onClick={() => setPromptDismissed(true)}
                 className="text-amber-800/70 hover:text-amber-900 text-[11px] underline px-1"
               >
-                Dismiss
+                {t('admin.securityAlert.dismiss')}
               </button>
             </div>
           </div>

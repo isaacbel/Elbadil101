@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AlertTriangle, X } from 'lucide-react';
+import { AlertTriangle, X, Loader2 } from 'lucide-react';
 
 interface ConfirmDialogProps {
   isOpen: boolean;
@@ -18,8 +18,8 @@ export default function ConfirmDialog({
   isOpen,
   title,
   message,
-  confirmLabel = 'Delete Permanently',
-  cancelLabel = 'Cancel',
+  confirmLabel = 'تأكيد الحذف النهائي',
+  cancelLabel = 'إلغاء',
   onConfirm,
   onCancel,
   isLoading = false,
@@ -27,9 +27,12 @@ export default function ConfirmDialog({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-line space-y-4">
-        <div className="flex items-center justify-between pb-2 border-b border-line">
+    <div
+      dir="rtl"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in font-naskh"
+    >
+      <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-line space-y-4 text-start">
+        <div className="flex items-center justify-between pb-3 border-b border-line">
           <div className="flex items-center gap-2 text-red-600">
             <AlertTriangle className="w-5 h-5 flex-shrink-0" />
             <h3 className="font-serif font-bold text-lg text-ink">{title}</h3>
@@ -37,14 +40,14 @@ export default function ConfirmDialog({
           <button
             type="button"
             onClick={onCancel}
-            className="p-1 rounded-lg text-muted hover:text-ink hover:bg-sand/60"
+            className="p-1 rounded-lg text-muted hover:text-ink hover:bg-sand/60 transition-colors"
             aria-label="Close"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <p className="text-sm text-ink/80 leading-relaxed">
+        <p className="text-xs sm:text-sm text-ink/80 leading-relaxed">
           {message}
         </p>
 
@@ -61,9 +64,10 @@ export default function ConfirmDialog({
             type="button"
             disabled={isLoading}
             onClick={onConfirm}
-            className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
           >
-            {isLoading ? 'Processing...' : confirmLabel}
+            {isLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+            <span>{isLoading ? 'جاري المعالجة...' : confirmLabel}</span>
           </button>
         </div>
       </div>

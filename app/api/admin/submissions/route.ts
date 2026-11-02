@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { getDb, initDb } from '@/lib/db';
+import { normalizeArabicText } from '@/lib/admin-labels';
+
+function normalizeSqlColumn(col: string): string {
+  return `REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(${col}, 'أ', 'ا'), 'إ', 'ا'), 'آ', 'ا'), 'ٱ', 'ا'), 'ة', 'ه'), 'ى', 'ي'), 'َ', ''), 'ُ', ''), 'ِ', '')`;
+}
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
@@ -27,11 +32,12 @@ export async function GET(req: NextRequest) {
   const args: any[] = [];
 
   if (search) {
+    const rawPattern = `%${search}%`;
+    const normPattern = `%${normalizeArabicText(search)}%`;
     conditions.push(
-      '(reference_id LIKE ? OR full_name LIKE ? OR email LIKE ? OR subject LIKE ? OR description LIKE ?)'
+      `(${normalizeSqlColumn('reference_id')} LIKE ? OR ${normalizeSqlColumn('subject')} LIKE ? OR ${normalizeSqlColumn('description')} LIKE ? OR reference_id LIKE ? OR subject LIKE ? OR description LIKE ?)`
     );
-    const likePattern = `%${search}%`;
-    args.push(likePattern, likePattern, likePattern, likePattern, likePattern);
+    args.push(normPattern, normPattern, normPattern, rawPattern, rawPattern, rawPattern);
   }
 
   if (type) {

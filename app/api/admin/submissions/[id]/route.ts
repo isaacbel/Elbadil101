@@ -8,7 +8,7 @@ export async function GET(
 ) {
   const session = await getSession();
   if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'غير مصرح به' }, { status: 401 });
   }
 
   const { id } = await params;
@@ -21,7 +21,7 @@ export async function GET(
   });
 
   if (subRes.rows.length === 0) {
-    return NextResponse.json({ error: 'Submission not found' }, { status: 404 });
+    return NextResponse.json({ error: 'المراسلة غير موجودة' }, { status: 404 });
   }
 
   const row = subRes.rows[0];
@@ -129,7 +129,7 @@ export async function PATCH(
 ) {
   const session = await getSession();
   if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'غير مصرح به' }, { status: 401 });
   }
 
   const { id } = await params;
@@ -142,7 +142,7 @@ export async function PATCH(
   });
 
   if (currentRes.rows.length === 0) {
-    return NextResponse.json({ error: 'Submission not found' }, { status: 404 });
+    return NextResponse.json({ error: 'المراسلة غير موجودة' }, { status: 404 });
   }
 
   const current = currentRes.rows[0];
@@ -181,7 +181,7 @@ export async function DELETE(
 ) {
   const session = await getSession();
   if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'غير مصرح به' }, { status: 401 });
   }
 
   const { id } = await params;

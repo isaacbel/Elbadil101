@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const lockout = checkLoginLockout(hashedIp, 5, 10 * 60 * 1000);
     if (lockout.locked) {
       return NextResponse.json(
-        { error: 'Too many failed login attempts. Please wait 10 minutes.' },
+        { error: 'تم تجاوز عدد المحاولات المسموح بها. يرجى الانتظار 10 دقائق قبل إعادة المحاولة.' },
         { status: 429 }
       );
     }
@@ -27,14 +27,14 @@ export async function POST(req: Request) {
 
     if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
       recordFailedLogin(hashedIp, 5, 10 * 60 * 1000);
-      return NextResponse.json({ error: 'Incorrect email or password.' }, { status: 401 });
+      return NextResponse.json({ error: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.' }, { status: 401 });
     }
 
     const admin = await authenticateAdmin(email, password);
 
     if (!admin) {
       recordFailedLogin(hashedIp, 5, 10 * 60 * 1000);
-      return NextResponse.json({ error: 'Incorrect email or password.' }, { status: 401 });
+      return NextResponse.json({ error: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.' }, { status: 401 });
     }
 
     // Clear failed attempts on valid login
@@ -66,6 +66,6 @@ export async function POST(req: Request) {
     return res;
   } catch (err: any) {
     console.error('Login error:', err);
-    return NextResponse.json({ error: 'Authentication service error.' }, { status: 500 });
+    return NextResponse.json({ error: 'حدث خطأ في خدمة المصادقة.' }, { status: 500 });
   }
 }

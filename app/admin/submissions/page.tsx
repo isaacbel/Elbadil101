@@ -12,10 +12,18 @@ import {
   Inbox,
   Loader2,
 } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
+import {
+  ADMIN_STATUS_LABELS,
+  ADMIN_PRIORITY_LABELS,
+  ADMIN_TYPE_LABELS,
+  formatAdminDate,
+} from '@/lib/admin-labels';
 import SubmissionDrawer from '@/components/admin/SubmissionDrawer';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 export default function AdminSubmissionsPage() {
+  const { t } = useI18n();
   const [items, setItems] = useState<any[]>([]);
   const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 15, totalPages: 1 });
   const [loading, setLoading] = useState(true);
@@ -99,16 +107,18 @@ export default function AdminSubmissionsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="font-serif text-2xl font-bold text-teal">
-            Citizen Written Submissions
+            {t('admin.submissions.title')}
           </h2>
           <p className="text-xs text-muted mt-0.5">
-            Search, filter, track and respond to written citizen correspondence
+            {t('admin.submissions.subtitle')}
           </p>
         </div>
 
-        <div className="text-xs text-ink/70 bg-white px-3.5 py-2 rounded-xl border border-line shadow-2xs">
-          Showing <span className="font-bold text-teal">{items.length}</span> of{' '}
-          <span className="font-bold text-teal">{pagination.total}</span> records
+        <div className="text-xs text-ink/70 bg-white px-3.5 py-2 rounded-xl border border-line shadow-2xs font-kreon">
+          {t('admin.submissions.showingRecords', {
+            count: String(items.length),
+            total: String(pagination.total),
+          })}
         </div>
       </div>
 
@@ -124,10 +134,10 @@ export default function AdminSubmissionsPage() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              placeholder="Search by reference ID, subject or content..."
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-line focus:outline-none focus:ring-1 focus:ring-teal text-xs bg-sand/20"
+              placeholder={t('admin.submissions.searchPlaceholder')}
+              className="w-full ps-9 pe-4 py-2.5 rounded-xl border border-line focus:outline-none focus:ring-1 focus:ring-teal text-xs bg-sand/20"
             />
-            <Search className="w-4 h-4 text-muted absolute left-3 top-3" />
+            <Search className="w-4 h-4 text-muted absolute start-3 top-3" />
           </div>
 
           {/* Request Type Filter */}
@@ -140,14 +150,14 @@ export default function AdminSubmissionsPage() {
               }}
               className="w-full px-3 py-2.5 rounded-xl border border-line focus:outline-none focus:ring-1 focus:ring-teal text-xs bg-sand/20"
             >
-              <option value="">All Types</option>
-              <option value="General Information">General Information</option>
-              <option value="Complaint">Complaint</option>
-              <option value="Suggestion">Suggestion</option>
-              <option value="Question">Question</option>
-              <option value="Technical Problem">Technical Problem</option>
-              <option value="Request for Assistance">Request for Assistance</option>
-              <option value="Other">Other</option>
+              <option value="">{t('admin.submissions.allTypes')}</option>
+              <option value="General Information">{ADMIN_TYPE_LABELS['General Information']}</option>
+              <option value="Complaint">{ADMIN_TYPE_LABELS['Complaint']}</option>
+              <option value="Suggestion">{ADMIN_TYPE_LABELS['Suggestion']}</option>
+              <option value="Question">{ADMIN_TYPE_LABELS['Question']}</option>
+              <option value="Technical Problem">{ADMIN_TYPE_LABELS['Technical Problem']}</option>
+              <option value="Request for Assistance">{ADMIN_TYPE_LABELS['Request for Assistance']}</option>
+              <option value="Other">{ADMIN_TYPE_LABELS['Other']}</option>
             </select>
           </div>
 
@@ -161,10 +171,10 @@ export default function AdminSubmissionsPage() {
               }}
               className="w-full px-3 py-2.5 rounded-xl border border-line focus:outline-none focus:ring-1 focus:ring-teal text-xs bg-sand/20"
             >
-              <option value="">All Statuses</option>
-              <option value="Pending">Pending</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Resolved">Resolved</option>
+              <option value="">{t('admin.submissions.allStatuses')}</option>
+              <option value="Pending">{ADMIN_STATUS_LABELS['Pending']}</option>
+              <option value="In Progress">{ADMIN_STATUS_LABELS['In Progress']}</option>
+              <option value="Resolved">{ADMIN_STATUS_LABELS['Resolved']}</option>
             </select>
           </div>
         </div>
@@ -181,10 +191,10 @@ export default function AdminSubmissionsPage() {
               }}
               className="w-full px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-1 focus:ring-teal text-xs bg-sand/20"
             >
-              <option value="">All Priorities</option>
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
+              <option value="">{t('admin.submissions.allPriorities')}</option>
+              <option value="Low">{ADMIN_PRIORITY_LABELS['Low']}</option>
+              <option value="Medium">{ADMIN_PRIORITY_LABELS['Medium']}</option>
+              <option value="High">{ADMIN_PRIORITY_LABELS['High']}</option>
             </select>
           </div>
 
@@ -195,8 +205,8 @@ export default function AdminSubmissionsPage() {
               onChange={(e) => setSort(e.target.value)}
               className="w-full px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-1 focus:ring-teal text-xs bg-sand/20"
             >
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
+              <option value="newest">{t('admin.submissions.sortNewest')}</option>
+              <option value="oldest">{t('admin.submissions.sortOldest')}</option>
             </select>
           </div>
 
@@ -209,7 +219,7 @@ export default function AdminSubmissionsPage() {
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line hover:bg-sand/40 text-xs font-semibold text-ink transition-colors"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Reset Filters</span>
+                <span>{t('admin.submissions.resetFilters')}</span>
               </button>
             )}
           </div>
@@ -222,13 +232,13 @@ export default function AdminSubmissionsPage() {
           <table className="w-full text-start text-xs">
             <thead>
               <tr className="bg-sand/40 border-b border-line text-ink/70 uppercase font-bold tracking-wider">
-                <th className="py-3.5 px-4 text-start">Reference ID</th>
-                <th className="py-3.5 px-4 text-start">Type</th>
-                <th className="py-3.5 px-4 text-start">Subject</th>
-                <th className="py-3.5 px-4 text-start">Priority</th>
-                <th className="py-3.5 px-4 text-start">Status</th>
-                <th className="py-3.5 px-4 text-start">Date</th>
-                <th className="py-3.5 px-4 text-end">Actions</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableRef')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableType')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableSubject')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tablePriority')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableStatus')}</th>
+                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableDate')}</th>
+                <th className="py-3.5 px-4 text-end">{t('admin.submissions.tableActions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-line/60">
@@ -237,7 +247,7 @@ export default function AdminSubmissionsPage() {
                   <td colSpan={7} className="py-12 text-center text-muted">
                     <div className="flex items-center justify-center gap-2">
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      <span>Loading records...</span>
+                      <span>{t('admin.overview.loading')}</span>
                     </div>
                   </td>
                 </tr>
@@ -250,9 +260,9 @@ export default function AdminSubmissionsPage() {
                   >
                     <td className="py-3.5 px-4 font-mono font-bold text-teal">
                       <div className="flex items-center gap-1.5">
-                        <span>{row.referenceId}</span>
+                        <bdi dir="ltr">{row.referenceId}</bdi>
                         {row.confidential && (
-                          <span title="Confidential">
+                          <span title="سري">
                             <Lock className="w-3 h-3 text-red-600" />
                           </span>
                         )}
@@ -261,11 +271,11 @@ export default function AdminSubmissionsPage() {
 
                     <td className="py-3.5 px-4">
                       <span className="px-2.5 py-0.5 rounded-full bg-teal/5 text-teal font-semibold">
-                        {row.type}
+                        {ADMIN_TYPE_LABELS[row.type] || row.type}
                       </span>
                     </td>
 
-                    <td className="py-3.5 px-4 max-w-[260px] truncate text-ink font-medium">
+                    <td className="py-3.5 px-4 max-w-[260px] truncate text-ink font-medium" dir="auto">
                       {row.subject}
                     </td>
 
@@ -279,7 +289,7 @@ export default function AdminSubmissionsPage() {
                             : 'text-muted'
                         }`}
                       >
-                        {row.priority}
+                        {ADMIN_PRIORITY_LABELS[row.priority] || row.priority}
                       </span>
                     </td>
 
@@ -293,12 +303,12 @@ export default function AdminSubmissionsPage() {
                             : 'bg-sand text-ink'
                         }`}
                       >
-                        {row.status}
+                        {ADMIN_STATUS_LABELS[row.status] || row.status}
                       </span>
                     </td>
 
                     <td className="py-3.5 px-4 text-muted whitespace-nowrap">
-                      {new Date(row.createdAt).toLocaleDateString()}
+                      {formatAdminDate(row.createdAt)}
                     </td>
 
                     <td className="py-3.5 px-4 text-end">
@@ -307,7 +317,7 @@ export default function AdminSubmissionsPage() {
                           type="button"
                           onClick={() => setSelectedId(row.id)}
                           className="p-1.5 rounded-lg text-muted hover:text-teal hover:bg-sand/60 transition-colors"
-                          title="View Details"
+                          title={t('admin.submissions.viewDetails')}
                         >
                           <Eye className="w-4 h-4" />
                         </button>
@@ -315,7 +325,7 @@ export default function AdminSubmissionsPage() {
                           type="button"
                           onClick={() => setDeleteTarget(row)}
                           className="p-1.5 rounded-lg text-muted hover:text-red-600 hover:bg-red-50 transition-colors"
-                          title="Delete"
+                          title={t('admin.submissions.delete')}
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -328,7 +338,7 @@ export default function AdminSubmissionsPage() {
                   <td colSpan={7} className="py-12 text-center text-muted italic">
                     <div className="flex flex-col items-center gap-2">
                       <Inbox className="w-8 h-8 text-muted/40" />
-                      <span>No submissions found matching your search and filter criteria.</span>
+                      <span>{t('admin.submissions.noResults')}</span>
                     </div>
                   </td>
                 </tr>
@@ -340,8 +350,11 @@ export default function AdminSubmissionsPage() {
         {/* Pagination Bar */}
         {pagination.totalPages > 1 && (
           <div className="p-4 bg-sand/30 border-t border-line flex items-center justify-between text-xs text-ink/70">
-            <div>
-              Page {pagination.page} of {pagination.totalPages}
+            <div className="font-kreon">
+              {t('admin.submissions.page', {
+                page: String(pagination.page),
+                totalPages: String(pagination.totalPages),
+              })}
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -349,16 +362,18 @@ export default function AdminSubmissionsPage() {
                 disabled={page <= 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 className="p-1.5 rounded-lg border border-line bg-white hover:bg-sand/40 disabled:opacity-40 transition-colors"
+                title={t('admin.common.prev')}
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4" />
               </button>
               <button
                 type="button"
                 disabled={page >= pagination.totalPages}
                 onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
                 className="p-1.5 rounded-lg border border-line bg-white hover:bg-sand/40 disabled:opacity-40 transition-colors"
+                title={t('admin.common.next')}
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronLeft className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -376,8 +391,12 @@ export default function AdminSubmissionsPage() {
       {/* Delete Confirmation */}
       <ConfirmDialog
         isOpen={Boolean(deleteTarget)}
-        title="Confirm Deletion"
-        message={`Are you sure you want to delete submission ${deleteTarget?.referenceId} from ${deleteTarget?.fullName}?`}
+        title={t('admin.submissions.deleteConfirmTitle')}
+        message={t('admin.submissions.deleteConfirmMsg', {
+          ref: deleteTarget?.referenceId || '',
+        })}
+        confirmLabel={t('admin.submissions.confirmDeleteBtn')}
+        cancelLabel={t('admin.submissions.cancelBtn')}
         onConfirm={handleDelete}
         onCancel={() => setDeleteTarget(null)}
         isLoading={deleting}

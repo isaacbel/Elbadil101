@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { getDb, initDb } from '@/lib/db';
+import {
+  ADMIN_VOTING_INTENTION_LABELS,
+  ADMIN_PARTICIPATION_LABELS,
+  formatAdminDate,
+} from '@/lib/admin-labels';
 
 export async function GET() {
   const session = await getSession();
@@ -23,21 +28,29 @@ export async function GET() {
   };
 
   const headers = [
-    'ID',
-    'First Name',
-    'Last Name',
-    'Wilaya',
-    'Phone',
-    'Commune',
-    'Voting Intention',
-    'Participation Type',
-    'Support Message',
-    'Registration Date',
+    'المعرف',
+    'الاسم',
+    'اللقب',
+    'الولاية',
+    'رقم الهاتف',
+    'البلدية',
+    'نية التصويت',
+    'نوع المشاركة',
+    'رسالة الدعم',
+    'تاريخ التسجيل',
   ];
 
   const csvRows = [headers.join(',')];
 
   for (const row of res.rows) {
+    const intentionLabel =
+      (row.intention && ADMIN_VOTING_INTENTION_LABELS[String(row.intention)]) ||
+      String(row.intention || '');
+    const participationLabel =
+      (row.participation && ADMIN_PARTICIPATION_LABELS[String(row.participation)]) ||
+      String(row.participation || '');
+    const formattedDate = formatAdminDate(row.created_at as string, true);
+
     csvRows.push(
       [
         row.id,
@@ -46,10 +59,10 @@ export async function GET() {
         escapeCsv(row.wilaya),
         escapeCsv(row.phone),
         escapeCsv(row.commune),
-        escapeCsv(row.intention),
-        escapeCsv(row.participation),
+        escapeCsv(intentionLabel),
+        escapeCsv(participationLabel),
         escapeCsv(row.message),
-        escapeCsv(row.created_at),
+        escapeCsv(formattedDate),
       ].join(',')
     );
   }
@@ -61,7 +74,7 @@ export async function GET() {
     status: 200,
     headers: {
       'Content-Type': 'text/csv; charset=utf-8',
-      'Content-Disposition': 'attachment; filename="candidate-support-registrations-2026.csv"',
+      'Content-Disposition': 'attachment; filename="candidate-supporters-2026.csv"',
     },
   });
 }
