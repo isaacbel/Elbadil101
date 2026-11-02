@@ -8,7 +8,7 @@ import Logo from '@/components/shared/Logo';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 
 export default function Navbar() {
-  const { dir, t } = useI18n();
+  const { locale, dir, t } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -17,8 +17,8 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
 
-      const sections = ['home', 'support', 'vision', 'bio', 'activities', 'contact'];
-      if (verifiedAchievements.length > 0) sections.push('achievements');
+      const sections = ['home', 'contact', 'vision', 'activities', 'candidates'];
+      if (verifiedAchievements && verifiedAchievements.length > 0) sections.push('achievements');
 
       const scrollPos = window.scrollY + 200;
       for (const sectionId of sections) {
@@ -38,15 +38,35 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navLabels = {
+    ar: {
+      contactCta: 'تواصل معنا',
+      candidates: 'المترشحون',
+      contactLink: 'تواصل مباشرة',
+    },
+    fr: {
+      contactCta: 'Contactez-nous',
+      candidates: 'Nos candidats',
+      contactLink: 'Écrire au bureau',
+    },
+    en: {
+      contactCta: 'Contact Us',
+      candidates: 'Candidates',
+      contactLink: 'Direct Contact',
+    },
+  };
+
+  const loc = navLabels[locale] || navLabels.ar;
+
   const navLinks = [
     { href: '#home', label: t('nav.home'), id: 'home' },
+    { href: '#contact', label: loc.contactLink, id: 'contact' },
     { href: '#vision', label: t('nav.vision'), id: 'vision' },
-    { href: '#bio', label: t('nav.bio'), id: 'bio' },
     { href: '#activities', label: t('nav.activities'), id: 'activities' },
-    ...(verifiedAchievements.length > 0
+    { href: '#candidates', label: loc.candidates, id: 'candidates' },
+    ...(verifiedAchievements && verifiedAchievements.length > 0
       ? [{ href: '#achievements', label: t('nav.achievements'), id: 'achievements' }]
       : []),
-    { href: '#contact', label: t('nav.contact'), id: 'contact' },
   ];
 
   return (
@@ -92,10 +112,10 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-4">
             <LanguageSwitcher />
             <a
-              href="#support"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-wheat hover:bg-wheat/90 text-deep text-xs font-semibold tracking-wide transition-transform hover:scale-105 active:scale-95 shadow-sm"
+              href="#contact"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-wheat hover:bg-wheat/90 text-deep text-xs font-semibold tracking-wide transition-transform hover:scale-105 active:scale-95 shadow-sm"
             >
-              <span>{t('nav.support')}</span>
+              <span>{loc.contactCta}</span>
               <ArrowUpRight className={`w-3.5 h-3.5 ${dir === 'rtl' ? 'rotate-[-90deg]' : ''}`} />
             </a>
           </div>
@@ -137,11 +157,11 @@ export default function Navbar() {
           </nav>
           <div className="pt-3 border-t border-white/10">
             <a
-              href="#support"
+              href="#contact"
               onClick={() => setMobileMenuOpen(false)}
               className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-wheat text-deep font-semibold text-sm shadow-md"
             >
-              <span>{t('nav.support')}</span>
+              <span>{loc.contactCta}</span>
               <ArrowUpRight className="w-4 h-4" />
             </a>
           </div>

@@ -1,32 +1,36 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
-import { wilayasList } from '@/lib/wilayas';
-import { algerianPhoneRegex, requestTypes } from '@/lib/validations';
+import { requestTypes } from '@/lib/validations';
+import { CAMPAIGN_LOCATION } from '@/lib/constants';
 import {
   FileText,
   AlertCircle,
   CheckCircle2,
   Copy,
   Check,
-  ChevronDown,
   Loader2,
   Lock,
   Lightbulb,
   ShieldAlert,
+  MapPin,
+  Building,
+  Info,
 } from 'lucide-react';
 
 export default function SubmissionForm() {
   const { locale, t } = useI18n();
 
-  // Form State
+  // Timestamp on mount to detect bot instant submissions
+  const [mountTime, setMountTime] = useState<number>(0);
+
+  useEffect(() => {
+    setMountTime(Date.now());
+  }, []);
+
+  // Form State (NO name, email, phone collected)
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    wilaya: '',
-    commune: '',
     organization: '',
     type: 'General Information' as (typeof requestTypes)[number],
     subject: '',
@@ -34,40 +38,20 @@ export default function SubmissionForm() {
     priority: 'Medium' as 'Low' | 'Medium' | 'High',
     consent: false,
     website: '', // honeypot
-    // Complaint fields
+    // Complaint fields (anonymous)
     complaintCategory: 'public_services',
     concernedParty: '',
     incidentDate: '',
-    confidential: false,
     // Suggestion fields
     suggestionTitle: '',
     expectedImprovement: '',
   });
 
-  const [wilayaSearch, setWilayaSearch] = useState('');
-  const [wilayaDropdownOpen, setWilayaDropdownOpen] = useState(false);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [referenceId, setReferenceId] = useState('');
   const [copiedRef, setCopiedRef] = useState(false);
-
-  // Filtered Wilayas
-  const filteredWilayas = useMemo(() => {
-    if (!wilayaSearch.trim()) return wilayasList;
-    const q = wilayaSearch.toLowerCase().trim();
-    return wilayasList.filter(
-      (w) =>
-        w.code.includes(q) ||
-        w.ar.toLowerCase().includes(q) ||
-        w.fr.toLowerCase().includes(q) ||
-        w.en.toLowerCase().includes(q)
-    );
-  }, [wilayaSearch]);
-
-  const selectedWilayaObj = useMemo(() => {
-    return wilayasList.find((w) => `${w.code} - ${w.fr}` === formData.wilaya || w.code === formData.wilaya);
-  }, [formData.wilaya]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -92,26 +76,29 @@ export default function SubmissionForm() {
   const validate = () => {
     const errors: Record<string, string> = {};
 
-    if (!formData.fullName.trim() || formData.fullName.trim().length < 3) {
-      errors.fullName = locale === 'ar' ? 'يرجى إدخال الاسم واللقب (3 أحرف على الأقل)' : 'Veuillez saisir votre nom complet (min. 3 caractères)';
-    }
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-      errors.email = locale === 'ar' ? 'عنوان بريد إلكتروني غير صالح' : 'Adresse email invalide';
-    }
-    if (!formData.phone.trim() || !algerianPhoneRegex.test(formData.phone.trim())) {
-      errors.phone = locale === 'ar' ? 'رقم هاتف جزائري غير صالح (05 / 06 / 07)' : 'Numéro algérien invalide (05 / 06 / 07)';
-    }
-    if (!formData.wilaya) {
-      errors.wilaya = locale === 'ar' ? 'يرجى اختيار الولاية' : 'Veuillez sélectionner la wilaya';
-    }
     if (!formData.subject.trim() || formData.subject.trim().length < 3) {
-      errors.subject = locale === 'ar' ? 'يرجى إدخال موضوع الطلب' : 'Objet du dossier obligatoire';
+      errors.subject =
+        locale === 'ar'
+          ? 'يرجى إدخال موضوع المراسلة (3 أحرف على الأقل)'
+          : locale === 'fr'
+          ? 'Objet de la requête obligatoire (min. 3 caractères)'
+          : 'Subject is required (min. 3 characters)';
     }
     if (!formData.description.trim() || formData.description.trim().length < 10) {
-      errors.description = locale === 'ar' ? 'يرجى كتابة وصف تفصيلي (10 أحرف على الأقل)' : 'Description détaillée obligatoire (min. 10 caractères)';
+      errors.description =
+        locale === 'ar'
+          ? 'يرجى كتابة نص المراسلة بالتفصيل (10 أحرف على الأقل)'
+          : locale === 'fr'
+          ? 'Description détaillée obligatoire (min. 10 caractères)'
+          : 'Detailed description required (min. 10 characters)';
     }
     if (!formData.consent) {
-      errors.consent = locale === 'ar' ? 'الموافقة على المعالجة القانونية إلزامية' : 'Consentement obligatoire';
+      errors.consent =
+        locale === 'ar'
+          ? 'الموافقة على شروط المراسلة إلزامية'
+          : locale === 'fr'
+          ? 'Consentement obligatoire'
+          : 'Consent is required';
     }
 
     setFieldErrors(errors);
@@ -133,7 +120,10 @@ export default function SubmissionForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          wilaya: CAMPAIGN_LOCATION.storageWilaya,
+          commune: CAMPAIGN_LOCATION.storageCommune,
           idempotencyKey,
+          formStartTime: mountTime,
         }),
       });
 
@@ -168,11 +158,6 @@ export default function SubmissionForm() {
     setStatus('idle');
     setReferenceId('');
     setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
-      wilaya: '',
-      commune: '',
       organization: '',
       type: 'General Information',
       subject: '',
@@ -183,10 +168,10 @@ export default function SubmissionForm() {
       complaintCategory: 'public_services',
       concernedParty: '',
       incidentDate: '',
-      confidential: false,
       suggestionTitle: '',
       expectedImprovement: '',
     });
+    setMountTime(Date.now());
   };
 
   return (
@@ -194,7 +179,7 @@ export default function SubmissionForm() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="inline-block px-3 py-1 rounded-full bg-teal/10 text-teal font-semibold text-xs tracking-wider uppercase mb-3">
+          <span className="inline-block px-3.5 py-1 rounded-full bg-teal/10 text-teal font-semibold text-xs tracking-wider uppercase mb-3">
             {t('citizenForm.eyebrow')}
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-teal mb-4">
@@ -208,7 +193,7 @@ export default function SubmissionForm() {
         {/* Card Box */}
         <div className="bg-white rounded-3xl p-6 sm:p-12 shadow-editorial border border-line relative">
           {status === 'success' ? (
-            /* Success View with Human-Readable Unique Reference ID */
+            /* Success View with Unique Reference ID */
             <div className="text-center py-10 space-y-6">
               <div className="w-16 h-16 rounded-full bg-green-brand/10 text-green-brand flex items-center justify-center mx-auto shadow-inner">
                 <CheckCircle2 className="w-10 h-10" />
@@ -247,7 +232,7 @@ export default function SubmissionForm() {
                 </button>
               </div>
 
-              <p className="text-xs text-muted max-w-sm mx-auto">
+              <p className="text-xs text-muted max-w-md mx-auto">
                 {t('citizenForm.saveRefNotice')}
               </p>
 
@@ -271,7 +256,7 @@ export default function SubmissionForm() {
                 </div>
               )}
 
-              {/* Honeypot field */}
+              {/* Honeypot field (hidden from screen) */}
               <div className="hidden" aria-hidden="true">
                 <input
                   type="text"
@@ -283,179 +268,65 @@ export default function SubmissionForm() {
                 />
               </div>
 
-              {/* SECTION A: Personal Information */}
+              {/* SECTION A: Fixed Location & Organization */}
               <div className="space-y-5">
-                <div className="border-b border-line pb-3">
+                <div className="border-b border-line pb-3 flex items-center justify-between">
                   <h3 className="font-serif text-lg font-bold text-teal flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-green-brand" />
-                    <span>{t('citizenForm.sectionA')}</span>
+                    <span>{locale === 'ar' ? 'أ. الدائرة الانتخابية والجهة' : locale === 'fr' ? 'A. Circonscription & Organisation' : 'A. Constituency & Organization'}</span>
                   </h3>
+                  <span className="text-[11px] text-muted flex items-center gap-1 bg-sand/60 px-2.5 py-1 rounded-full border border-line">
+                    <Lock className="w-3 h-3 text-teal" />
+                    <span>{locale === 'ar' ? 'الموقع محدد ومثبت' : locale === 'fr' ? 'Lieu vérifié' : 'Locked Location'}</span>
+                  </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {/* Full Name */}
-                  <div className="sm:col-span-2 lg:col-span-1">
-                    <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
-                      {t('citizenForm.fullName')} <span className="text-red-600">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="fullName"
-                      required
-                      value={formData.fullName}
-                      onChange={handleInputChange}
-                      placeholder={locale === 'ar' ? 'الاسم واللقب' : 'Nom et Prénom'}
-                      className={`w-full px-4 py-3 rounded-xl border ${
-                        fieldErrors.fullName ? 'border-red-500 ring-1 ring-red-500' : 'border-line'
-                      } focus:outline-none focus:ring-2 focus:ring-teal bg-white text-ink transition-all text-sm`}
-                    />
-                    {fieldErrors.fullName && (
-                      <p className="mt-1.5 text-xs text-red-600 font-medium">{fieldErrors.fullName}</p>
-                    )}
-                  </div>
-
-                  {/* Email */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {/* Locked Wilaya */}
                   <div>
                     <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
-                      {t('citizenForm.email')} <span className="text-red-600">*</span>
+                      {locale === 'ar' ? 'الولاية' : 'Wilaya'}
                     </label>
-                    <input
-                      type="email"
-                      name="email"
-                      dir="ltr"
-                      required
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="nom@example.org"
-                      className={`w-full px-4 py-3 rounded-xl border ${
-                        fieldErrors.email ? 'border-red-500 ring-1 ring-red-500' : 'border-line'
-                      } focus:outline-none focus:ring-2 focus:ring-teal bg-white text-ink text-start transition-all text-sm`}
-                    />
-                    {fieldErrors.email && (
-                      <p className="mt-1.5 text-xs text-red-600 font-medium">{fieldErrors.email}</p>
-                    )}
-                  </div>
-
-                  {/* Phone */}
-                  <div>
-                    <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
-                      {t('citizenForm.phone')} <span className="text-red-600">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      inputMode="tel"
-                      dir="ltr"
-                      required
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="05XXXXXXXX / +213"
-                      className={`w-full px-4 py-3 rounded-xl border ${
-                        fieldErrors.phone ? 'border-red-500 ring-1 ring-red-500' : 'border-line'
-                      } focus:outline-none focus:ring-2 focus:ring-teal bg-white text-ink text-start transition-all text-sm`}
-                    />
-                    {fieldErrors.phone && (
-                      <p className="mt-1.5 text-xs text-red-600 font-medium">{fieldErrors.phone}</p>
-                    )}
-                  </div>
-
-                  {/* Wilaya Searchable Dropdown */}
-                  <div className="relative">
-                    <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
-                      {t('citizenForm.wilaya')} <span className="text-red-600">*</span>
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => setWilayaDropdownOpen(!wilayaDropdownOpen)}
-                      className={`w-full px-4 py-3 rounded-xl border ${
-                        fieldErrors.wilaya ? 'border-red-500 ring-1 ring-red-500' : 'border-line'
-                      } flex items-center justify-between bg-white text-start text-sm focus:outline-none focus:ring-2 focus:ring-teal transition-all`}
-                    >
-                      <span className={formData.wilaya ? 'text-ink font-medium' : 'text-muted'}>
-                        {selectedWilayaObj
-                          ? `${selectedWilayaObj.code} - ${selectedWilayaObj[locale]}`
-                          : t('supportForm.selectWilaya')}
+                    <div className="w-full px-4 py-3 rounded-xl border border-line bg-sand/30 text-ink flex items-center justify-between text-sm select-none">
+                      <span className="font-medium flex items-center gap-1.5">
+                        <MapPin className="w-4 h-4 text-teal" />
+                        {CAMPAIGN_LOCATION.wilaya[locale]}
                       </span>
-                      <ChevronDown className="w-4 h-4 text-muted" />
-                    </button>
-
-                    {wilayaDropdownOpen && (
-                      <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-line z-40 max-h-60 overflow-hidden flex flex-col">
-                        <div className="p-2 border-b border-line bg-sand/40">
-                          <input
-                            type="text"
-                            value={wilayaSearch}
-                            onChange={(e) => setWilayaSearch(e.target.value)}
-                            placeholder={t('supportForm.searchWilaya')}
-                            className="w-full px-3 py-2 text-xs rounded-lg border border-line focus:outline-none focus:ring-1 focus:ring-teal bg-white"
-                            autoFocus
-                          />
-                        </div>
-                        <div className="overflow-y-auto flex-1 p-1">
-                          {filteredWilayas.map((w) => (
-                            <button
-                              key={w.code}
-                              type="button"
-                              onClick={() => {
-                                setFormData((prev) => ({ ...prev, wilaya: `${w.code} - ${w.fr}` }));
-                                setWilayaDropdownOpen(false);
-                                setWilayaSearch('');
-                                if (fieldErrors.wilaya) {
-                                  setFieldErrors((prev) => {
-                                    const n = { ...prev };
-                                    delete n.wilaya;
-                                    return n;
-                                  });
-                                }
-                              }}
-                              className={`w-full px-3 py-2 text-start text-xs rounded-md transition-colors flex items-center justify-between ${
-                                formData.wilaya === `${w.code} - ${w.fr}`
-                                  ? 'bg-teal/10 text-teal font-semibold'
-                                  : 'hover:bg-sand/60 text-ink'
-                              }`}
-                            >
-                              <span>
-                                {w.code} - {w[locale]}
-                              </span>
-                              <span className="text-[10px] text-muted">({w.fr})</span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    {fieldErrors.wilaya && (
-                      <p className="mt-1.5 text-xs text-red-600 font-medium">{fieldErrors.wilaya}</p>
-                    )}
+                      <Lock className="w-3.5 h-3.5 text-muted opacity-70" />
+                    </div>
                   </div>
 
-                  {/* Commune (optional) */}
+                  {/* Locked Commune */}
                   <div>
                     <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
-                      {t('citizenForm.commune')} <span className="text-muted font-normal">({t('common.optional')})</span>
+                      {locale === 'ar' ? 'البلدية' : 'Commune'}
                     </label>
-                    <input
-                      type="text"
-                      name="commune"
-                      value={formData.commune}
-                      onChange={handleInputChange}
-                      placeholder={locale === 'ar' ? 'البلدية' : 'Commune'}
-                      className="w-full px-4 py-3 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-teal bg-white text-ink transition-all text-sm"
-                    />
+                    <div className="w-full px-4 py-3 rounded-xl border border-line bg-sand/30 text-ink flex items-center justify-between text-sm select-none">
+                      <span className="font-medium flex items-center gap-1.5">
+                        <MapPin className="w-4 h-4 text-teal" />
+                        {CAMPAIGN_LOCATION.commune[locale]}
+                      </span>
+                      <Lock className="w-3.5 h-3.5 text-muted opacity-70" />
+                    </div>
                   </div>
 
-                  {/* Organization (optional) */}
+                  {/* Optional Organization */}
                   <div>
                     <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
-                      {t('citizenForm.organization')} <span className="text-muted font-normal">({t('common.optional')})</span>
+                      {locale === 'ar' ? 'الجمعية / الهيئة' : 'Association / Organisme'}{' '}
+                      <span className="text-muted font-normal">({t('common.optional')})</span>
                     </label>
-                    <input
-                      type="text"
-                      name="organization"
-                      value={formData.organization}
-                      onChange={handleInputChange}
-                      placeholder={locale === 'ar' ? 'اسم الهيئة أو الجمعية' : 'Association / Organisme'}
-                      className="w-full px-4 py-3 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-teal bg-white text-ink transition-all text-sm"
-                    />
+                    <div className="relative">
+                      <input
+                        type="text"
+                        name="organization"
+                        value={formData.organization}
+                        onChange={handleInputChange}
+                        placeholder={locale === 'ar' ? 'اسم الهيئة أو الجمعية (إن وجد)' : 'Nom de l’association (facultatif)'}
+                        className="w-full px-4 py-3 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-teal bg-white text-ink transition-all text-sm"
+                      />
+                      <Building className="w-4 h-4 text-muted absolute end-3.5 top-3.5 pointer-events-none" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -542,7 +413,7 @@ export default function SubmissionForm() {
                   </div>
                 </div>
 
-                {/* Detailed Description with Live Counter and Mandatory TEXT ONLY Note */}
+                {/* Detailed Description with Live Counter and Mandatory Anonymity Notice */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-xs font-semibold text-ink uppercase tracking-wider">
@@ -566,10 +437,16 @@ export default function SubmissionForm() {
                     } focus:outline-none focus:ring-2 focus:ring-teal bg-white text-ink transition-all text-sm`}
                   />
 
-                  {/* Strict Notice: TEXT ONLY */}
-                  <div className="mt-2 p-3 rounded-xl bg-sand/70 border border-line text-xs text-ink/80 flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-teal flex-shrink-0" />
-                    <span>{t('citizenForm.notice')}</span>
+                  {/* Mandatory Anonymity and No Personal Data Notice */}
+                  <div className="mt-2.5 p-3.5 rounded-xl bg-sand/70 border border-line text-xs text-ink/85 flex items-start gap-2.5 leading-relaxed">
+                    <Info className="w-4 h-4 text-teal flex-shrink-0 mt-0.5" />
+                    <span>
+                      {locale === 'ar'
+                        ? 'تنبيه: يُرجى عدم كتابة أي معطيات شخصية (مثل الاسم، رقم الهاتف، أو أرقام الهوية) في نص الرسالة. لا تجمع هذه الاستمارة أي بيانات تعريفية، وبالتالي لا يمكن للمكتب الرد الشخصي المباشر.'
+                        : locale === 'fr'
+                        ? 'Avis : Veuillez ne pas inclure de données personnelles (nom, téléphone, pièces d’identité) dans votre texte. Ce formulaire étant strictement anonyme, aucune réponse directe individuelle ne pourra être transmise.'
+                        : 'Notice: Please do not include personal data (name, phone, identity numbers) in your message. As this submission is strictly anonymous, the office cannot send direct individual replies.'}
+                    </span>
                   </div>
 
                   {fieldErrors.description && (
@@ -578,9 +455,9 @@ export default function SubmissionForm() {
                 </div>
               </div>
 
-              {/* SECTION D: Complaint-Only Fields */}
+              {/* SECTION D: Complaint-Only Fields (Anonymous) */}
               {formData.type === 'Complaint' && (
-                <div className="p-6 rounded-2xl bg-sand/60 border border-line space-y-5 animate-fade-in">
+                <div className="p-6 rounded-2xl bg-sand/50 border border-line space-y-5 animate-fade-in">
                   <div className="border-b border-line pb-3 flex items-center justify-between">
                     <h3 className="font-serif text-lg font-bold text-teal flex items-center gap-2">
                       <ShieldAlert className="w-5 h-5 text-red-600" />
@@ -611,7 +488,7 @@ export default function SubmissionForm() {
                       </select>
                     </div>
 
-                    {/* Person or Department */}
+                    {/* Department or Entity Concerned */}
                     <div>
                       <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
                         {t('citizenForm.concernedParty')}
@@ -621,7 +498,7 @@ export default function SubmissionForm() {
                         name="concernedParty"
                         value={formData.concernedParty}
                         onChange={handleInputChange}
-                        placeholder={locale === 'ar' ? 'مثال: مديرية الأشغال، بلدية...' : 'Direction / Service concerné'}
+                        placeholder={locale === 'ar' ? 'مثال: مديرية الأشغال، مصلحة...' : 'Direction / Service concerné'}
                         className="w-full px-4 py-3 rounded-xl border border-line focus:outline-none focus:ring-2 focus:ring-teal bg-white text-ink transition-all text-sm"
                       />
                     </div>
@@ -640,29 +517,12 @@ export default function SubmissionForm() {
                       />
                     </div>
                   </div>
-
-                  {/* Confidentiality Choice */}
-                  <div className="pt-2">
-                    <label className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="confidential"
-                        checked={formData.confidential}
-                        onChange={handleInputChange}
-                        className="w-4 h-4 rounded text-teal focus:ring-teal border-line"
-                      />
-                      <span className="text-xs sm:text-sm font-medium text-ink flex items-center gap-1.5">
-                        <Lock className="w-3.5 h-3.5 text-red-600" />
-                        <span>{t('citizenForm.confidential')} ({formData.confidential ? t('citizenForm.confidentialYes') : t('citizenForm.confidentialNo')})</span>
-                      </span>
-                    </label>
-                  </div>
                 </div>
               )}
 
               {/* SECTION E: Suggestion-Only Fields */}
               {formData.type === 'Suggestion' && (
-                <div className="p-6 rounded-2xl bg-sand/60 border border-line space-y-5 animate-fade-in">
+                <div className="p-6 rounded-2xl bg-sand/50 border border-line space-y-5 animate-fade-in">
                   <div className="border-b border-line pb-3 flex items-center justify-between">
                     <h3 className="font-serif text-lg font-bold text-teal flex items-center gap-2">
                       <Lightbulb className="w-5 h-5 text-green-brand" />
@@ -705,7 +565,7 @@ export default function SubmissionForm() {
                 </div>
               )}
 
-              {/* Consent Checkbox */}
+              {/* Consent Checkbox: Explicitly Notes No Identity Collected */}
               <div>
                 <label className="flex items-start gap-3 cursor-pointer select-none">
                   <input
@@ -716,10 +576,15 @@ export default function SubmissionForm() {
                     className="mt-1 w-4 h-4 rounded text-teal focus:ring-teal border-line"
                   />
                   <span className="text-xs text-ink/80 leading-relaxed">
-                    {t('citizenForm.consent')}{' '}
+                    {locale === 'ar'
+                      ? 'أؤكد صحة المراسلة وأوافق على دراستها ومتابعتها مؤسساتياً. أعلم أن المنصة لا تجمع اسمي أو هاتفي أو بريدي الإلكتروني وفقاً لـ'
+                      : locale === 'fr'
+                      ? 'Je confirme l’exactitude de ce message et consens à son examen institutionnel. Je prends acte qu’aucune donnée d’identité n’est collectée, conformément à notre '
+                      : 'I certify the authenticity of this submission and consent to its review. I acknowledge that no personal identity is collected, in accordance with our '}
                     <a href="/privacy" className="text-teal hover:underline font-semibold" target="_blank" rel="noreferrer">
-                      ({t('supportForm.privacyLink')})
+                      {locale === 'ar' ? 'سياسة الخصوصية' : locale === 'fr' ? 'politique de confidentialité' : 'privacy policy'}
                     </a>
+                    .
                   </span>
                 </label>
                 {fieldErrors.consent && (

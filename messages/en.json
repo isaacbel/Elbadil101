@@ -2,59 +2,16 @@
   "nav": {
     "home": "Home",
     "vision": "Vision & Priorities",
-    "bio": "Biography",
     "activities": "Field Activities",
-    "contact": "Candidate Office",
-    "support": "Join the Movement",
+    "candidates": "Candidates",
+    "contact": "Contact Us",
+    "contactCta": "Contact Us",
     "achievements": "Key Milestones"
   },
   "hero": {
-    "supportCta": "Support the Candidate",
+    "contactCta": "Contact Us Directly",
     "visionCta": "Discover Our Vision",
-    "badge": "Official Campaign 2026",
-    "altPortrait": "Official portrait of the candidate"
-  },
-  "supportForm": {
-    "eyebrow": "Register Your Support",
-    "title": "A constructive, principled voice for every community",
-    "description": "Your details are strictly used to verify and contact supporters in full accordance with our privacy policy.",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "wilaya": "Wilaya (Province)",
-    "selectWilaya": "Select wilaya...",
-    "searchWilaya": "Search wilaya...",
-    "phone": "Phone Number (Algeria)",
-    "phonePlaceholder": "05 / 06 / 07 XX XX XX XX",
-    "commune": "Commune (Town/District)",
-    "intention": "Voting Intention",
-    "intentions": {
-      "placeholder": "Select voting intention...",
-      "definitely": "Will definitely vote",
-      "leaning": "Leaning toward voting",
-      "learn_more": "Want to learn more",
-      "undecided": "Don't know yet"
-    },
-    "participation": "Participation Preference",
-    "participations": {
-      "placeholder": "How would you like to contribute...",
-      "support": "Register my symbolic support",
-      "share": "Share and promote the campaign",
-      "volunteer": "Volunteer with local teams",
-      "field_outreach": "Help with grassroots outreach"
-    },
-    "message": "Support Message (optional)",
-    "messagePlaceholder": "Share a brief note with the candidate and campaign team...",
-    "consent": "I consent to my information being used to contact me and verify my support.",
-    "privacyLink": "Privacy Policy",
-    "submit": "Register Support",
-    "submitting": "Registering...",
-    "successTitle": "Thank you! Your support has been recorded.",
-    "successMessage": "Your voice and dedication are the backbone of our shared movement toward local progress and integrity.",
-    "shareCampaign": "Share the campaign",
-    "shareText": "I stand with this candidate for an honest, grassroots representative. Join the campaign!",
-    "copied": "Share link copied to clipboard!",
-    "duplicatePhone": "This phone number is already registered in our support directory.",
-    "networkError": "An error occurred while saving your support. Please try again."
+    "badge": "Official Campaign 2026"
   },
   "vision": {
     "eyebrow": "Vision & Priorities",
@@ -77,17 +34,28 @@
     "viewDetails": "View details",
     "close": "Close"
   },
+  "candidates": {
+    "eyebrow": "Our Candidates",
+    "title": "Al-Badil · Free List 101",
+    "subtitle": "Meet the candidates representing the list in the Jijel constituency.",
+    "viewProfile": "View Profile",
+    "close": "Close",
+    "prev": "Previous",
+    "next": "Next",
+    "rank": "Rank",
+    "commune": "Commune"
+  },
   "citizenForm": {
     "eyebrow": "Citizen Liaison Office",
     "title": "Contact the Candidate's Office",
     "subtitle": "Submit your written requests, grievances, and constructive suggestions directly to our parliamentary team.",
     "notice": "Please describe your request in writing. Attachments and files are not accepted.",
-    "sectionA": "A. Personal Information",
-    "fullName": "Full Name",
-    "email": "Email Address",
-    "phone": "Phone Number (Algeria)",
+    "anonymityNotice": "This system is fully anonymous — no personal information is required, and individual replies are not possible. Each request is reviewed on its merits.",
+    "locationLocked": "Geographic area is pre-defined",
     "wilaya": "Wilaya",
-    "commune": "Commune (Town/District)",
+    "wilayaValue": "Jijel (Wilaya 18)",
+    "commune": "Commune",
+    "communeValue": "Taher",
     "organization": "Organization / Association (optional)",
     "sectionB": "B. Request Type",
     "requestType": "Request Type",
@@ -123,9 +91,6 @@
     },
     "concernedParty": "Department or Person Concerned (optional)",
     "incidentDate": "Date of Incident / Occurrence",
-    "confidential": "Would you like your complaint to remain strictly confidential?",
-    "confidentialYes": "Yes, keep strictly confidential",
-    "confidentialNo": "No, standard submission",
     "sectionE": "E. Suggestion Details (suggestions only)",
     "suggestionTitle": "Suggestion / Project Title",
     "expectedImprovement": "Expected Impact or Improvement",
@@ -141,8 +106,7 @@
   },
   "cta": {
     "title": "Your voice belongs at the heart of public action",
-    "text": "Join the campaign today or reach out directly to the office with your priorities.",
-    "supportBtn": "Support the Candidate",
+    "text": "Reach out directly to the office with your priorities and concerns.",
     "contactBtn": "Contact the Office"
   },
   "footer": {

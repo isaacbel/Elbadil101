@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { authenticateAdmin, signToken } from '@/lib/auth';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { hashIp, checkHashedRateLimit } from '@/lib/rate-limit';
 
 export async function POST(req: Request) {
   try {
     const rawIp = req.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1';
-    const rateCheck = checkRateLimit(`login_${rawIp}`, 5, 10 * 60 * 1000);
+    const hashedIp = hashIp(`login_${rawIp}`);
+    const rateCheck = checkHashedRateLimit(hashedIp, 5, 10 * 60 * 1000);
 
     if (!rateCheck.allowed) {
       return NextResponse.json(

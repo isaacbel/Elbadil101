@@ -9,7 +9,6 @@ import {
   Inbox,
   ShieldAlert,
   Lightbulb,
-  Users,
   LogOut,
   ExternalLink,
   X,
@@ -29,7 +28,6 @@ export default function AdminSidebar({ mobileOpen = false, onCloseMobile, userRo
     { href: '/admin/submissions', label: 'All Submissions', icon: Inbox },
     { href: '/admin/complaints', label: 'Complaints', icon: ShieldAlert },
     { href: '/admin/suggestions', label: 'Suggestions', icon: Lightbulb },
-    { href: '/admin/support', label: 'Support Directory', icon: Users },
   ];
 
   const handleLogout = async () => {

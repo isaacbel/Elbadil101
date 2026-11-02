@@ -51,15 +51,16 @@ export default function PrivacyPage() {
                 <section className="space-y-2">
                   <h2 className="font-serif text-xl font-bold text-teal">2. طبيعة المعطيات المجمعة</h2>
                   <ul className="list-disc pr-5 space-y-1">
-                    <li><b>استمارة الدعم والتطوع:</b> الاسم، اللقب، الولاية، رقم الهاتف، البلدية، نية التصويت ونوع المساهمة.</li>
-                    <li><b>استمارة المراسلات والشكاوى:</b> الاسم واللقب، البريد الإلكتروني، رقم الهاتف، الولاية، موضوع الطلب وتفاصيل المسألة المكتوبة.</li>
+                    <li><b>بوّابة التواصل المباشر مع مكتب المرشح:</b> هذه الخدمة <b>مجهولة الهوية بالكامل</b>. لا يُطلب منك تقديم اسمك أو بريدك الإلكتروني أو رقم هاتفك. يُخزَّن فقط موضوع الطلب ونصه التفصيلي ورقم مرجعي فريد للمتابعة.</li>
+                    <li>الموقع الجغرافي (الولاية: جيجل، البلدية: الطاهير) مثبَّت مسبقاً ولا يمكن للمستخدم تغييره.</li>
+                    <li>اسم الجمعية أو الهيئة اختياري ولا يُعدّ معرِّفاً شخصياً مباشراً.</li>
                   </ul>
                 </section>
 
                 <section className="space-y-2">
                   <h2 className="font-serif text-xl font-bold text-teal">3. نظام كتابي حصري بدون مرفقات</h2>
                   <p>
-                    من أجل الحفاظ على أمن المعطيات والحد من المخاطر الإلكترونية، تعمل هذه المنصة بنظام <b>كتابي حصري (Text-Only)</b>. لا تسمح المنصة بتحميل أو تخزين أي ملفات أو صور أو وثائق إلكترونية (PDF/JPG/DOC).
+                    من أجل الحفاظ على أمن المعطيات والحد من المخاطر الإلكترونية، تعمل هذه المنصة بنظام <b>كتابي حصري (Text-Only)</b>. لا تسمح المنصة بتحميل أو تخزين أي ملفات أو صور أو وثائق إلكترونية (PDF/JPG/DOC). كما لا تتيح المنصة إمكانية الردّ الفردي المباشر على الطلبات نظراً للطابع المجهول للمنصة.
                   </p>
                 </section>
 
@@ -89,15 +90,15 @@ export default function PrivacyPage() {
                 <section className="space-y-2">
                   <h2 className="font-serif text-xl font-bold text-teal">2. Données collectées</h2>
                   <ul className="list-disc pl-5 space-y-1">
-                    <li><b>Formulaire de soutien :</b> Nom, prénom, wilaya, numéro de téléphone, intention de vote et mode de participation.</li>
-                    <li><b>Bureau citoyen :</b> Coordonnées, objet de la demande, texte de la requête ou doléance.</li>
+                    <li><b>Bureau citoyen (portail de contact) :</b> Ce service est <b>entièrement anonyme</b>. Aucun nom, email ou numéro de téléphone n'est collecté. Seuls l'objet, le texte de la demande et un identifiant de référence unique sont enregistrés. La localisation (Jijel / Taher) est prédéfinie et ne peut être modifiée.</li>
+                    <li>Le nom d'une éventuelle organisation (facultatif) ne constitue pas une donnée d'identité directe.</li>
                   </ul>
                 </section>
 
                 <section className="space-y-2">
                   <h2 className="font-serif text-xl font-bold text-teal">3. Système strictement textuel</h2>
                   <p>
-                    Par mesure de sécurité et de sobriété, la plateforme fonctionne en <b>mode strictement textuel</b>. Aucun téléchargement de fichier (PDF, image, document) n&apos;est accepté ni stocké.
+                    Par mesure de sécurité et de sobriété, la plateforme fonctionne en <b>mode strictement textuel</b>. Aucun téléchargement de fichier (PDF, image, document) n&apos;est accepté ni stocké. Étant donné l&apos;anonymat complet du portail citoyen, aucune réponse individuelle directe n&apos;est possible.
                   </p>
                 </section>
 

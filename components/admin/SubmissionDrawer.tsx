@@ -3,20 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import {
   X,
-  Mail,
-  Phone,
-  MessageCircle,
   Calendar,
   MapPin,
   Building,
   ShieldAlert,
   Lightbulb,
-  Lock,
-  Plus,
   Trash2,
   Clock,
   Send,
   Loader2,
+  Tag,
 } from 'lucide-react';
 import ConfirmDialog from './ConfirmDialog';
 
@@ -155,14 +151,6 @@ export default function SubmissionDrawer({
   // Check if string contains Arabic characters for RTL-aware rendering in admin
   const isArabic = (text: string) => /[\u0600-\u06FF]/.test(text || '');
 
-  // Formatted Algerian Phone for WhatsApp
-  const cleanPhone = (phone: string) => {
-    const raw = phone.replace(/[^\d]/g, '');
-    if (raw.startsWith('0')) return '213' + raw.substring(1);
-    if (raw.startsWith('213')) return raw;
-    return '213' + raw;
-  };
-
   return (
     <>
       <div className="fixed inset-0 z-50 overflow-hidden">
@@ -177,10 +165,10 @@ export default function SubmissionDrawer({
                 <span className="font-mono text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white/20 text-sand">
                   {data?.referenceId || 'Loading...'}
                 </span>
-                {data?.confidential && (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-red-600 text-white">
-                    <Lock className="w-3 h-3" />
-                    Confidential
+                {data?.type && (
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-wheat text-teal capitalize">
+                    <Tag className="w-3 h-3" />
+                    {data.type}
                   </span>
                 )}
               </div>
@@ -253,65 +241,38 @@ export default function SubmissionDrawer({
                   </div>
                 </div>
 
-                {/* Submitter Personal Info & Quick Actions */}
-                <div className="p-5 rounded-2xl bg-white border border-line shadow-sm space-y-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h4
-                        className={`text-lg font-bold text-teal ${
-                          isArabic(data.fullName) ? 'font-naskh' : ''
-                        }`}
-                        dir={isArabic(data.fullName) ? 'rtl' : 'ltr'}
-                      >
-                        {data.fullName}
-                      </h4>
-                      <div className="text-xs text-muted flex items-center gap-2 mt-1">
-                        <MapPin className="w-3.5 h-3.5 text-green-brand" />
-                        <span>{data.wilaya}</span>
-                        {data.commune && <span>· {data.commune}</span>}
-                        {data.organization && (
-                          <span className="flex items-center gap-1">
-                            <Building className="w-3.5 h-3.5" />
-                            {data.organization}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <span className="text-[11px] font-mono text-muted">
+                {/* Submission Metadata (Locked Location & Info) */}
+                <div className="p-5 rounded-2xl bg-white border border-line shadow-sm space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold uppercase tracking-wider text-teal">
+                      Submission Overview
+                    </span>
+                    <span className="text-[11px] font-mono text-muted flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-muted" />
                       {new Date(data.createdAt).toLocaleDateString()}
                     </span>
                   </div>
 
-                  {/* Contact Action Buttons */}
-                  <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-line/60">
-                    <a
-                      href={`mailto:${data.email}?subject=Regarding your inquiry ${data.referenceId}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sand/60 hover:bg-sand text-xs font-semibold text-ink transition-colors"
-                    >
-                      <Mail className="w-3.5 h-3.5 text-teal" />
-                      <span>{data.email}</span>
-                    </a>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
+                    <div className="flex items-center gap-2 p-2.5 rounded-xl bg-sand/30 border border-line/60">
+                      <MapPin className="w-4 h-4 text-green-brand flex-shrink-0" />
+                      <div>
+                        <div className="text-[10px] text-muted">Fixed Wilaya &amp; Commune</div>
+                        <div className="font-semibold text-teal">
+                          {data.wilaya || '18 - جيجل (Jijel)'} · {data.commune || 'الطاهير (Taher)'}
+                        </div>
+                      </div>
+                    </div>
 
-                    <a
-                      href={`tel:${data.phone}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sand/60 hover:bg-sand text-xs font-semibold text-ink transition-colors"
-                    >
-                      <Phone className="w-3.5 h-3.5 text-teal" />
-                      <span dir="ltr">{data.phone}</span>
-                    </a>
-
-                    {!data.phone.includes('*') && (
-                      <a
-                        href={`https://wa.me/${cleanPhone(data.phone)}?text=Bonjour,%20nous%20vous%20contactons%20au%20sujet%20de%20votre%20requête%20${data.referenceId}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-brand/10 hover:bg-green-brand/20 text-xs font-semibold text-teal transition-colors"
-                      >
-                        <MessageCircle className="w-3.5 h-3.5 text-green-brand" />
-                        <span>WhatsApp</span>
-                      </a>
-                    )}
+                    <div className="flex items-center gap-2 p-2.5 rounded-xl bg-sand/30 border border-line/60">
+                      <Building className="w-4 h-4 text-teal flex-shrink-0" />
+                      <div>
+                        <div className="text-[10px] text-muted">Entity / Organization</div>
+                        <div className="font-semibold text-ink">
+                          {data.organization || 'Individual Citizen (Anonymous)'}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -339,12 +300,6 @@ export default function SubmissionDrawer({
                         <span className="text-muted">Incident Date:</span>
                         <div className="font-semibold text-ink mt-0.5">
                           {data.complaintDetails.incidentDate || 'Not specified'}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-muted">Confidentiality:</span>
-                        <div className="font-semibold text-red-600 mt-0.5">
-                          {data.confidential ? 'Strictly Confidential' : 'Public'}
                         </div>
                       </div>
                     </div>

@@ -2,59 +2,16 @@
   "nav": {
     "home": "Accueil",
     "vision": "Vision & Priorités",
-    "bio": "Parcours",
     "activities": "Activités de terrain",
-    "contact": "Bureau du candidat",
-    "support": "Rejoindre le mouvement",
+    "candidates": "Liste des candidats",
+    "contact": "Contactez-nous",
+    "contactCta": "Contactez-nous",
     "achievements": "Réalisations"
   },
   "hero": {
-    "supportCta": "Soutenez le candidat",
+    "contactCta": "Contactez-nous directement",
     "visionCta": "Découvrir notre vision",
-    "badge": "Campagne officielle 2026",
-    "altPortrait": "Portrait officiel du candidat"
-  },
-  "supportForm": {
-    "eyebrow": "Enregistrement du soutien",
-    "title": "Une voix responsable, engagée au cœur du quotidien",
-    "description": "Vos données sont strictement utilisées pour vérifier et contacter les sympathisants, dans le respect de notre politique de confidentialité.",
-    "firstName": "Prénom",
-    "lastName": "Nom",
-    "wilaya": "Wilaya",
-    "selectWilaya": "Sélectionnez votre wilaya...",
-    "searchWilaya": "Rechercher une wilaya...",
-    "phone": "Numéro de téléphone (Algérie)",
-    "phonePlaceholder": "05 / 06 / 07 XX XX XX XX",
-    "commune": "Commune (optionnel)",
-    "intention": "Intention de vote",
-    "intentions": {
-      "placeholder": "Votre intention de vote...",
-      "definitely": "Votera certainement",
-      "leaning": "Favorable au vote",
-      "learn_more": "Souhaite en savoir plus",
-      "undecided": "Indécis pour le moment"
-    },
-    "participation": "Mode de participation",
-    "participations": {
-      "placeholder": "Comment souhaitez-vous aider...",
-      "support": "Enregistrer mon soutien moral",
-      "share": "Relayer la campagne et sensibiliser",
-      "volunteer": "Rejoindre l'équipe bénévole",
-      "field_outreach": "Participer aux actions de terrain"
-    },
-    "message": "Message de soutien (optionnel)",
-    "messagePlaceholder": "Votre message au candidat et à l'équipe...",
-    "consent": "J'accepte que mes coordonnées soient utilisées pour me contacter et vérifier mon soutien.",
-    "privacyLink": "Politique de confidentialité",
-    "submit": "Enregistrer mon soutien",
-    "submitting": "Enregistrement en cours...",
-    "successTitle": "Merci ! Votre soutien a été enregistré avec succès.",
-    "successMessage": "Votre engagement donne force et crédibilité à notre projet commun pour un développement équilibré.",
-    "shareCampaign": "Partager la campagne",
-    "shareText": "Je soutiens la candidature pour une voix responsable et proche de nos réalités. Rejoignez le mouvement !",
-    "copied": "Lien de partage copié dans le presse-papier !",
-    "duplicatePhone": "Ce numéro de téléphone est déjà enregistré.",
-    "networkError": "Une erreur est survenue lors de l'enregistrement. Veuillez réessayer."
+    "badge": "Campagne officielle 2026"
   },
   "vision": {
     "eyebrow": "Vision & Priorités",
@@ -77,17 +34,28 @@
     "viewDetails": "Détails de l'activité",
     "close": "Fermer"
   },
+  "candidates": {
+    "eyebrow": "Liste des candidats",
+    "title": "Al-Badil · Liste Libre 101",
+    "subtitle": "Découvrez les candidats qui représentent la liste dans la wilaya de Jijel.",
+    "viewProfile": "Voir le profil",
+    "close": "Fermer",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "rank": "Rang",
+    "commune": "Commune"
+  },
   "citizenForm": {
     "eyebrow": "Bureau de liaison citoyenne",
     "title": "Écrire au bureau du candidat",
     "subtitle": "Nous recevons vos requêtes, doléances et propositions écrites pour les étudier avec rigueur et suivi.",
     "notice": "Veuillez décrire votre demande par écrit. Les pièces jointes et fichiers ne sont pas acceptés.",
-    "sectionA": "A. Informations personnelles",
-    "fullName": "Nom et prénom complet",
-    "email": "Adresse email",
-    "phone": "Numéro de téléphone (Algérie)",
+    "anonymityNotice": "Ce système est entièrement anonyme — aucune information personnelle ne vous est demandée, et aucune réponse individuelle n'est possible. Chaque demande est traitée selon ses mérites.",
+    "locationLocked": "Zone géographique prédéfinie",
     "wilaya": "Wilaya",
-    "commune": "Commune (optionnel)",
+    "wilayaValue": "Jijel (Wilaya 18)",
+    "commune": "Commune",
+    "communeValue": "Taher",
     "organization": "Association / Organisation (optionnel)",
     "sectionB": "B. Type de requête",
     "requestType": "Type de requête",
@@ -123,9 +91,6 @@
     },
     "concernedParty": "Organisme ou service concerné (optionnel)",
     "incidentDate": "Date de survenue / de constatation",
-    "confidential": "Souhaitez-vous que cette réclamation reste strictement confidentielle ?",
-    "confidentialYes": "Oui, traitement strictement confidentiel",
-    "confidentialNo": "Non, réclamation publique ordinaire",
     "sectionE": "E. Détails de la proposition (spécifique aux suggestions)",
     "suggestionTitle": "Titre du projet ou de la suggestion",
     "expectedImprovement": "Impact ou amélioration attendue",
@@ -141,8 +106,7 @@
   },
   "cta": {
     "title": "Votre voix est au cœur de l'action publique",
-    "text": "Rejoignez la dynamique citoyenne ou soumettez directement vos préoccupations à notre équipe.",
-    "supportBtn": "Soutenir la candidature",
+    "text": "Soumettez directement vos préoccupations à notre équipe ou rejoignez la dynamique citoyenne.",
     "contactBtn": "Contacter le bureau"
   },
   "footer": {

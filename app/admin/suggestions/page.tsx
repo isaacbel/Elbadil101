@@ -107,8 +107,6 @@ export default function AdminSuggestionsPage() {
             <thead>
               <tr className="bg-sand/40 border-b border-line text-ink/70 uppercase font-bold tracking-wider">
                 <th className="py-3.5 px-4 text-start">Reference ID</th>
-                <th className="py-3.5 px-4 text-start">Proposer</th>
-                <th className="py-3.5 px-4 text-start">Wilaya</th>
                 <th className="py-3.5 px-4 text-start">Suggestion Title / Subject</th>
                 <th className="py-3.5 px-4 text-start">Status</th>
                 <th className="py-3.5 px-4 text-start">Date</th>
@@ -118,7 +116,7 @@ export default function AdminSuggestionsPage() {
             <tbody className="divide-y divide-line/60">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-muted">
+                  <td colSpan={5} className="py-12 text-center text-muted">
                     <Loader2 className="w-5 h-5 animate-spin mx-auto" />
                   </td>
                 </tr>
@@ -133,13 +131,7 @@ export default function AdminSuggestionsPage() {
                       {row.referenceId}
                     </td>
 
-                    <td className="py-3.5 px-4 font-medium text-ink">
-                      {row.fullName}
-                    </td>
-
-                    <td className="py-3.5 px-4 text-muted">{row.wilaya}</td>
-
-                    <td className="py-3.5 px-4 font-semibold text-ink max-w-[280px] truncate">
+                    <td className="py-3.5 px-4 font-semibold text-ink max-w-[320px] truncate">
                       {row.subject}
                     </td>
 
@@ -177,7 +169,7 @@ export default function AdminSuggestionsPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-muted italic">
+                  <td colSpan={5} className="py-12 text-center text-muted italic">
                     No suggestions recorded.
                   </td>
                 </tr>

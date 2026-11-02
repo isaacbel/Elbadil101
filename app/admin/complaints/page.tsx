@@ -113,10 +113,7 @@ export default function AdminComplaintsPage() {
             <thead>
               <tr className="bg-sand/40 border-b border-line text-ink/70 uppercase font-bold tracking-wider">
                 <th className="py-3.5 px-4 text-start">Reference ID</th>
-                <th className="py-3.5 px-4 text-start">Citizen / Submitter</th>
-                <th className="py-3.5 px-4 text-start">Wilaya</th>
                 <th className="py-3.5 px-4 text-start">Complaint Subject</th>
-                <th className="py-3.5 px-4 text-start">Confidentiality</th>
                 <th className="py-3.5 px-4 text-start">Status</th>
                 <th className="py-3.5 px-4 text-start">Date</th>
                 <th className="py-3.5 px-4 text-end">Action</th>
@@ -125,7 +122,7 @@ export default function AdminComplaintsPage() {
             <tbody className="divide-y divide-line/60">
               {loading ? (
                 <tr>
-                  <td colSpan={8} className="py-12 text-center text-muted">
+                  <td colSpan={5} className="py-12 text-center text-muted">
                     <Loader2 className="w-5 h-5 animate-spin mx-auto" />
                   </td>
                 </tr>
@@ -140,25 +137,8 @@ export default function AdminComplaintsPage() {
                       {row.referenceId}
                     </td>
 
-                    <td className="py-3.5 px-4 font-medium text-ink">
-                      {row.fullName}
-                    </td>
-
-                    <td className="py-3.5 px-4 text-muted">{row.wilaya}</td>
-
-                    <td className="py-3.5 px-4 font-semibold text-ink max-w-[240px] truncate">
+                    <td className="py-3.5 px-4 font-semibold text-ink max-w-[280px] truncate">
                       {row.subject}
-                    </td>
-
-                    <td className="py-3.5 px-4">
-                      {row.confidential ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-600 text-white font-semibold text-[10px]">
-                          <Lock className="w-3 h-3" />
-                          <span>Confidential</span>
-                        </span>
-                      ) : (
-                        <span className="text-muted text-[11px]">Public</span>
-                      )}
                     </td>
 
                     <td className="py-3.5 px-4">
@@ -195,7 +175,7 @@ export default function AdminComplaintsPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={8} className="py-12 text-center text-muted italic">
+                  <td colSpan={5} className="py-12 text-center text-muted italic">
                     No complaints registered.
                   </td>
                 </tr>

@@ -1,6 +1,6 @@
 import { initDb, getDb } from '../lib/db';
 import { authenticateAdmin, signToken, verifyToken } from '../lib/auth';
-import { supportSchema, submissionSchema } from '../lib/validations';
+import { submissionSchema } from '../lib/validations';
 
 async function runTests() {
   console.log('=== RUNNING END-TO-END QA TESTS ===\n');
@@ -10,32 +10,26 @@ async function runTests() {
 
   // Test 1: Validation Schemas
   console.log('1. Testing Validation Schemas:');
-  const validSupport = supportSchema.safeParse({
-    firstName: 'Ahmed',
-    lastName: 'Benali',
-    wilaya: '16 - Alger',
-    phone: '0555123456',
-    commune: 'Bab El Oued',
-    intention: 'definitely',
-    participation: 'volunteer',
+  const validSubmission = submissionSchema.safeParse({
+    type: 'Complaint',
+    subject: 'Lighting issue in municipal park',
+    description: 'The streetlights have been non-functional for 3 weeks.',
     consent: true,
   });
-  console.log(' - Valid support data:', validSupport.success ? 'PASS' : 'FAIL');
+  console.log(' - Valid submission data:', validSubmission.success ? 'PASS' : 'FAIL');
 
-  const invalidPhone = supportSchema.safeParse({
-    firstName: 'Ahmed',
-    lastName: 'Benali',
-    wilaya: '16 - Alger',
-    phone: '12345',
+  const invalidSubmission = submissionSchema.safeParse({
+    type: 'Complaint',
+    subject: 'Hi', // too short
+    description: 'Short',
     consent: true,
   });
-  console.log(' - Invalid phone rejected:', !invalidPhone.success ? 'PASS' : 'FAIL');
+  console.log(' - Short subject rejected:', !invalidSubmission.success ? 'PASS' : 'FAIL');
 
-  const honeypotTrap = supportSchema.safeParse({
-    firstName: 'Bot',
-    lastName: 'Spam',
-    wilaya: '16 - Alger',
-    phone: '0555123456',
+  const honeypotTrap = submissionSchema.safeParse({
+    type: 'Suggestion',
+    subject: 'Improve civic green spaces',
+    description: 'We propose planting native olive trees along municipal avenues.',
     consent: true,
     website: 'http://spam.com',
   });

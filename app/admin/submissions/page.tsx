@@ -12,7 +12,6 @@ import {
   Inbox,
   Loader2,
 } from 'lucide-react';
-import { wilayasList } from '@/lib/wilayas';
 import SubmissionDrawer from '@/components/admin/SubmissionDrawer';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
@@ -27,7 +26,6 @@ export default function AdminSubmissionsPage() {
   const [type, setType] = useState('');
   const [status, setStatus] = useState('');
   const [priority, setPriority] = useState('');
-  const [wilaya, setWilaya] = useState('');
   const [sort, setSort] = useState('newest');
   const [page, setPage] = useState(1);
 
@@ -44,7 +42,6 @@ export default function AdminSubmissionsPage() {
       if (type) params.set('type', type);
       if (status) params.set('status', status);
       if (priority) params.set('priority', priority);
-      if (wilaya) params.set('wilaya', wilaya);
       if (sort) params.set('sort', sort);
       params.set('page', String(page));
       params.set('limit', '15');
@@ -61,7 +58,7 @@ export default function AdminSubmissionsPage() {
     } finally {
       setLoading(false);
     }
-  }, [search, type, status, priority, wilaya, sort, page]);
+  }, [search, type, status, priority, sort, page]);
 
   useEffect(() => {
     fetchSubmissions();
@@ -72,12 +69,11 @@ export default function AdminSubmissionsPage() {
     setType('');
     setStatus('');
     setPriority('');
-    setWilaya('');
     setSort('newest');
     setPage(1);
   };
 
-  const hasActiveFilters = Boolean(search || type || status || priority || wilaya || sort !== 'newest');
+  const hasActiveFilters = Boolean(search || type || status || priority || sort !== 'newest');
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -118,9 +114,9 @@ export default function AdminSubmissionsPage() {
 
       {/* Combinable Search & Multi-filter Bar */}
       <div className="p-5 rounded-2xl bg-white border border-line shadow-card space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {/* Search Box */}
-          <div className="sm:col-span-2 relative">
+          <div className="relative">
             <input
               type="text"
               value={search}
@@ -128,7 +124,7 @@ export default function AdminSubmissionsPage() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              placeholder="Search by name, email, ref ID, subject or content..."
+              placeholder="Search by reference ID, subject or content..."
               className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-line focus:outline-none focus:ring-1 focus:ring-teal text-xs bg-sand/20"
             />
             <Search className="w-4 h-4 text-muted absolute left-3 top-3" />
@@ -174,7 +170,7 @@ export default function AdminSubmissionsPage() {
         </div>
 
         {/* Secondary Filter Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-line/60">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 border-t border-line/60">
           {/* Priority Filter */}
           <div>
             <select
@@ -189,25 +185,6 @@ export default function AdminSubmissionsPage() {
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
               <option value="High">High</option>
-            </select>
-          </div>
-
-          {/* Wilaya Filter */}
-          <div>
-            <select
-              value={wilaya}
-              onChange={(e) => {
-                setWilaya(e.target.value);
-                setPage(1);
-              }}
-              className="w-full px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-1 focus:ring-teal text-xs bg-sand/20"
-            >
-              <option value="">All 58 Wilayas</option>
-              {wilayasList.map((w) => (
-                <option key={w.code} value={w.fr}>
-                  {w.code} - {w.fr}
-                </option>
-              ))}
             </select>
           </div>
 
@@ -246,9 +223,7 @@ export default function AdminSubmissionsPage() {
             <thead>
               <tr className="bg-sand/40 border-b border-line text-ink/70 uppercase font-bold tracking-wider">
                 <th className="py-3.5 px-4 text-start">Reference ID</th>
-                <th className="py-3.5 px-4 text-start">Citizen Name</th>
                 <th className="py-3.5 px-4 text-start">Type</th>
-                <th className="py-3.5 px-4 text-start">Wilaya</th>
                 <th className="py-3.5 px-4 text-start">Subject</th>
                 <th className="py-3.5 px-4 text-start">Priority</th>
                 <th className="py-3.5 px-4 text-start">Status</th>
@@ -259,7 +234,7 @@ export default function AdminSubmissionsPage() {
             <tbody className="divide-y divide-line/60">
               {loading ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-muted">
+                  <td colSpan={7} className="py-12 text-center text-muted">
                     <div className="flex items-center justify-center gap-2">
                       <Loader2 className="w-5 h-5 animate-spin" />
                       <span>Loading records...</span>
@@ -284,19 +259,13 @@ export default function AdminSubmissionsPage() {
                       </div>
                     </td>
 
-                    <td className="py-3.5 px-4 font-medium text-ink">
-                      {row.fullName}
-                    </td>
-
                     <td className="py-3.5 px-4">
                       <span className="px-2.5 py-0.5 rounded-full bg-teal/5 text-teal font-semibold">
                         {row.type}
                       </span>
                     </td>
 
-                    <td className="py-3.5 px-4 text-muted">{row.wilaya}</td>
-
-                    <td className="py-3.5 px-4 max-w-[200px] truncate text-ink font-medium">
+                    <td className="py-3.5 px-4 max-w-[260px] truncate text-ink font-medium">
                       {row.subject}
                     </td>
 
@@ -356,7 +325,7 @@ export default function AdminSubmissionsPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-muted italic">
+                  <td colSpan={7} className="py-12 text-center text-muted italic">
                     <div className="flex flex-col items-center gap-2">
                       <Inbox className="w-8 h-8 text-muted/40" />
                       <span>No submissions found matching your search and filter criteria.</span>

@@ -78,13 +78,13 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#vision" className="hover:text-sand transition-colors">
-                  {t('nav.vision')}
+                <a href="#contact" className="hover:text-sand transition-colors">
+                  {t('nav.contact')}
                 </a>
               </li>
               <li>
-                <a href="#bio" className="hover:text-sand transition-colors">
-                  {t('nav.bio')}
+                <a href="#vision" className="hover:text-sand transition-colors">
+                  {t('nav.vision')}
                 </a>
               </li>
               <li>
@@ -93,13 +93,8 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#support" className="hover:text-sand transition-colors">
-                  {t('nav.support')}
-                </a>
-              </li>
-              <li>
-                <a href="#contact" className="hover:text-sand transition-colors">
-                  {t('nav.contact')}
+                <a href="#candidates" className="hover:text-sand transition-colors">
+                  {t('nav.candidates')}
                 </a>
               </li>
             </ul>

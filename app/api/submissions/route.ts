@@ -1,20 +1,37 @@
 import { NextResponse } from 'next/server';
 import { submissionSchema } from '@/lib/validations';
 import { getDb, initDb, sanitizeText, generateReferenceId } from '@/lib/db';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { hashIp, checkHashedRateLimit, checkDuplicateContent } from '@/lib/rate-limit';
+import { CAMPAIGN_LOCATION, ANTI_ABUSE_CONFIG } from '@/lib/constants';
 
 export async function POST(req: Request) {
   try {
-    const rawIp = req.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1';
-    const rateCheck = checkRateLimit(`submission_${rawIp}`, 8, 10 * 60 * 1000);
+    // 1. Salted IP Hash rate limiting (raw IP is never stored)
+    const rawIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1';
+    const hashedIp = hashIp(rawIp);
+    const rateCheck = checkHashedRateLimit(hashedIp);
+
     if (!rateCheck.allowed) {
       return NextResponse.json(
-        { error: 'Too many requests. Please try again later.' },
+        { error: 'Too many requests. Please wait a few minutes before submitting again.' },
         { status: 429 }
       );
     }
 
     const json = await req.json();
+
+    // 2. Minimum time-to-submit check (anti-bot)
+    if (json.formStartTime && typeof json.formStartTime === 'number') {
+      const elapsed = Date.now() - json.formStartTime;
+      if (elapsed < ANTI_ABUSE_CONFIG.minSubmitTimeMs) {
+        return NextResponse.json(
+          { error: 'Submission submitted too quickly. Please take a moment to review.' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // 3. Zod validation
     const result = submissionSchema.safeParse(json);
 
     if (!result.success) {
@@ -24,15 +41,24 @@ export async function POST(req: Request) {
 
     const d = result.data;
 
-    // Honeypot check
+    // 4. Honeypot check
     if (d.website && d.website.length > 0) {
       return NextResponse.json({ error: 'Spam detected' }, { status: 400 });
+    }
+
+    // 5. Identical content detection within time window
+    const isDuplicate = checkDuplicateContent(d.type, d.subject, d.description);
+    if (isDuplicate) {
+      return NextResponse.json(
+        { error: 'An identical request was recently submitted. Please avoid duplicate submissions.' },
+        { status: 409 }
+      );
     }
 
     await initDb();
     const db = getDb();
 
-    // Idempotency check if key provided
+    // 6. Idempotency check if key provided
     if (d.idempotencyKey) {
       const existingKey = await db.execute({
         sql: 'SELECT reference_id FROM submissions WHERE idempotency_key = ?',
@@ -43,7 +69,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // Generate collision-safe reference ID
+    // 7. Collision-safe reference ID generator
     let referenceId = generateReferenceId();
     let unique = false;
     let attempts = 0;
@@ -60,34 +86,35 @@ export async function POST(req: Request) {
       }
     }
 
-    const isConfidential = d.confidential === true || d.confidential === 'true' ? 1 : 0;
+    // 8. Enforce locked constituency location on SERVER
+    const enforcedWilaya = CAMPAIGN_LOCATION.storageWilaya;
+    const enforcedCommune = CAMPAIGN_LOCATION.storageCommune;
 
-    // Insert submission record
+    // 9. Insert submission record (NO personal name, email, phone collected)
     const insertSub = await db.execute({
       sql: `INSERT INTO submissions (
         reference_id, full_name, email, phone, wilaya, commune, organization,
         type, subject, description, priority, status, confidential, idempotency_key
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', ?, ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', 0, ?)`,
       args: [
         referenceId,
-        sanitizeText(d.fullName),
-        sanitizeText(d.email),
-        d.phone.trim(),
-        sanitizeText(d.wilaya),
-        sanitizeText(d.commune),
+        'Anonymous Citizen', // identity not collected
+        '',
+        '',
+        enforcedWilaya,
+        enforcedCommune,
         sanitizeText(d.organization),
         sanitizeText(d.type),
         sanitizeText(d.subject),
         sanitizeText(d.description),
         d.priority,
-        isConfidential,
         d.idempotencyKey || null,
       ],
     });
 
     const subId = Number(insertSub.lastInsertRowid);
 
-    // Conditional insert into complaint_details
+    // 10. Conditional insert into complaint_details
     if (d.type === 'Complaint') {
       await db.execute({
         sql: `INSERT INTO complaint_details (
@@ -103,7 +130,7 @@ export async function POST(req: Request) {
       });
     }
 
-    // Conditional insert into suggestion_details
+    // 11. Conditional insert into suggestion_details
     if (d.type === 'Suggestion') {
       await db.execute({
         sql: `INSERT INTO suggestion_details (
@@ -118,7 +145,7 @@ export async function POST(req: Request) {
       });
     }
 
-    // Initial status history log
+    // 12. Initial status history log
     await db.execute({
       sql: `INSERT INTO status_history (submission_id, previous_status, new_status, changed_by)
             VALUES (?, 'Created', 'Pending', 'Citizen Submission')`,
