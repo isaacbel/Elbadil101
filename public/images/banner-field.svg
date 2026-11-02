@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bannerBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#184834"/>
+      <stop offset="60%" stop-color="#123D2B"/>
+      <stop offset="100%" stop-color="#0B261A"/>
+    </linearGradient>
+    <radialGradient id="highlight" cx="60%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#347556" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#123D2B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="420" rx="20" fill="url(#bannerBg)"/>
+  <rect width="1200" height="420" rx="20" fill="url(#highlight)"/>
+
+  <!-- Field Action Abstract Figures -->
+  <g fill="#FAFAF7" fill-opacity="0.15">
+    <circle cx="360" cy="180" r="40"/>
+    <path d="M 320 230 C 320 200, 400 200, 400 230 L 410 320 L 310 320 Z"/>
+    
+    <circle cx="480" cy="160" r="45"/>
+    <path d="M 430 220 C 430 190, 530 190, 530 220 L 545 320 L 415 320 Z"/>
+
+    <circle cx="600" cy="170" r="42"/>
+    <path d="M 550 225 C 550 195, 650 195, 650 225 L 665 320 L 535 320 Z"/>
+
+    <circle cx="720" cy="185" r="38"/>
+    <path d="M 680 235 C 680 205, 760 205, 760 235 L 770 320 L 670 320 Z"/>
+
+    <circle cx="840" cy="190" r="36"/>
+    <path d="M 805 240 C 805 210, 875 210, 875 240 L 885 320 L 795 320 Z"/>
+  </g>
+
+  <!-- Framing & Lines -->
+  <line x1="80" y1="320" x2="1120" y2="320" stroke="#ffffff" stroke-opacity="0.2" stroke-width="2"/>
+
+  <!-- Overlay Box -->
+  <rect x="350" y="340" width="500" height="50" rx="10" fill="#0A2217" stroke="#ffffff" stroke-opacity="0.2"/>
+  <text x="600" y="364" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#FAFAF7" text-anchor="middle" letter-spacing="1.5">
+    COMMUNITY FIELDWORK &amp; CONSULTATION BANNER
+  </text>
+  <text x="600" y="380" font-family="Inter, sans-serif" font-size="10.5" fill="#9FB5A8" text-anchor="middle">
+    Replace with: public/images/banner-field.svg (1200x420)
+  </text>
+</svg>

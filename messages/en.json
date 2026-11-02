@@ -1,0 +1,165 @@
+{
+  "nav": {
+    "home": "Home",
+    "vision": "Vision & Priorities",
+    "bio": "Biography",
+    "activities": "Field Activities",
+    "contact": "Candidate Office",
+    "support": "Join the Movement",
+    "achievements": "Key Milestones"
+  },
+  "hero": {
+    "supportCta": "Support the Candidate",
+    "visionCta": "Discover Our Vision",
+    "badge": "Official Campaign 2026",
+    "altPortrait": "Official portrait of the candidate"
+  },
+  "supportForm": {
+    "eyebrow": "Register Your Support",
+    "title": "A constructive, principled voice for every community",
+    "description": "Your details are strictly used to verify and contact supporters in full accordance with our privacy policy.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "wilaya": "Wilaya (Province)",
+    "selectWilaya": "Select wilaya...",
+    "searchWilaya": "Search wilaya...",
+    "phone": "Phone Number (Algeria)",
+    "phonePlaceholder": "05 / 06 / 07 XX XX XX XX",
+    "commune": "Commune (Town/District)",
+    "intention": "Voting Intention",
+    "intentions": {
+      "placeholder": "Select voting intention...",
+      "definitely": "Will definitely vote",
+      "leaning": "Leaning toward voting",
+      "learn_more": "Want to learn more",
+      "undecided": "Don't know yet"
+    },
+    "participation": "Participation Preference",
+    "participations": {
+      "placeholder": "How would you like to contribute...",
+      "support": "Register my symbolic support",
+      "share": "Share and promote the campaign",
+      "volunteer": "Volunteer with local teams",
+      "field_outreach": "Help with grassroots outreach"
+    },
+    "message": "Support Message (optional)",
+    "messagePlaceholder": "Share a brief note with the candidate and campaign team...",
+    "consent": "I consent to my information being used to contact me and verify my support.",
+    "privacyLink": "Privacy Policy",
+    "submit": "Register Support",
+    "submitting": "Registering...",
+    "successTitle": "Thank you! Your support has been recorded.",
+    "successMessage": "Your voice and dedication are the backbone of our shared movement toward local progress and integrity.",
+    "shareCampaign": "Share the campaign",
+    "shareText": "I stand with this candidate for an honest, grassroots representative. Join the campaign!",
+    "copied": "Share link copied to clipboard!",
+    "duplicatePhone": "This phone number is already registered in our support directory.",
+    "networkError": "An error occurred while saving your support. Please try again."
+  },
+  "vision": {
+    "eyebrow": "Vision & Priorities",
+    "title": "Practical priorities, rooted in dignity and opportunity",
+    "subtitle": "A balanced reform agenda designed to empower communes, restore institutional accountability, and foster shared economic opportunity."
+  },
+  "bio": {
+    "eyebrow": "Biography & Public Journey",
+    "title": "A public commitment built through active listening",
+    "bannerCaption": "Field consultation with neighborhood residents and civil society members",
+    "timelineTitle": "Key Milestones & Journey"
+  },
+  "activities": {
+    "eyebrow": "Field Activities",
+    "title": "Present in the conversations that matter",
+    "subtitle": "Community dialogues, listening walks, and municipal workshops across towns and wilayas.",
+    "all": "All activities",
+    "prev": "Previous",
+    "next": "Next",
+    "viewDetails": "View details",
+    "close": "Close"
+  },
+  "citizenForm": {
+    "eyebrow": "Citizen Liaison Office",
+    "title": "Contact the Candidate's Office",
+    "subtitle": "Submit your written requests, grievances, and constructive suggestions directly to our parliamentary team.",
+    "notice": "Please describe your request in writing. Attachments and files are not accepted.",
+    "sectionA": "A. Personal Information",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number (Algeria)",
+    "wilaya": "Wilaya",
+    "commune": "Commune (Town/District)",
+    "organization": "Organization / Association (optional)",
+    "sectionB": "B. Request Type",
+    "requestType": "Request Type",
+    "types": {
+      "General Information": "General Information",
+      "Complaint": "Complaint / Grievance",
+      "Suggestion": "Constructive Suggestion",
+      "Question": "Policy / Legislative Question",
+      "Technical Problem": "Local / Technical Issue",
+      "Request for Assistance": "Request for Assistance",
+      "Other": "Other Subject"
+    },
+    "sectionC": "C. Submission Details",
+    "subject": "Subject / Title",
+    "subjectPlaceholder": "Concise summary of your request...",
+    "description": "Detailed Description",
+    "descriptionPlaceholder": "Please provide full details of your request, context, or previous institutional steps taken...",
+    "counter": "characters",
+    "priority": "Requested Priority",
+    "priorities": {
+      "Low": "Low",
+      "Medium": "Medium (default)",
+      "High": "High / Urgent"
+    },
+    "sectionD": "D. Complaint Details (complaints only)",
+    "complaintCategory": "Complaint Category",
+    "complaintCategories": {
+      "public_services": "Public Services & Municipal Utilities",
+      "local_infrastructure": "Roads & Urban Planning",
+      "administrative_delay": "Administrative Delay & Red Tape",
+      "social_housing": "Housing & Social Welfare",
+      "other": "Other"
+    },
+    "concernedParty": "Department or Person Concerned (optional)",
+    "incidentDate": "Date of Incident / Occurrence",
+    "confidential": "Would you like your complaint to remain strictly confidential?",
+    "confidentialYes": "Yes, keep strictly confidential",
+    "confidentialNo": "No, standard submission",
+    "sectionE": "E. Suggestion Details (suggestions only)",
+    "suggestionTitle": "Suggestion / Project Title",
+    "expectedImprovement": "Expected Impact or Improvement",
+    "consent": "I certify that the information provided is accurate and consent to its processing by the candidate's office.",
+    "submit": "Submit Written Request",
+    "submitting": "Submitting...",
+    "successTitle": "Your request has been officially recorded!",
+    "successDesc": "Your unique reference tracking ID is:",
+    "copyRef": "Copy Reference ID",
+    "copied": "Reference ID copied!",
+    "saveRefNotice": "Keep this reference ID safe for all future inquiries with the office.",
+    "newSubmission": "Submit another request"
+  },
+  "cta": {
+    "title": "Your voice belongs at the heart of public action",
+    "text": "Join the campaign today or reach out directly to the office with your priorities.",
+    "supportBtn": "Support the Candidate",
+    "contactBtn": "Contact the Office"
+  },
+  "footer": {
+    "aboutTitle": "About the Candidate",
+    "quickLinks": "Quick Navigation",
+    "contactTitle": "Office & Contact",
+    "legal": "Legal Notice",
+    "privacy": "Privacy Policy",
+    "copyright": "All rights reserved. Candidate Office & Official Campaign © 2026",
+    "adminLogin": "Office Administration"
+  },
+  "common": {
+    "required": "Required",
+    "optional": "Optional",
+    "loading": "Loading...",
+    "error": "An unexpected error occurred",
+    "charsRemaining": "characters left",
+    "share": "Share"
+  }
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="act2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3A6B53"/>
+      <stop offset="100%" stop-color="#194833"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" rx="16" fill="url(#act2)"/>
+  <circle cx="400" cy="200" r="80" fill="#ffffff" fill-opacity="0.1"/>
+  <polygon points="400,140 450,230 350,230" fill="#C94343" fill-opacity="0.9"/>
+  <rect x="250" y="270" width="300" height="70" rx="10" fill="#0E2D20" stroke="#FAFAF7" stroke-opacity="0.3"/>
+  <text x="400" y="300" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FAFAF7" text-anchor="middle">YOUTH &amp; TECHNICAL INNOVATION</text>
+  <text x="400" y="322" font-family="Inter, sans-serif" font-size="11" fill="#C9D6CE" text-anchor="middle">Replace with: public/images/activity-2.svg</text>
+</svg>

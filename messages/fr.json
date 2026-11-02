@@ -1,0 +1,165 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "vision": "Vision & Priorités",
+    "bio": "Parcours",
+    "activities": "Activités de terrain",
+    "contact": "Bureau du candidat",
+    "support": "Rejoindre le mouvement",
+    "achievements": "Réalisations"
+  },
+  "hero": {
+    "supportCta": "Soutenez le candidat",
+    "visionCta": "Découvrir notre vision",
+    "badge": "Campagne officielle 2026",
+    "altPortrait": "Portrait officiel du candidat"
+  },
+  "supportForm": {
+    "eyebrow": "Enregistrement du soutien",
+    "title": "Une voix responsable, engagée au cœur du quotidien",
+    "description": "Vos données sont strictement utilisées pour vérifier et contacter les sympathisants, dans le respect de notre politique de confidentialité.",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "wilaya": "Wilaya",
+    "selectWilaya": "Sélectionnez votre wilaya...",
+    "searchWilaya": "Rechercher une wilaya...",
+    "phone": "Numéro de téléphone (Algérie)",
+    "phonePlaceholder": "05 / 06 / 07 XX XX XX XX",
+    "commune": "Commune (optionnel)",
+    "intention": "Intention de vote",
+    "intentions": {
+      "placeholder": "Votre intention de vote...",
+      "definitely": "Votera certainement",
+      "leaning": "Favorable au vote",
+      "learn_more": "Souhaite en savoir plus",
+      "undecided": "Indécis pour le moment"
+    },
+    "participation": "Mode de participation",
+    "participations": {
+      "placeholder": "Comment souhaitez-vous aider...",
+      "support": "Enregistrer mon soutien moral",
+      "share": "Relayer la campagne et sensibiliser",
+      "volunteer": "Rejoindre l'équipe bénévole",
+      "field_outreach": "Participer aux actions de terrain"
+    },
+    "message": "Message de soutien (optionnel)",
+    "messagePlaceholder": "Votre message au candidat et à l'équipe...",
+    "consent": "J'accepte que mes coordonnées soient utilisées pour me contacter et vérifier mon soutien.",
+    "privacyLink": "Politique de confidentialité",
+    "submit": "Enregistrer mon soutien",
+    "submitting": "Enregistrement en cours...",
+    "successTitle": "Merci ! Votre soutien a été enregistré avec succès.",
+    "successMessage": "Votre engagement donne force et crédibilité à notre projet commun pour un développement équilibré.",
+    "shareCampaign": "Partager la campagne",
+    "shareText": "Je soutiens la candidature pour une voix responsable et proche de nos réalités. Rejoignez le mouvement !",
+    "copied": "Lien de partage copié dans le presse-papier !",
+    "duplicatePhone": "Ce numéro de téléphone est déjà enregistré.",
+    "networkError": "Une erreur est survenue lors de l'enregistrement. Veuillez réessayer."
+  },
+  "vision": {
+    "eyebrow": "Vision & Priorités",
+    "title": "Des priorités concrètes ancrées dans la dignité",
+    "subtitle": "Un engagement public fondé sur l'équilibre des territoires, la justice sociale et la responsabilité institutionnelle."
+  },
+  "bio": {
+    "eyebrow": "Parcours & Engagement",
+    "title": "Un engagement public construit par l'écoute du terrain",
+    "bannerCaption": "Rencontre citoyenne et échanges de proximité avec les habitants",
+    "timelineTitle": "Étapes clés de notre parcours"
+  },
+  "activities": {
+    "eyebrow": "Activités de terrain",
+    "title": "Présent dans les conversations qui comptent",
+    "subtitle": "Visites de proximité, consultations citoyennes et concertations thématiques avec la société civile.",
+    "all": "Toutes les activités",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "viewDetails": "Détails de l'activité",
+    "close": "Fermer"
+  },
+  "citizenForm": {
+    "eyebrow": "Bureau de liaison citoyenne",
+    "title": "Écrire au bureau du candidat",
+    "subtitle": "Nous recevons vos requêtes, doléances et propositions écrites pour les étudier avec rigueur et suivi.",
+    "notice": "Veuillez décrire votre demande par écrit. Les pièces jointes et fichiers ne sont pas acceptés.",
+    "sectionA": "A. Informations personnelles",
+    "fullName": "Nom et prénom complet",
+    "email": "Adresse email",
+    "phone": "Numéro de téléphone (Algérie)",
+    "wilaya": "Wilaya",
+    "commune": "Commune (optionnel)",
+    "organization": "Association / Organisation (optionnel)",
+    "sectionB": "B. Type de requête",
+    "requestType": "Type de requête",
+    "types": {
+      "General Information": "Demande d'information générale",
+      "Complaint": "Doléance / Réclamation",
+      "Suggestion": "Proposition / Suggestion",
+      "Question": "Question thématique ou politique",
+      "Technical Problem": "Signalement de problème local",
+      "Request for Assistance": "Demande d'accompagnement",
+      "Other": "Autre sujet"
+    },
+    "sectionC": "C. Détails de la requête",
+    "subject": "Objet / Titre de la requête",
+    "subjectPlaceholder": "Titre clair et précis...",
+    "description": "Description détaillée de votre demande",
+    "descriptionPlaceholder": "Décrivez ici en détail la situation, les démarches déjà entreprises ou vos attentes...",
+    "counter": "caractères",
+    "priority": "Niveau d'urgence proposé",
+    "priorities": {
+      "Low": "Faible",
+      "Medium": "Moyen (défaut)",
+      "High": "Urgent"
+    },
+    "sectionD": "D. Détails de la doléance (spécifique aux réclamations)",
+    "complaintCategory": "Catégorie de la réclamation",
+    "complaintCategories": {
+      "public_services": "Services publics & administrations",
+      "local_infrastructure": "Voirie & Aménagement local",
+      "administrative_delay": "Lenteurs administratives",
+      "social_housing": "Logement & Affaires sociales",
+      "other": "Autre"
+    },
+    "concernedParty": "Organisme ou service concerné (optionnel)",
+    "incidentDate": "Date de survenue / de constatation",
+    "confidential": "Souhaitez-vous que cette réclamation reste strictement confidentielle ?",
+    "confidentialYes": "Oui, traitement strictement confidentiel",
+    "confidentialNo": "Non, réclamation publique ordinaire",
+    "sectionE": "E. Détails de la proposition (spécifique aux suggestions)",
+    "suggestionTitle": "Titre du projet ou de la suggestion",
+    "expectedImprovement": "Impact ou amélioration attendue",
+    "consent": "Je certifie l'exactitude de ces informations et consens à leur traitement par le bureau du candidat.",
+    "submit": "Transmettre la requête",
+    "submitting": "Transmission en cours...",
+    "successTitle": "Requête transmise et enregistrée avec succès !",
+    "successDesc": "Votre numéro de référence unique de dossier est :",
+    "copyRef": "Copier la référence",
+    "copied": "Référence copiée !",
+    "saveRefNotice": "Conservez précieusement ce numéro pour tout échange ultérieur avec nos équipes.",
+    "newSubmission": "Envoyer une autre requête"
+  },
+  "cta": {
+    "title": "Votre voix est au cœur de l'action publique",
+    "text": "Rejoignez la dynamique citoyenne ou soumettez directement vos préoccupations à notre équipe.",
+    "supportBtn": "Soutenir la candidature",
+    "contactBtn": "Contacter le bureau"
+  },
+  "footer": {
+    "aboutTitle": "À propos du candidat",
+    "quickLinks": "Navigation rapide",
+    "contactTitle": "Contact & Permanence",
+    "legal": "Mentions légales",
+    "privacy": "Politique de confidentialité",
+    "copyright": "Tous droits réservés au candidat et au comité de campagne © 2026",
+    "adminLogin": "Portail d'administration"
+  },
+  "common": {
+    "required": "Requis",
+    "optional": "Optionnel",
+    "loading": "Chargement...",
+    "error": "Une erreur inattendue est survenue",
+    "charsRemaining": "caractères restants",
+    "share": "Partager"
+  }
+}

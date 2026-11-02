@@ -1,0 +1,24 @@
+{
+  "name": "القائمة الحرّة البديل 101",
+  "short_name": "البديل",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/favicon/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#0B4F4A",
+  "background_color": "#F4EEE2",
+  "display": "standalone",
+  "start_url": "/"
+}
