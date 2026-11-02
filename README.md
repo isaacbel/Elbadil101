@@ -1,171 +1,197 @@
-# Candidate Office & Political Campaign Platform
-**Premium Trilingual Political Candidate Website + Citizen Written Submission Platform + Secure Admin Dashboard**
+# Elbadil 101 — Political Campaign & Citizen Office Platform
 
-An official digital platform engineered for political candidates, built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **LibSQL (SQLite/Turso)**.
+[![Next.js 15](https://img.shields.io/badge/Next.js-15.1.6-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React-19.0.0-61dafb?style=flat&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.0-38bdf8?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
+[![LibSQL / Turso](https://img.shields.io/badge/Database-LibSQL%20%2F%20Turso-00d492?style=flat&logo=sqlite)](https://turso.tech/)
+[![License](https://img.shields.io/badge/License-Proprietary-red?style=flat)](#license)
+
+An official, high-performance trilingual campaign website and digital citizen correspondence portal built for political candidates and civic organizations. Features a modern editorial design, full native Arabic RTL layout, citizen grievance/suggestion tracking, supporter registration, and a role-based administrative dashboard.
 
 ---
 
 ## 🌟 Key Features
 
-### 1. Trilingual & Native RTL Architecture
-- **Languages:** Arabic (`ar`, default with full `dir="rtl"`), French (`fr`, `dir="ltr"`), and English (`en`, `dir="ltr"`).
-- **Typography:** Playfair Display (editorial Latin headings), Inter (clean Latin body), and Cairo (balanced Arabic typography).
-- **RTL-Aware:** Mirrored layouts, carousels, arrows, vertical timelines, and logical spacing (`ms/me/ps/pe`, `start/end`).
-- **Translation System:** Centralized JSON messages (`messages/ar.json`, `messages/fr.json`, `messages/en.json`) with cookie persistence.
+### 1. 🌐 Trilingual & Native RTL Architecture
+* **Supported Languages**: Arabic (`ar`, default with complete `dir="rtl"`), French (`fr`, `dir="ltr"`), and English (`en`, `dir="ltr"`).
+* **Typography**: Cairo (balanced Arabic typography), Playfair Display (editorial Latin headings), and Inter (body copy).
+* **RTL-Native Layout**: Dynamic direction switching, mirrored carousels, responsive timelines, and logical CSS spacing (`ms-*`, `me-*`, `ps-*`, `pe-*`).
+* **Translation System**: Centralized JSON dictionaries (`messages/ar.json`, `messages/fr.json`, `messages/en.json`) with cookie persistence.
 
-### 2. Complete Public Campaign Website (Sections 5.1 – 5.10)
-- **5.1 Navigation Header:** Sticky, transparent over hero, backdrop-blurred on scroll, language switcher, mobile drawer, active section highlighting.
-- **5.2 Hero Section:** Large editorial H1 with campaign slogan, candidate role, wilaya, portrait card, primary CTA "Support the Candidate", secondary "Discover Our Vision".
-- **5.3 Support Registration Form:** First name, last name, searchable dropdown of all 58 Algerian wilayas, Algerian phone format validation (`05/06/07 + 8 digits` or `+213`), voting intention, participation preference, collapsible note, duplicate phone protection, and Web Share API / WhatsApp sharing.
-- **5.4 Vision & Priorities:** 4 editorial cards with Lucide icons (Economic Dignity, Local Development, Youth & Education, Institutional Responsibility) with hover elevations and bullet points.
-- **5.5 Biography & Journey:** Professional photo, vertical connected timeline with animated reveal, and field-work photo banner with caption.
-- **5.6 Field Activities Carousel:** RTL-aware interactive carousel across categories (Urban Development, Youth, Women's Participation, Community, Local Governance) with modal detail view.
-- **5.7 Key Achievements (Conditional):** Self-omitting section that only renders when verified statistics exist in `data/content.ts`.
-- **5.8 Citizen Submission Platform ("Contact the Office"):**
-  - **TEXT ONLY:** Strictly no file uploads, no PDFs, no image inputs, and no storage buckets.
-  - Sections: Personal Information, Request Type (7 types), Detailed Description with live counter (up to 3,000 characters), Priority selector.
-  - Conditional Complaint fields: category, department concerned, incident date, confidentiality toggle.
-  - Conditional Suggestion fields: title, expected impact/improvement.
-  - Generates collision-safe human-readable reference IDs (e.g. `REQ-2026-XXXXXX`).
-- **5.9 Final Call to Action:** High-impact campaign banner with dual CTAs.
-- **5.10 Institutional Footer:** Dark green palette, candidate information, quick links, contact info, social links, legal & privacy notices, admin login shortcut.
+### 2. 🏛️ Public Citizen & Campaign Portal
+* **Navigation Bar**: Glassmorphic sticky header with scroll detection, mobile navigation drawer, language switch, and smooth anchor scrolling.
+* **Hero Section**: High-impact editorial layout with candidate portrait card, campaign slogan, badges, and primary action buttons.
+* **Supporter Registration**: Real-time validation for Algerian mobile numbers (`05/06/07 + 8 digits` or `+213`), searchable selector for all 58 Algerian wilayas, voting intentions, volunteer preferences, and duplicate prevention.
+* **Program & Priorities**: Thematic policy cards (Economic Dignity, Regional Development, Youth & Education, Institutional Accountability) with interactive micro-animations.
+* **Biography & Journey**: Verified milestones timeline and field consultation photo banner.
+* **Field Activities**: Interactive carousel showcasing community outreach, youth forums, and municipal assemblies with rich modal details.
+* **Citizen Submission Platform ("Contact the Office")**:
+  * **Zero File Upload Vulnerability**: Strictly text-only inputs—no binary uploads, PDFs, or external storage buckets required.
+  * **Categorized Routing**: 7 distinct submission types (Grievance, Suggestion, Inquiry, Meeting Request, Support, etc.).
+  * **Smart Forms**: Context-sensitive fields for complaints (category, concerned department, incident date, confidentiality toggle) and suggestions (title, expected impact).
+  * **Human-Readable Tracking IDs**: Collision-resistant tracking codes (e.g. `REQ-2026-XXXXXX`).
+* **Interactive Sharing**: Web Share API integration with automatic fallback to WhatsApp.
 
-### 3. Secure Admin Authentication & Role-Based Dashboard
-- **Security:** Scrypt password hashing with random salt, HMAC-SHA256 session tokens in `httpOnly` secure cookies, Edge middleware route protection.
-- **Role-Based Access Control:** `super_admin` and `admin` roles. Confidential complaints mask the submitter's identity for standard staff.
-- **Overview Analytics:** Total submissions, complaints, suggestions, pending, in-progress, resolved, supporters count, and 7-day activity chart.
-- **Full Submissions Management:** Combinable multi-filtering (search, type, status, priority, wilaya, sort order), pagination, and sliding inspection drawer.
-- **Administrative Tools:** Status transitions, priority changes, internal staff notes, direct email/phone/WhatsApp links, and cascade deletion.
-- **Supporters Directory & CSV Export:** Filtered view of supporters with one-click CSV download (UTF-8 with BOM for Excel compatibility).
+### 3. 🛡️ Secure Staff & Admin Dashboard (`/admin`)
+* **Role-Based Access Control (RBAC)**: Distinct access levels (`super_admin` and `admin`).
+* **Citizen Privacy Protection**: Submissions flagged as confidential automatically mask citizen contact details for non-supervisors.
+* **Real-time Analytics**: Visual KPI cards (Total Submissions, Pending, In Progress, Resolved, Active Supporters) and 7-day activity metrics.
+* **Submissions Management Drawer**: Multi-factor filtering (type, status, priority, wilaya), live search, internal staff notes, status transitions, and audit logs.
+* **Supporters Directory**: Full searchable registry with instant **CSV Export** (UTF-8 with BOM for native Microsoft Excel Arabic/French rendering).
+* **Edge Route Protection**: Scrypt password hashing with unique salt, cryptographic HMAC-SHA256 session cookies, and Next.js Edge Middleware protection.
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ Tech Stack
 
-### 1. Requirements
-- Node.js 18+ (tested and verified on Node 20, 22, and 24 on Windows & Linux)
-- npm or pnpm
+* **Framework**: Next.js 15 (App Router, Server Actions & Edge Middleware)
+* **Frontend**: React 19, Tailwind CSS v4, Framer Motion, Lucide Icons
+* **Data Validation**: Zod
+* **Database Client**: `@libsql/client` (SQLite for local development, Turso LibSQL for cloud/serverless)
+* **Authentication**: Custom lightweight Scrypt + WebCrypto HMAC-SHA256 (no heavy external auth dependencies)
 
-### 2. Environment Configuration
-Copy `.env.example` to `.env.local`:
+---
+
+## 📁 Project Structure
+
+```text
+├── app/
+│   ├── admin/                 # Admin dashboard pages (overview, submissions, complaints, suggestions, support)
+│   ├── api/                   # API routes (submissions, support, auth, admin actions)
+│   ├── layout.tsx             # Root layout with font definitions & metadata
+│   ├── page.tsx               # Main public campaign page
+│   └── globals.css            # Tailwind CSS v4 configurations
+├── components/
+│   ├── admin/                 # Admin drawer, header, sidebar, dialogs
+│   ├── public/                # Public site sections (Hero, Vision, Bio, Activities, Forms)
+│   └── shared/                # Logo, LanguageSwitcher, shared UI components
+├── data/
+│   ├── content.ts             # Central candidate details, bio, milestones & contact info
+│   └── campaign.db            # Local SQLite database (ignored by git)
+├── lib/
+│   ├── auth.ts                # Session management & Scrypt password hashing
+│   ├── db.ts                  # LibSQL client & automatic table initialization
+│   ├── i18n.tsx               # Trilingual context provider & hooks
+│   ├── rate-limit.ts          # In-memory IP rate limiter
+│   ├── validations.ts         # Zod schemas for submissions & registrations
+│   └── wilayas.ts             # 58 Algerian Wilayas dataset
+├── messages/                  # i18n strings (ar.json, fr.json, en.json)
+├── public/                    # Logos, SVG illustrations, and icons
+├── scripts/
+│   ├── seed-admin.ts          # CLI script to initialize/reset admin credentials
+│   └── test-e2e.ts            # E2E verification test script
+└── middleware.ts              # Edge session authentication middleware
+```
+
+---
+
+## 🚀 Quickstart Guide
+
+### 1. Prerequisites
+* **Node.js** 18.x or 20.x+
+* **npm** or **pnpm**
+
+### 2. Installation
+Clone the repository and install dependencies:
+```bash
+git clone https://github.com/isaacbel/Elbadil101.git
+cd Elbadil101
+npm install
+```
+
+### 3. Environment Configuration
+Create your local environment file:
 ```bash
 cp .env.example .env.local
 ```
 
-Configure your secrets:
+Edit `.env.local` with your configuration:
 ```env
+# Local SQLite database (default for development)
 DATABASE_PATH=./data/campaign.db
+
+# Admin User Credentials
 ADMIN_EMAIL=admin@candidate.dz
-ADMIN_PASSWORD=YourSecurePassword123!
+ADMIN_PASSWORD=ReplaceWithStrongPassword123!
 ADMIN_ROLE=super_admin
-SESSION_SECRET=a5c889f8123d4567890abcdef1234567890abcdef1234567890abcdef12345678
+
+# Session Security (Generate with: openssl rand -hex 32)
+SESSION_SECRET=replace-with-a-64-character-random-hex-string
 ```
 
-### 3. Seed the First Admin User
-Run the automated seeding script:
+### 4. Database Setup & Admin Seeding
+Initialize the database tables and seed the initial administrator:
 ```bash
 npm run seed
 ```
-Or specify credentials inline:
-```bash
-npx tsx scripts/seed-admin.ts admin@candidate.dz YourSecurePassword123! super_admin
-```
 
-### 4. Run Development Server
+### 5. Start Development Server
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) for the public site, and [http://localhost:3000/admin/login](http://localhost:3000/admin/login) for the admin portal.
-
-### 5. Production Build
-```bash
-npm run build
-npm run start
-```
+* **Public Campaign Website**: [http://localhost:3000](http://localhost:3000)
+* **Administrative Portal**: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
 
 ---
 
-## 🗄️ Database Architecture & Migrations
+## 🗄️ Database: Local SQLite & Cloud Turso
 
-The database engine uses `@libsql/client` which runs seamlessly both locally (SQLite file `data/campaign.db`) and in cloud serverless deployments (Turso / LibSQL).
+The application automatically connects based on environment variables configured in `lib/db.ts`:
 
-### Tables:
-1. `support_registrations`: Supporter entries with unique phone constraints and participation preferences.
-2. `submissions`: Central citizen correspondence table with unique `reference_id` (`REQ-YYYY-XXXXXX`), priority, status, and confidentiality flags.
-3. `complaint_details`: 1-to-1 extension table for complaint-specific data (category, department, incident date).
-4. `suggestion_details`: 1-to-1 extension table for suggestion-specific data (title, expected improvement).
-5. `admin_users`: Authenticated campaign staff with role and scrypt password hash.
-6. `internal_notes`: Private administrative staff notes with timestamps and author email.
-7. `status_history`: Audit trail logging every status change with timestamp and actor.
+### Local Development
+Uses local SQLite file (`data/campaign.db`). Tables are created automatically on first query.
 
----
+### Cloud / Production (Free Serverless LibSQL)
+For serverless hosting (such as Vercel), set up a free [Turso](https://turso.tech) database:
 
-## 📝 Candidate Content Replacement Checklist
-
-Everything you need to customize is located in **ONE** central file: [`data/content.ts`](file:///c:/Users/pc/Desktop/vote/data/content.ts).
-
-| Item to Replace | File Location | Description |
-| :--- | :--- | :--- |
-| **Candidate Name** | `data/content.ts` | Replace `[اسم المرشح]`, `[Nom du Candidat]`, `[Candidate Name]` |
-| **Profession / Role** | `data/content.ts` | Replace `[مهندس معماري · عضو منتخب]`, etc. |
-| **Town & Wilaya** | `data/content.ts` | Replace `[البلدية، الولاية]`, `[Commune, Wilaya]` |
-| **Campaign Slogan** | `data/content.ts` | Campaign motto displayed across hero and quotes |
-| **Party / List** | `data/content.ts` | Official party affiliation or independent list name |
-| **Biographies** | `data/content.ts` | `shortBio` (hero/meta) and `fullBio` (biography section) |
-| **Milestones** | `data/content.ts` | `timelineMilestones` array (year, title, description) |
-| **Field Activities** | `data/content.ts` | `activities` array (year, category, title, description) |
-| **Office Contact** | `data/content.ts` | Email, phone number, physical address, and office hours |
-| **Social Links** | `data/content.ts` | Facebook, X, Instagram, and YouTube URLs |
+1. Install Turso CLI or log in to the Turso Dashboard:
+   ```bash
+   turso db create elbadil-db
+   turso db tokens create elbadil-db
+   ```
+2. Add the connection credentials to your environment variables:
+   ```env
+   TURSO_DATABASE_URL=libsql://elbadil-db-yourusername.turso.io
+   TURSO_AUTH_TOKEN=your-turso-auth-token
+   ```
 
 ---
 
-## 🖼️ Replaceable Image Assets Checklist
+## ☁️ Free Cloud Deployment (Vercel)
 
-All placeholder assets are located in [`public/images/`](file:///c:/Users/pc/Desktop/vote/public/images/):
-
-| Asset Path | Recommended Dimensions | Usage |
-| :--- | :--- | :--- |
-| `public/images/logo.svg` | Square (120x120 or SVG) | Header emblem, footer logo, metadata |
-| `public/images/hero-portrait.svg` | 600 x 750 (4:5 portrait) | Hero section candidate portrait |
-| `public/images/bio-photo.svg` | 600 x 700 (3:4 portrait) | Biography & professional practice card |
-| `public/images/banner-field.svg` | 1200 x 420 (landscape) | Fieldwork consultation banner |
-| `public/images/activity-1.svg` | 800 x 500 (16:10) | Activity 1: Urban Development |
-| `public/images/activity-2.svg` | 800 x 500 (16:10) | Activity 2: Youth & Innovation |
-| `public/images/activity-3.svg` | 800 x 500 (16:10) | Activity 3: Women's Participation |
-| `public/images/activity-4.svg` | 800 x 500 (16:10) | Activity 4: Community Outreach |
-| `public/images/activity-5.svg` | 800 x 500 (16:10) | Activity 5: Civic Assembly |
-
-*(You can replace these with `.jpg` or `.png` files by updating the paths in `components/public/Hero.tsx`, `BiographySection.tsx`, and `ActivitiesCarousel.tsx`).*
+1. Push your repository to GitHub.
+2. Link the repository on [Vercel](https://vercel.com/new).
+3. Set the following **Environment Variables** in Vercel Project Settings:
+   * `TURSO_DATABASE_URL` — your Turso database connection URL
+   * `TURSO_AUTH_TOKEN` — your Turso authentication token
+   * `ADMIN_EMAIL` — primary admin email
+   * `ADMIN_PASSWORD_HASH` — hashed password generated by `npm run seed`
+   * `ADMIN_ROLE` — `super_admin`
+   * `SESSION_SECRET` — 64-character random hex string
+4. Click **Deploy**. Next.js App Router and Edge Middleware will deploy automatically.
 
 ---
 
-## 🌐 How to Add or Modify Languages
+## ✏️ Customizing Candidate Content
 
-1. Add your new language code (e.g. `es`) to `Locale` in `lib/i18n.tsx`.
-2. Create `messages/es.json` with translated keys corresponding to `messages/en.json`.
-3. Add the language button to `components/shared/LanguageSwitcher.tsx`.
-4. Add the language metadata in `app/layout.tsx` under `alternates.languages`.
+To update candidate details, political program, milestones, or office contact details, edit [`data/content.ts`](file:///c:/Users/pc/Desktop/vote/data/content.ts):
 
----
-
-## ☁️ Deploying to Vercel
-
-1. Push your repository to GitHub / GitLab.
-2. Import the project into [Vercel](https://vercel.com).
-3. In the Vercel Project Settings, add the Environment Variables:
-   - `ADMIN_EMAIL`: Your primary admin email (e.g. `admin@candidate.dz`)
-   - `ADMIN_PASSWORD_HASH`: The generated scrypt hash from `npm run seed`
-   - `ADMIN_ROLE`: `super_admin`
-   - `SESSION_SECRET`: A secure 64-character hex string (`openssl rand -hex 32`)
-   - For database persistence on Vercel: set `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` (free serverless LibSQL database from [Turso](https://turso.tech)), or connect Supabase Postgres.
-4. Deploy! All routes, static pages, and edge middleware deploy automatically.
+* **Name & Affiliation**: Arabic, French, and English translations of the candidate name and list/party.
+* **Biography**: Short summary for meta tags and detailed biography timeline.
+* **Office & Social Links**: Address, office opening hours, phone, email, and social media URLs.
 
 ---
 
-## 🛡️ Security & Privacy Notice
+## 🔒 Security Practices
 
-- **Text-Only Submission System:** Eliminates remote code execution, malicious file uploads, storage bucket abuse, and MIME-sniffing vulnerabilities.
-- **Honeypot & Rate Limiting:** All public forms include hidden honeypot fields and IP-based rate limiting to protect against automated spam bots.
-- **Confidential Grievance Protection:** Citizen complaints marked as confidential have submitter contact details masked (`***@confidential.dz`) for regular administrative roles.
-#   E l b a d i l 1 0 1  
- 
+* **No File Upload Attack Surface**: Eliminates shell execution, malicious script storage, and excessive storage billing.
+* **Spam & Bot Mitigation**: In-memory rate limiting and invisible form honeypots.
+* **XSS & SQL Injection Defense**: Parametrized LibSQL statements and automated input string sanitization.
+* **Secure Cookies**: HTTP-only, SameSite=Lax cookie storage with HMAC-SHA256 cryptographic verification.
+
+---
+
+## 📄 License
+
+This project is licensed under private campaign terms. All rights reserved.
