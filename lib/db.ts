@@ -2,17 +2,19 @@ import { createClient, Client } from '@libsql/client';
 import path from 'path';
 import fs from 'fs';
 
-let clientInstance: Client | null = null;
-let initialized = false;
+const globalForDb = globalThis as unknown as {
+  libsqlClient?: Client;
+  dbInitialized?: boolean;
+};
 
 export function getDb(): Client {
-  if (clientInstance) return clientInstance;
+  if (globalForDb.libsqlClient) return globalForDb.libsqlClient;
 
   const url = process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL;
   const authToken = process.env.TURSO_AUTH_TOKEN;
 
   if (url && (url.startsWith('libsql://') || url.startsWith('https://') || url.startsWith('http://'))) {
-    clientInstance = createClient({
+    globalForDb.libsqlClient = createClient({
       url,
       authToken,
     });
@@ -24,16 +26,16 @@ export function getDb(): Client {
       fs.mkdirSync(dbDir, { recursive: true });
     }
     const normalizedPath = path.resolve(dbFilePath).replace(/\\/g, '/');
-    clientInstance = createClient({
+    globalForDb.libsqlClient = createClient({
       url: `file:${normalizedPath}`,
     });
   }
 
-  return clientInstance;
+  return globalForDb.libsqlClient;
 }
 
 export async function initDb(): Promise<void> {
-  if (initialized) return;
+  if (globalForDb.dbInitialized) return;
   const db = getDb();
 
   await db.batch([
@@ -125,7 +127,7 @@ export async function initDb(): Promise<void> {
     // Column already exists
   }
 
-  initialized = true;
+  globalForDb.dbInitialized = true;
 }
 
 export function sanitizeText(str: unknown): string {
