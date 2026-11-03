@@ -123,7 +123,8 @@ export default function SubmissionForm() {
           wilaya: CAMPAIGN_LOCATION.storageWilaya,
           commune: CAMPAIGN_LOCATION.storageCommune,
           idempotencyKey,
-          formStartTime: mountTime,
+          clientDurationMs: mountTime ? Math.max(0, Date.now() - mountTime) : 3000,
+          formStartTime: mountTime || Date.now(),
         }),
       });
 
@@ -256,13 +257,16 @@ export default function SubmissionForm() {
                 </div>
               )}
 
-              {/* Honeypot field (hidden from screen) */}
-              <div className="hidden" aria-hidden="true">
+              {/* Honeypot field (hidden from screen, protected against browser autofill) */}
+              <div
+                style={{ display: 'none', position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}
+                aria-hidden="true"
+              >
                 <input
                   type="text"
                   name="website"
                   tabIndex={-1}
-                  autoComplete="off"
+                  autoComplete="new-password"
                   value={formData.website}
                   onChange={handleInputChange}
                 />

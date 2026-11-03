@@ -16,16 +16,17 @@ export const submissionSchema = z.object({
   wilaya: z.string().optional().default(CAMPAIGN_LOCATION.storageWilaya),
   commune: z.string().optional().default(CAMPAIGN_LOCATION.storageCommune),
   organization: z.string().trim().max(120).optional().default(''),
-  type: z.enum(requestTypes, { errorMap: () => ({ message: 'type_required' }) }),
-  subject: z.string().trim().min(3, { message: 'subject_min' }).max(160, { message: 'subject_max' }),
-  description: z.string().trim().min(10, { message: 'description_min' }).max(3000, { message: 'description_max' }),
+  type: z.enum(requestTypes, { errorMap: () => ({ message: 'نوع المراسلة غير صالح' }) }),
+  subject: z.string().trim().min(3, { message: 'موضوع المراسلة يجب أن يحتوي على 3 أحرف على الأقل' }).max(160, { message: 'الموضوع لا يمكن أن يتجاوز 160 حرفاً' }),
+  description: z.string().trim().min(10, { message: 'نص المراسلة يجب أن يحتوي على 10 أحرف على الأقل' }).max(3000, { message: 'نص المراسلة لا يمكن أن يتجاوز 3000 حرف' }),
   priority: z.enum(['Low', 'Medium', 'High']).default('Medium'),
   consent: z.union([z.boolean(), z.string()]).refine(val => val === true || val === 'true' || val === 'on', {
-    message: 'consent_required',
+    message: 'الموافقة على شروط المراسلة مطلوبة',
   }),
-  website: z.string().max(0, { message: 'Spam detected' }).optional().default(''),
+  website: z.string().max(0, { message: 'تم رصد نشاط غير مصرح به' }).optional().default(''),
   idempotencyKey: z.string().max(100).optional(),
   formStartTime: z.number().optional(),
+  clientDurationMs: z.number().optional(),
 
   // Conditional Complaint fields (without confidentiality since all submissions are anonymous)
   complaintCategory: z.string().max(100).optional().default(''),

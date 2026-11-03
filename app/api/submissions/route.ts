@@ -20,12 +20,20 @@ export async function POST(req: Request) {
 
     const json = await req.json();
 
-    // 2. Minimum time-to-submit check (anti-bot)
-    if (json.formStartTime && typeof json.formStartTime === 'number') {
-      const elapsed = Date.now() - json.formStartTime;
-      if (elapsed < ANTI_ABUSE_CONFIG.minSubmitTimeMs) {
+    // 2. Anti-bot submit timing check (immune to cross-machine clock skew)
+    if (typeof json.clientDurationMs === 'number') {
+      if (json.clientDurationMs > 0 && json.clientDurationMs < 800) {
         return NextResponse.json(
-          { error: 'Submission submitted too quickly. Please take a moment to review.' },
+          { error: 'يرجى مراجعة محتوى المراسلة قبل الإرسال.' },
+          { status: 400 }
+        );
+      }
+    } else if (typeof json.formStartTime === 'number' && json.formStartTime > 0) {
+      const elapsed = Date.now() - json.formStartTime;
+      // Only reject if elapsed is positive and suspiciously sub-second; ignore negative elapsed due to client/server clock drift
+      if (elapsed > 0 && elapsed < 800) {
+        return NextResponse.json(
+          { error: 'يرجى مراجعة محتوى المراسلة قبل الإرسال.' },
           { status: 400 }
         );
       }
