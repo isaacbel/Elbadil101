@@ -5,31 +5,27 @@ import { I18nProvider, Locale } from '@/lib/i18n';
 import { candidate } from '@/data/content';
 import './globals.css';
 
-// ALBADIL Brand Fonts via next/font/google (self-hosted)
+// ALBADIL Brand Fonts via next/font/google (self-hosted variable fonts)
 const kufam = Kufam({
-  subsets: ['latin'],
-  weight: ['600', '700', '900'],
+  subsets: ['arabic', 'latin'],
   display: 'swap',
   variable: '--font-kufam',
 });
 
 const kreon = Kreon({
   subsets: ['latin'],
-  weight: ['700'],
   display: 'swap',
   variable: '--font-kreon',
 });
 
 const notoNaskh = Noto_Naskh_Arabic({
-  subsets: ['arabic', 'latin'],
-  weight: ['400', '500', '600', '700'],
+  subsets: ['arabic'],
   display: 'swap',
   variable: '--font-naskh',
 });
 
 const inter = Inter({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
   display: 'swap',
   variable: '--font-latin',
 });
