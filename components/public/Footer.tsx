@@ -78,6 +78,11 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <a href="#about" className="hover:text-sand transition-colors">
+                  {t('nav.about')}
+                </a>
+              </li>
+              <li>
                 <a href="#contact" className="hover:text-sand transition-colors">
                   {t('nav.contact')}
                 </a>

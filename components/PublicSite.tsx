@@ -4,6 +4,7 @@ import React from 'react';
 import { useI18n } from '@/lib/i18n';
 import Navbar from '@/components/public/Navbar';
 import Hero from '@/components/public/Hero';
+import AboutSection from '@/components/public/AboutSection';
 import SubmissionForm from '@/components/public/SubmissionForm';
 import VisionSection from '@/components/public/VisionSection';
 import BigPhotoSection from '@/components/public/BigPhotoSection';
@@ -22,32 +23,35 @@ export default function PublicSite() {
       <Navbar />
 
       <main>
-        {/* 1. Hero (Dark: Deep/Teal, spacious layout without portrait) */}
+        {/* 1. Hero */}
         <Hero />
 
-        {/* 2. Direct Citizen Contact Form (Light: Sand - replaces old support section) */}
+        {/* 2. About section - من نحن؟ */}
+        <AboutSection />
+
+        {/* 3. Direct Citizen Contact Form */}
         <SubmissionForm />
 
-        {/* 3. Vision & Priorities (Dark: Teal) */}
+        {/* 4. Vision & Priorities */}
         <VisionSection />
 
-        {/* 4. Large Field Photography Block (Light: Sand background) */}
+        {/* 5. Large Field Photography Block */}
         <BigPhotoSection />
 
-        {/* 5. Field Activities Carousel (Dark: Teal) */}
+        {/* 6. Field Activities Carousel */}
         <ActivitiesCarousel />
 
-        {/* 6. Candidates Carousel (Light: Sand) */}
+        {/* 7. Candidates Carousel */}
         <CandidatesCarousel />
 
-        {/* 7. Key Impact / Milestones (Conditional on verified data) */}
+        {/* 8. Key Impact / Milestones (Conditional) */}
         <AchievementsSection />
 
-        {/* 8. Final Call to Action (Dark: Teal) */}
+        {/* 9. Final Call to Action */}
         <FinalCTA />
       </main>
 
-      {/* 9. Institutional Footer (Deep) */}
+      {/* 10. Institutional Footer */}
       <Footer />
     </div>
   );

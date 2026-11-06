@@ -5,21 +5,26 @@ export const requestTypes = [
   'General Information',
   'Complaint',
   'Suggestion',
-  'Question',
   'Technical Problem',
   'Request for Assistance',
   'Other',
 ] as const;
 
+// All valid types including legacy 'Question' for reading existing submissions
+export const allKnownRequestTypes = [
+  ...requestTypes,
+  'Question',
+] as const;
+
 export const submissionSchema = z.object({
-  // Location is fixed and validated against constants
+  // Location is fixed for the campaign (Taher, Jijel)
   wilaya: z.string().optional().default(CAMPAIGN_LOCATION.storageWilaya),
   commune: z.string().optional().default(CAMPAIGN_LOCATION.storageCommune),
   organization: z.string().trim().max(120).optional().default(''),
-  type: z.enum(requestTypes, { errorMap: () => ({ message: 'نوع المراسلة غير صالح' }) }),
-  subject: z.string().trim().min(3, { message: 'موضوع المراسلة يجب أن يحتوي على 3 أحرف على الأقل' }).max(160, { message: 'الموضوع لا يمكن أن يتجاوز 160 حرفاً' }),
+  type: z.enum(requestTypes, { errorMap: () => ({ message: 'نوع المراسلة غير صالح' }) }).or(z.string()),
+  subject: z.string().trim().max(160).optional().default(''),
   description: z.string().trim().min(10, { message: 'نص المراسلة يجب أن يحتوي على 10 أحرف على الأقل' }).max(3000, { message: 'نص المراسلة لا يمكن أن يتجاوز 3000 حرف' }),
-  priority: z.enum(['Low', 'Medium', 'High']).default('Medium'),
+  priority: z.enum(['Low', 'Medium', 'High']).optional().default('Medium'),
   consent: z.union([z.boolean(), z.string()]).refine(val => val === true || val === 'true' || val === 'on', {
     message: 'الموافقة على شروط المراسلة مطلوبة',
   }),
@@ -28,12 +33,10 @@ export const submissionSchema = z.object({
   formStartTime: z.number().optional(),
   clientDurationMs: z.number().optional(),
 
-  // Conditional Complaint fields (without confidentiality since all submissions are anonymous)
+  // Optional legacy details
   complaintCategory: z.string().max(100).optional().default(''),
   concernedParty: z.string().max(120).optional().default(''),
   incidentDate: z.string().max(30).optional().default(''),
-
-  // Conditional Suggestion fields
   suggestionTitle: z.string().max(160).optional().default(''),
   expectedImprovement: z.string().max(1000).optional().default(''),
 });

@@ -16,7 +16,6 @@ import {
 import { useI18n } from '@/lib/i18n';
 import {
   ADMIN_STATUS_LABELS,
-  ADMIN_PRIORITY_LABELS,
   ADMIN_TYPE_LABELS,
   formatAdminDate,
 } from '@/lib/admin-labels';
@@ -34,7 +33,7 @@ interface StatsData {
 }
 
 export default function AdminOverviewPage() {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [stats, setStats] = useState<StatsData | null>(null);
   const [recentItems, setRecentItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -270,8 +269,7 @@ export default function AdminOverviewPage() {
               <tr className="border-b border-line text-muted uppercase font-semibold">
                 <th className="py-3 px-3 text-start">{t('admin.submissions.tableRef')}</th>
                 <th className="py-3 px-3 text-start">{t('admin.submissions.tableType')}</th>
-                <th className="py-3 px-3 text-start">{t('admin.submissions.tableSubject')}</th>
-                <th className="py-3 px-3 text-start">{t('admin.submissions.tablePriority')}</th>
+                <th className="py-3 px-3 text-start">{locale === 'ar' ? 'نص المراسلة' : 'Message'}</th>
                 <th className="py-3 px-3 text-start">{t('admin.submissions.tableStatus')}</th>
                 <th className="py-3 px-3 text-start">{t('admin.submissions.tableDate')}</th>
                 <th className="py-3 px-3 text-end">{t('admin.submissions.tableActions')}</th>
@@ -293,21 +291,8 @@ export default function AdminOverviewPage() {
                         {ADMIN_TYPE_LABELS[item.type] || item.type}
                       </span>
                     </td>
-                    <td className="py-3 px-3 max-w-[220px] truncate text-ink/80 font-medium" dir="auto">
-                      {item.subject}
-                    </td>
-                    <td className="py-3 px-3">
-                      <span
-                        className={`font-semibold ${
-                          item.priority === 'High'
-                            ? 'text-red-600'
-                            : item.priority === 'Medium'
-                            ? 'text-amber-600'
-                            : 'text-muted'
-                        }`}
-                      >
-                        {ADMIN_PRIORITY_LABELS[item.priority] || item.priority}
-                      </span>
+                    <td className="py-3 px-3 max-w-[280px] truncate text-ink/80 font-medium" dir="auto">
+                      {item.description || item.subject}
                     </td>
                     <td className="py-3 px-3">
                       <span
@@ -341,7 +326,7 @@ export default function AdminOverviewPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7} className="py-8 text-center text-muted italic">
+                  <td colSpan={6} className="py-8 text-center text-muted italic">
                     {loading ? t('admin.overview.loading') : t('admin.overview.noSubmissions')}
                   </td>
                 </tr>

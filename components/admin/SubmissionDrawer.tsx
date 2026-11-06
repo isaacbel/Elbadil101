@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 import {
   X,
   Calendar,
-  MapPin,
-  Building,
   ShieldAlert,
   Lightbulb,
   Trash2,
@@ -17,7 +15,6 @@ import {
 import { useI18n } from '@/lib/i18n';
 import {
   ADMIN_STATUS_LABELS,
-  ADMIN_PRIORITY_LABELS,
   ADMIN_TYPE_LABELS,
   ADMIN_COMPLAINT_CATEGORY_LABELS,
   formatAdminDate,
@@ -97,22 +94,6 @@ export default function SubmissionDrawer({
     }
   };
 
-  const handlePriorityChange = async (newPriority: string) => {
-    try {
-      const res = await fetch(`/api/admin/submissions/${data.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ priority: newPriority }),
-      });
-      if (res.ok) {
-        setData((prev: any) => ({ ...prev, priority: newPriority }));
-        onUpdated();
-      }
-    } catch (err) {
-      console.error('Failed to update priority:', err);
-    }
-  };
-
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newNote.trim()) return;
@@ -179,7 +160,7 @@ export default function SubmissionDrawer({
                 )}
               </div>
               <div className="text-sm font-serif font-bold text-sand truncate max-w-md" dir="auto">
-                {data?.subject || t('admin.drawer.title')}
+                {data?.type ? ADMIN_TYPE_LABELS[data.type] || data.type : t('admin.drawer.title')}
               </div>
             </div>
 
@@ -202,7 +183,7 @@ export default function SubmissionDrawer({
               </div>
             ) : (
               <>
-                {/* Status & Priority Control Toolbar */}
+                {/* Status Control Toolbar */}
                 <div className="p-4 rounded-2xl bg-sand/40 border border-line flex flex-wrap items-center justify-between gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-ink/70 uppercase tracking-wider mb-1">
@@ -235,54 +216,9 @@ export default function SubmissionDrawer({
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-[11px] font-bold text-ink/70 uppercase tracking-wider mb-1">
-                      {t('admin.drawer.priorityLabel')}
-                    </label>
-                    <select
-                      value={data.priority}
-                      onChange={(e) => handlePriorityChange(e.target.value)}
-                      className="px-3 py-1.5 text-xs font-semibold rounded-xl border border-line bg-white focus:outline-none focus:ring-1 focus:ring-teal"
-                    >
-                      <option value="Low">{ADMIN_PRIORITY_LABELS['Low']}</option>
-                      <option value="Medium">{ADMIN_PRIORITY_LABELS['Medium']}</option>
-                      <option value="High">{ADMIN_PRIORITY_LABELS['High']}</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Submission Metadata (Locked Location & Info) */}
-                <div className="p-5 rounded-2xl bg-white border border-line shadow-sm space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-teal">
-                      {t('admin.drawer.overviewTitle')}
-                    </span>
-                    <span className="text-[11px] text-muted flex items-center gap-1 font-kreon">
-                      <Calendar className="w-3.5 h-3.5 text-muted" />
-                      {formatAdminDate(data.createdAt, true)}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
-                    <div className="flex items-center gap-2 p-2.5 rounded-xl bg-sand/30 border border-line/60">
-                      <MapPin className="w-4 h-4 text-green-brand flex-shrink-0" />
-                      <div>
-                        <div className="text-[10px] text-muted">{t('admin.drawer.fixedLocation')}</div>
-                        <div className="font-semibold text-teal">
-                          18 - جيجل (Jijel) · الطاهير (Taher)
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 p-2.5 rounded-xl bg-sand/30 border border-line/60">
-                      <Building className="w-4 h-4 text-teal flex-shrink-0" />
-                      <div>
-                        <div className="text-[10px] text-muted">{t('admin.drawer.organization')}</div>
-                        <div className="font-semibold text-ink" dir="auto">
-                          {data.organization || t('admin.drawer.individualCitizen')}
-                        </div>
-                      </div>
-                    </div>
+                  <div className="text-xs text-muted flex items-center gap-1 font-kreon">
+                    <Calendar className="w-4 h-4 text-teal" />
+                    <span>{formatAdminDate(data.createdAt, true)}</span>
                   </div>
                 </div>
 

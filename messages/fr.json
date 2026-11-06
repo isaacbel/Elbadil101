@@ -1,15 +1,16 @@
 {
   "nav": {
     "home": "Accueil",
+    "about": "Qui sommes-nous ?",
     "vision": "Vision & Priorités",
     "activities": "Activités de terrain",
-    "candidates": "Liste des candidats",
+    "candidates": "Nos candidats",
     "contact": "Contactez-nous",
     "contactCta": "Contactez-nous",
     "achievements": "Réalisations"
   },
   "hero": {
-    "contactCta": "Contactez-nous directement",
+    "contactCta": "Contactez-nous",
     "visionCta": "Découvrir notre vision",
     "badge": "Campagne officielle 2026"
   },
@@ -35,7 +36,7 @@
     "close": "Fermer"
   },
   "candidates": {
-    "eyebrow": "Liste des candidats",
+    "eyebrow": "Nos candidats",
     "title": "Al-Badil · Liste Libre 101",
     "subtitle": "Découvrez les candidats qui représentent la liste dans la wilaya de Jijel.",
     "viewProfile": "Voir le profil",
@@ -47,7 +48,7 @@
   },
   "citizenForm": {
     "eyebrow": "Bureau de liaison citoyenne",
-    "title": "Écrire au bureau du candidat",
+    "title": "Contactez-nous",
     "subtitle": "Nous recevons vos requêtes, doléances et propositions écrites pour les étudier avec rigueur et suivi.",
     "notice": "Veuillez décrire votre demande par écrit. Les pièces jointes et fichiers ne sont pas acceptés.",
     "anonymityNotice": "Ce système est entièrement anonyme — aucune information personnelle ne vous est demandée, et aucune réponse individuelle n'est possible. Chaque demande est traitée selon ses mérites.",
@@ -94,7 +95,7 @@
     "sectionE": "E. Détails de la proposition (spécifique aux suggestions)",
     "suggestionTitle": "Titre du projet ou de la suggestion",
     "expectedImprovement": "Impact ou amélioration attendue",
-    "consent": "Je certifie l'exactitude de ces informations et consens à leur traitement par le bureau du candidat.",
+    "consent": "Je confirme l’exactitude de cette correspondance et consens à son examen et à son suivi institutionnels.",
     "submit": "Transmettre la requête",
     "submitting": "Transmission en cours...",
     "successTitle": "Requête transmise et enregistrée avec succès !",
@@ -107,15 +108,15 @@
   "cta": {
     "title": "Votre voix est au cœur de l'action publique",
     "text": "Soumettez directement vos préoccupations à notre équipe ou rejoignez la dynamique citoyenne.",
-    "contactBtn": "Contacter le bureau"
+    "contactBtn": "Contactez-nous"
   },
   "footer": {
-    "aboutTitle": "À propos du candidat",
+    "aboutTitle": "À propos de la liste",
     "quickLinks": "Navigation rapide",
     "contactTitle": "Contact & Permanence",
     "legal": "Mentions légales",
     "privacy": "Politique de confidentialité",
-    "copyright": "Tous droits réservés au candidat et au comité de campagne © 2026",
+    "copyright": "Tous droits réservés à la Liste Libre Al-Badil 101 © 2026",
     "adminLogin": "Portail d'administration"
   },
   "common": {

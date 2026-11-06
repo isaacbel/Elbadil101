@@ -10,7 +10,7 @@ import {
 import SubmissionDrawer from '@/components/admin/SubmissionDrawer';
 
 export default function AdminSuggestionsPage() {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -113,7 +113,7 @@ export default function AdminSuggestionsPage() {
             <thead>
               <tr className="bg-sand/40 border-b border-line text-ink/70 uppercase font-bold tracking-wider">
                 <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableRef')}</th>
-                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableSubject')}</th>
+                <th className="py-3.5 px-4 text-start">{locale === 'ar' ? 'نص المراسلة' : 'Message'}</th>
                 <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableStatus')}</th>
                 <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableDate')}</th>
                 <th className="py-3.5 px-4 text-end">{t('admin.submissions.tableActions')}</th>
@@ -138,7 +138,7 @@ export default function AdminSuggestionsPage() {
                     </td>
 
                     <td className="py-3.5 px-4 font-semibold text-ink max-w-[320px] truncate" dir="auto">
-                      {row.subject}
+                      {row.description || row.subject}
                     </td>
 
                     <td className="py-3.5 px-4">

@@ -17,7 +17,7 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
 
-      const sections = ['home', 'contact', 'vision', 'activities', 'candidates'];
+      const sections = ['home', 'about', 'contact', 'vision', 'activities', 'candidates'];
       if (verifiedAchievements && verifiedAchievements.length > 0) sections.push('achievements');
 
       const scrollPos = window.scrollY + 200;
@@ -41,18 +41,21 @@ export default function Navbar() {
   const navLabels = {
     ar: {
       contactCta: 'تواصل معنا',
-      candidates: 'المترشحون',
-      contactLink: 'تواصل مباشرة',
+      candidates: 'مترشحونا',
+      contactLink: 'تواصل معنا',
+      about: 'من نحن؟',
     },
     fr: {
       contactCta: 'Contactez-nous',
       candidates: 'Nos candidats',
-      contactLink: 'Écrire au bureau',
+      contactLink: 'Contactez-nous',
+      about: 'Qui sommes-nous ?',
     },
     en: {
       contactCta: 'Contact Us',
-      candidates: 'Candidates',
-      contactLink: 'Direct Contact',
+      candidates: 'Our Candidates',
+      contactLink: 'Contact Us',
+      about: 'About Us',
     },
   };
 
@@ -60,6 +63,7 @@ export default function Navbar() {
 
   const navLinks = [
     { href: '#home', label: t('nav.home'), id: 'home' },
+    { href: '#about', label: loc.about, id: 'about' },
     { href: '#contact', label: loc.contactLink, id: 'contact' },
     { href: '#vision', label: t('nav.vision'), id: 'vision' },
     { href: '#activities', label: t('nav.activities'), id: 'activities' },

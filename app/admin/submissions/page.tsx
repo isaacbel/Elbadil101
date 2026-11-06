@@ -15,7 +15,6 @@ import {
 import { useI18n } from '@/lib/i18n';
 import {
   ADMIN_STATUS_LABELS,
-  ADMIN_PRIORITY_LABELS,
   ADMIN_TYPE_LABELS,
   formatAdminDate,
 } from '@/lib/admin-labels';
@@ -23,17 +22,16 @@ import SubmissionDrawer from '@/components/admin/SubmissionDrawer';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 export default function AdminSubmissionsPage() {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [items, setItems] = useState<any[]>([]);
   const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 15, totalPages: 1 });
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState('admin');
 
-  // Filters State
+  // Filters State (priority removed)
   const [search, setSearch] = useState('');
   const [type, setType] = useState('');
   const [status, setStatus] = useState('');
-  const [priority, setPriority] = useState('');
   const [sort, setSort] = useState('newest');
   const [page, setPage] = useState(1);
 
@@ -49,7 +47,6 @@ export default function AdminSubmissionsPage() {
       if (search) params.set('search', search);
       if (type) params.set('type', type);
       if (status) params.set('status', status);
-      if (priority) params.set('priority', priority);
       if (sort) params.set('sort', sort);
       params.set('page', String(page));
       params.set('limit', '15');
@@ -66,7 +63,7 @@ export default function AdminSubmissionsPage() {
     } finally {
       setLoading(false);
     }
-  }, [search, type, status, priority, sort, page]);
+  }, [search, type, status, sort, page]);
 
   useEffect(() => {
     fetchSubmissions();
@@ -76,12 +73,11 @@ export default function AdminSubmissionsPage() {
     setSearch('');
     setType('');
     setStatus('');
-    setPriority('');
     setSort('newest');
     setPage(1);
   };
 
-  const hasActiveFilters = Boolean(search || type || status || priority || sort !== 'newest');
+  const hasActiveFilters = Boolean(search || type || status || sort !== 'newest');
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -122,11 +118,11 @@ export default function AdminSubmissionsPage() {
         </div>
       </div>
 
-      {/* Combinable Search & Multi-filter Bar */}
+      {/* Combinable Search & Filter Bar */}
       <div className="p-5 rounded-2xl bg-white border border-line shadow-card space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Search Box */}
-          <div className="relative">
+          <div className="relative sm:col-span-2">
             <input
               type="text"
               value={search}
@@ -140,7 +136,7 @@ export default function AdminSubmissionsPage() {
             <Search className="w-4 h-4 text-muted absolute start-3 top-3" />
           </div>
 
-          {/* Request Type Filter */}
+          {/* Request Type Filter (Question removed) */}
           <div>
             <select
               value={type}
@@ -154,7 +150,6 @@ export default function AdminSubmissionsPage() {
               <option value="General Information">{ADMIN_TYPE_LABELS['General Information']}</option>
               <option value="Complaint">{ADMIN_TYPE_LABELS['Complaint']}</option>
               <option value="Suggestion">{ADMIN_TYPE_LABELS['Suggestion']}</option>
-              <option value="Question">{ADMIN_TYPE_LABELS['Question']}</option>
               <option value="Technical Problem">{ADMIN_TYPE_LABELS['Technical Problem']}</option>
               <option value="Request for Assistance">{ADMIN_TYPE_LABELS['Request for Assistance']}</option>
               <option value="Other">{ADMIN_TYPE_LABELS['Other']}</option>
@@ -179,27 +174,9 @@ export default function AdminSubmissionsPage() {
           </div>
         </div>
 
-        {/* Secondary Filter Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 border-t border-line/60">
-          {/* Priority Filter */}
-          <div>
-            <select
-              value={priority}
-              onChange={(e) => {
-                setPriority(e.target.value);
-                setPage(1);
-              }}
-              className="w-full px-3 py-2 rounded-xl border border-line focus:outline-none focus:ring-1 focus:ring-teal text-xs bg-sand/20"
-            >
-              <option value="">{t('admin.submissions.allPriorities')}</option>
-              <option value="Low">{ADMIN_PRIORITY_LABELS['Low']}</option>
-              <option value="Medium">{ADMIN_PRIORITY_LABELS['Medium']}</option>
-              <option value="High">{ADMIN_PRIORITY_LABELS['High']}</option>
-            </select>
-          </div>
-
-          {/* Sorting Order */}
-          <div>
+        {/* Secondary Row (Sorting & Reset) */}
+        <div className="flex items-center justify-between pt-2 border-t border-line/60">
+          <div className="w-48">
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value)}
@@ -210,19 +187,16 @@ export default function AdminSubmissionsPage() {
             </select>
           </div>
 
-          {/* One-Click Reset Button */}
-          <div className="flex items-center justify-end">
-            {hasActiveFilters && (
-              <button
-                type="button"
-                onClick={resetFilters}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line hover:bg-sand/40 text-xs font-semibold text-ink transition-colors"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>{t('admin.submissions.resetFilters')}</span>
-              </button>
-            )}
-          </div>
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-line hover:bg-sand/40 text-xs font-semibold text-ink transition-colors"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>{t('admin.submissions.resetFilters')}</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -234,8 +208,7 @@ export default function AdminSubmissionsPage() {
               <tr className="bg-sand/40 border-b border-line text-ink/70 uppercase font-bold tracking-wider">
                 <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableRef')}</th>
                 <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableType')}</th>
-                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableSubject')}</th>
-                <th className="py-3.5 px-4 text-start">{t('admin.submissions.tablePriority')}</th>
+                <th className="py-3.5 px-4 text-start">{locale === 'ar' ? 'نص المراسلة' : 'Message'}</th>
                 <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableStatus')}</th>
                 <th className="py-3.5 px-4 text-start">{t('admin.submissions.tableDate')}</th>
                 <th className="py-3.5 px-4 text-end">{t('admin.submissions.tableActions')}</th>
@@ -244,7 +217,7 @@ export default function AdminSubmissionsPage() {
             <tbody className="divide-y divide-line/60">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-muted">
+                  <td colSpan={6} className="py-12 text-center text-muted">
                     <div className="flex items-center justify-center gap-2">
                       <Loader2 className="w-5 h-5 animate-spin" />
                       <span>{t('admin.overview.loading')}</span>
@@ -275,22 +248,8 @@ export default function AdminSubmissionsPage() {
                       </span>
                     </td>
 
-                    <td className="py-3.5 px-4 max-w-[260px] truncate text-ink font-medium" dir="auto">
-                      {row.subject}
-                    </td>
-
-                    <td className="py-3.5 px-4">
-                      <span
-                        className={`font-semibold ${
-                          row.priority === 'High'
-                            ? 'text-red-600'
-                            : row.priority === 'Medium'
-                            ? 'text-amber-600'
-                            : 'text-muted'
-                        }`}
-                      >
-                        {ADMIN_PRIORITY_LABELS[row.priority] || row.priority}
-                      </span>
+                    <td className="py-3.5 px-4 max-w-[340px] truncate text-ink font-medium" dir="auto">
+                      {row.description || row.subject}
                     </td>
 
                     <td className="py-3.5 px-4">
@@ -335,7 +294,7 @@ export default function AdminSubmissionsPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-muted italic">
+                  <td colSpan={6} className="py-12 text-center text-muted italic">
                     <div className="flex flex-col items-center gap-2">
                       <Inbox className="w-8 h-8 text-muted/40" />
                       <span>{t('admin.submissions.noResults')}</span>

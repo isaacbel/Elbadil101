@@ -35,7 +35,7 @@ export default function CandidatesCarousel() {
   const titles = {
     ar: {
       kicker: 'القائمة الحرّة البديل 101',
-      title: 'مترشحو القائمة',
+      title: 'مترشحونا',
       subtitle: 'كفاءات وطاقات محلية ملتزمة بالعمل الميداني والتمثيل الصادق لطموحات ساكنة الطاهير وجيجل.',
       viewBio: 'عرض الملف الكامل',
       close: 'إغلاق',

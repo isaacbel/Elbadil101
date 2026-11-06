@@ -1,15 +1,16 @@
 {
   "nav": {
     "home": "Home",
+    "about": "About Us",
     "vision": "Vision & Priorities",
     "activities": "Field Activities",
-    "candidates": "Candidates",
+    "candidates": "Our Candidates",
     "contact": "Contact Us",
     "contactCta": "Contact Us",
     "achievements": "Key Milestones"
   },
   "hero": {
-    "contactCta": "Contact Us Directly",
+    "contactCta": "Contact Us",
     "visionCta": "Discover Our Vision",
     "badge": "Official Campaign 2026"
   },
@@ -47,7 +48,7 @@
   },
   "citizenForm": {
     "eyebrow": "Citizen Liaison Office",
-    "title": "Contact the Candidate's Office",
+    "title": "Contact Us",
     "subtitle": "Submit your written requests, grievances, and constructive suggestions directly to our parliamentary team.",
     "notice": "Please describe your request in writing. Attachments and files are not accepted.",
     "anonymityNotice": "This system is fully anonymous — no personal information is required, and individual replies are not possible. Each request is reviewed on its merits.",
@@ -94,28 +95,28 @@
     "sectionE": "E. Suggestion Details (suggestions only)",
     "suggestionTitle": "Suggestion / Project Title",
     "expectedImprovement": "Expected Impact or Improvement",
-    "consent": "I certify that the information provided is accurate and consent to its processing by the candidate's office.",
+    "consent": "I confirm the authenticity of this submission and consent to its institutional review and follow-up.",
     "submit": "Submit Written Request",
     "submitting": "Submitting...",
     "successTitle": "Your request has been officially recorded!",
     "successDesc": "Your unique reference tracking ID is:",
     "copyRef": "Copy Reference ID",
     "copied": "Reference ID copied!",
-    "saveRefNotice": "Keep this reference ID safe for all future inquiries with the office.",
+    "saveRefNotice": "Keep this reference ID safe for all future inquiries.",
     "newSubmission": "Submit another request"
   },
   "cta": {
     "title": "Your voice belongs at the heart of public action",
     "text": "Reach out directly to the office with your priorities and concerns.",
-    "contactBtn": "Contact the Office"
+    "contactBtn": "Contact Us"
   },
   "footer": {
-    "aboutTitle": "About the Candidate",
+    "aboutTitle": "About the List",
     "quickLinks": "Quick Navigation",
     "contactTitle": "Office & Contact",
     "legal": "Legal Notice",
     "privacy": "Privacy Policy",
-    "copyright": "All rights reserved. Candidate Office & Official Campaign © 2026",
+    "copyright": "All rights reserved. Free List Al-Badil 101 © 2026",
     "adminLogin": "Office Administration"
   },
   "common": {

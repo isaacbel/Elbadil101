@@ -55,7 +55,8 @@ export async function POST(req: Request) {
     }
 
     // 5. Identical content detection within time window
-    const isDuplicate = checkDuplicateContent(d.type, d.subject, d.description);
+    const submissionSubject = d.subject || d.type || 'مراسلة';
+    const isDuplicate = checkDuplicateContent(d.type, submissionSubject, d.description);
     if (isDuplicate) {
       return NextResponse.json(
         { error: 'An identical request was recently submitted. Please avoid duplicate submissions.' },
@@ -111,11 +112,11 @@ export async function POST(req: Request) {
         '',
         enforcedWilaya,
         enforcedCommune,
-        sanitizeText(d.organization),
+        sanitizeText(d.organization || ''),
         sanitizeText(d.type),
-        sanitizeText(d.subject),
+        sanitizeText(submissionSubject),
         sanitizeText(d.description),
-        d.priority,
+        d.priority || 'Medium',
         d.idempotencyKey || null,
       ],
     });

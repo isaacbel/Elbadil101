@@ -20,10 +20,10 @@ export default function FinalCTA() {
         </h2>
         <p className="text-sand/85 text-base sm:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
           {locale === 'ar'
-            ? 'انشغالاتكم ومقترحاتكم هي منطلق عملنا الميداني والتنموي. تواصلوا مباشرة مع مكتب المرشح والقائمة 101.'
+            ? 'انشغالاتكم ومقترحاتكم هي منطلق عملنا الميداني والتنموي. تواصلوا معنا والقائمة 101.'
             : locale === 'fr'
-            ? 'Vos préoccupations et propositions constituent le fondement de notre action. Écrivez directement au bureau de la liste 101.'
-            : 'Your priorities and ideas guide our field work and public representation. Contact our team directly today.'}
+            ? 'Vos préoccupations et propositions constituent le fondement de notre action. Contactez-nous et la liste 101.'
+            : 'Your priorities and ideas guide our field work and public representation. Contact us and List 101.'}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
@@ -33,10 +33,10 @@ export default function FinalCTA() {
           >
             <span>
               {locale === 'ar'
-                ? 'تواصل مباشرة مع مكتب المرشح'
+                ? 'تواصل معنا'
                 : locale === 'fr'
-                ? 'Contacter directement le bureau'
-                : 'Contact the Office Directly'}
+                ? 'Contactez-nous'
+                : 'Contact Us'}
             </span>
             <ArrowRight className={`w-4 h-4 ${dir === 'rtl' ? 'rotate-180' : ''}`} />
           </a>

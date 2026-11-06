@@ -29,34 +29,34 @@ export interface CandidateContent {
 
 export const candidate: CandidateContent = {
   name: {
-    ar: '[اسم المرشح]',
-    fr: '[Nom du Candidat]',
-    en: '[Candidate Name]',
+    ar: 'القائمة الحرة البديل 101',
+    fr: 'Liste Libre Al-Badil 101',
+    en: 'Free List Al-Badil 101',
   },
   role: {
-    ar: '[مهندس معماري · عضو منتخب بالمجلس الشعبي الولائي]',
-    fr: '[Architecte · Élu à l’Assemblée Populaire de Wilaya]',
-    en: '[Architect · Elected Member of the Provincial Assembly]',
+    ar: 'القائمة الحرة البديل 101',
+    fr: 'Liste Libre Al-Badil 101',
+    en: 'Free List Al-Badil 101',
   },
   place: {
-    ar: '[البلدية، الولاية]',
-    fr: '[Commune, Wilaya]',
-    en: '[Town, Wilaya]',
+    ar: 'بلدية الطاهير، ولاية جيجل',
+    fr: 'Commune de Taher, Wilaya de Jijel',
+    en: 'Taher Municipality, Jijel',
   },
   slogan: {
-    ar: 'صوت مسؤول وقريب من انشغالاتكم اليومية',
-    fr: 'Une voix responsable, engagée au cœur du quotidien',
-    en: 'A responsible voice, close to everyday life',
+    ar: 'نواصل المسيرة ... ونصنع البديل',
+    fr: 'Nous poursuivons le chemin... et construisons l’alternative',
+    en: 'We continue the journey... and build the alternative',
   },
   party: {
-    ar: '[اسم الحزب أو القائمة الحرة المستقلة]',
-    fr: '[Nom du parti ou liste indépendante]',
-    en: '[Party or Independent List]',
+    ar: 'القائمة الحرة البديل 101',
+    fr: 'Liste Libre Al-Badil 101',
+    en: 'Free List Al-Badil 101',
   },
   shortBio: {
-    ar: 'مهندس معماري وناشط في التنمية المحلية والحضرية، ملتزم بالعمل المؤسساتي المسؤول والإنصات المباشر لانشغالات المواطنين عبر بلديات الولاية.',
-    fr: 'Architecte et acteur engagé du développement local et urbain, dédié à un travail institutionnel intègre et à l’écoute directe des citoyens de la wilaya.',
-    en: 'Architect and dedicated local advocate for balanced urban development, committed to principled public service and direct citizen dialogue across all communes.',
+    ar: 'تنمية عادلة وشاملة لبلدية الطاهير وسكانها.',
+    fr: 'Un développement juste et inclusif pour la commune de Taher et ses habitants.',
+    en: 'Fair and inclusive development for Taher municipality and its residents.',
   },
   fullBio: {
     ar: 'على مدار سنوات من العمل الميداني في الهندسة المعمارية والتهيئة العمرانية ثم في التمثيل المحلي، راكمت تجربة عميقة في فهم تحديات التنمية المحلية، السكن، وتحديث المرافق العمومية. أؤمن بأن المسؤولية العامة أمانة تتطلب الشفافية، الصدق، والتواجد المستمر في الميدان.',
