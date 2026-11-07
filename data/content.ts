@@ -306,11 +306,71 @@ export interface Activity {
   year: string;
   title: { ar: string; fr: string; en: string };
   description: { ar: string; fr: string; en: string };
-  imagePlaceholder: string;
+  imagePlaceholder?: string;
   location: { ar: string; fr: string; en: string };
+  image?: string;
+  images?: string[];
+  imageAlt?: { ar: string; fr: string; en: string };
 }
 
 export const activities: Activity[] = [
+  {
+    id: 'act-bouachir',
+    category: {
+      ar: 'تجمع شعبي',
+      fr: 'Rassemblement Populaire',
+      en: 'Public Rally',
+    },
+    year: '2026',
+    title: {
+      ar: 'أول تجمع شعبي ببوعشير',
+      fr: 'Premier rassemblement populaire à Bouachir',
+      en: 'First Public Rally in Bouachir',
+    },
+    description: {
+      ar: `بوعشير تشهد أول تجمع شعبي للقائمة الحرة البديل في اطار الحملة الانتخابية المحلية نوفمبر 2026.
+
+من القلب، شكراً لأهالي بوعشير على حسن الاستقبال وكرم الضيافة. ❤️
+
+سعدنا بلقائكم والاستماع إليكم ومشاركة هذه اللحظات معكم خلال أول تجمع شعبي لنا في المنطقة.
+
+شكراً لكل من حضر، ولكل من خصّص من وقته ليكون معنا. استقبالكم الطيب وكلماتكم الصادقة محل تقدير واعتزاز.
+
+بوعشير، شكراً على هذه البداية الجميلة. 🇩🇿
+
+«القائمة الحرة البديل رقم 101» 🌿`,
+      fr: `Bouachir accueille le premier rassemblement populaire de la Liste Libre Al-Badil dans le cadre de la campagne électorale locale de novembre 2026.
+
+Du fond du cœur, merci aux habitants de Bouachir pour leur accueil chaleureux et leur généreuse hospitalité. ❤️
+
+Nous avons été ravis de vous rencontrer, de vous écouter et de partager ces moments avec vous lors de notre premier rassemblement populaire dans la région.
+
+Merci à toutes celles et ceux qui ont assisté, et à chacun qui a consacré de son temps pour être à nos côtés. Votre accueil chaleureux et vos paroles sincères sont une source de fierté et de profonde gratitude.
+
+Bouachir, merci pour ce magnifique départ. 🇩🇿
+
+« Liste Libre Al-Badil N° 101 » 🌿`,
+      en: `Bouachir hosts the first public rally of the Free List Al-Badil as part of the local election campaign, November 2026.
+
+From the bottom of our hearts, thank you to the people of Bouachir for the warm welcome and generous hospitality. ❤️
+
+We were delighted to meet you, listen to your concerns, and share these moments with you during our first public gathering in the area.
+
+Thank you to everyone who attended, and to everyone who dedicated their time to be with us. Your kind reception and sincere words are a source of great pride and gratitude.
+
+Bouachir, thank you for this wonderful beginning. 🇩🇿
+
+« Free List Al-Badil No. 101 » 🌿`,
+    },
+    image: '/images/tajamo3at/WhatsApp Image 2026-11-06 at 08.26.15.jpeg',
+    imageAlt: {
+      ar: 'أول تجمع شعبي للقائمة الحرة البديل ببوعشير',
+      fr: 'Premier rassemblement populaire de la Liste Libre Al-Badil à Bouachir',
+      en: 'First public rally of the Free List Al-Badil in Bouachir',
+    },
+    imagePlaceholder: 'Bouachir Public Rally',
+    location: { ar: 'بوعشير', fr: 'Bouachir', en: 'Bouachir' },
+  },
   {
     id: 'act-1',
     category: {

@@ -33,7 +33,9 @@
     "prev": "السابق",
     "next": "التالي",
     "viewDetails": "عرض التفاصيل",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "readMore": "اقرأ المزيد",
+    "showLess": "عرض أقل"
   },
   "candidates": {
     "eyebrow": "مترشحونا",

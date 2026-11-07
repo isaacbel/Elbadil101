@@ -33,7 +33,9 @@
     "prev": "Previous",
     "next": "Next",
     "viewDetails": "View details",
-    "close": "Close"
+    "close": "Close",
+    "readMore": "Read more",
+    "showLess": "Show less"
   },
   "candidates": {
     "eyebrow": "Our Candidates",
