@@ -18,6 +18,7 @@ import {
   Linkedin,
   Mail,
   ArrowUpRight,
+  User,
 } from 'lucide-react';
 
 export default function CandidatesCarousel() {
@@ -119,7 +120,7 @@ export default function CandidatesCarousel() {
           role="region"
           aria-label="Candidates Carousel"
         >
-          {candidates.map((c) => (
+          {candidates.map((c, idx) => (
             <div
               key={c.id}
               onClick={() => setSelectedCandidate(c)}
@@ -128,12 +129,26 @@ export default function CandidatesCarousel() {
               <div>
                 {/* Photo with rank number badge */}
                 <div className="relative aspect-[4/5] w-full overflow-hidden bg-deep">
-                  <Image
-                    src={c.image}
-                    alt={c.name[locale] || c.name.ar}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                  {c.image ? (
+                    <Image
+                      src={c.image}
+                      alt={c.name[locale] || c.name.ar}
+                      fill
+                      priority={idx < 3}
+                      loading={idx >= 3 ? 'lazy' : undefined}
+                      sizes="(max-width: 640px) 290px, (max-width: 1024px) 330px, 340px"
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-deep via-teal/80 to-deep text-sand">
+                      <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center mb-2">
+                        <User className="w-10 h-10 text-wheat/80" />
+                      </div>
+                      <span className="font-kreon text-xl font-bold text-wheat">
+                        #{c.number}
+                      </span>
+                    </div>
+                  )}
                   {/* Rank Badge */}
                   <div className="absolute top-4 start-4 px-3 py-1.5 rounded-xl bg-deep/90 backdrop-blur-md border border-white/20 text-wheat shadow-md flex items-center gap-1.5">
                     <span className="text-[11px] font-medium text-sand/80">{cur.listNumber}</span>
@@ -155,14 +170,18 @@ export default function CandidatesCarousel() {
                     {c.name[locale] || c.name.ar}
                   </h3>
 
-                  <div className="flex items-center gap-1.5 text-xs text-muted font-medium">
-                    <Briefcase className="w-3.5 h-3.5 text-green-brand flex-shrink-0" />
-                    <span className="line-clamp-1">{c.profession[locale] || c.profession.ar}</span>
-                  </div>
+                  {(c.profession[locale] || c.profession.ar) ? (
+                    <div className="flex items-center gap-1.5 text-xs text-muted font-medium">
+                      <Briefcase className="w-3.5 h-3.5 text-green-brand flex-shrink-0" />
+                      <span className="line-clamp-1">{c.profession[locale] || c.profession.ar}</span>
+                    </div>
+                  ) : null}
 
-                  <p className="text-ink/75 text-xs sm:text-sm leading-relaxed line-clamp-3 pt-1">
-                    {c.bio[locale] || c.bio.ar}
-                  </p>
+                  {(c.bio[locale] || c.bio.ar) ? (
+                    <p className="text-ink/75 text-xs sm:text-sm leading-relaxed line-clamp-3 pt-1">
+                      {c.bio[locale] || c.bio.ar}
+                    </p>
+                  ) : null}
 
                   {/* Optional Extra Highlights (shown only when provided) */}
                   {c.extraInfo?.focus && (
@@ -199,12 +218,19 @@ export default function CandidatesCarousel() {
 
             {/* Modal Header Media Block */}
             <div className="relative aspect-[16/9] w-full bg-deep flex-shrink-0">
-              <Image
-                src={selectedCandidate.image}
-                alt={selectedCandidate.name[locale] || selectedCandidate.name.ar}
-                fill
-                className="object-cover"
-              />
+              {selectedCandidate.image ? (
+                <Image
+                  src={selectedCandidate.image}
+                  alt={selectedCandidate.name[locale] || selectedCandidate.name.ar}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  className="object-cover object-top"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-deep via-teal/80 to-deep text-sand">
+                  <User className="w-16 h-16 text-wheat/60" />
+                </div>
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-deep/90 via-deep/40 to-transparent flex items-end p-6">
                 <div>
                   <span className="inline-block px-3 py-1 rounded-full bg-wheat text-deep text-xs font-bold font-kreon mb-2">
@@ -214,8 +240,12 @@ export default function CandidatesCarousel() {
                     {selectedCandidate.name[locale] || selectedCandidate.name.ar}
                   </h3>
                   <div className="text-sand/80 text-xs sm:text-sm mt-1 flex items-center gap-2">
-                    <span>{selectedCandidate.profession[locale] || selectedCandidate.profession.ar}</span>
-                    <span>•</span>
+                    {(selectedCandidate.profession[locale] || selectedCandidate.profession.ar) ? (
+                      <>
+                        <span>{selectedCandidate.profession[locale] || selectedCandidate.profession.ar}</span>
+                        <span>•</span>
+                      </>
+                    ) : null}
                     <span>{selectedCandidate.commune[locale] || selectedCandidate.commune.ar}</span>
                   </div>
                 </div>
@@ -225,14 +255,16 @@ export default function CandidatesCarousel() {
             {/* Modal Scrollable Body */}
             <div className="p-6 sm:p-8 space-y-5 overflow-y-auto flex-1">
               {/* Full Bio */}
-              <div>
-                <h4 className="text-xs font-bold text-teal uppercase tracking-wider mb-2">
-                  {locale === 'ar' ? 'نبذة عن المترشح' : 'Biographie'}
-                </h4>
-                <p className="text-ink/80 text-sm leading-relaxed">
-                  {selectedCandidate.bio[locale] || selectedCandidate.bio.ar}
-                </p>
-              </div>
+              {(selectedCandidate.bio[locale] || selectedCandidate.bio.ar) ? (
+                <div>
+                  <h4 className="text-xs font-bold text-teal uppercase tracking-wider mb-2">
+                    {locale === 'ar' ? 'نبذة عن المترشح' : 'Biographie'}
+                  </h4>
+                  <p className="text-ink/80 text-sm leading-relaxed">
+                    {selectedCandidate.bio[locale] || selectedCandidate.bio.ar}
+                  </p>
+                </div>
+              ) : null}
 
               {/* Extra Info Lines (Shown Only When Provided) */}
               {selectedCandidate.extraInfo && (
