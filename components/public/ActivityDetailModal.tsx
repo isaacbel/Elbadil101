@@ -15,6 +15,20 @@ interface ActivityDetailModalProps {
   fallbackImageIndex?: number;
 }
 
+export function renderTextWithHashtags(text: string, hashtagClass = 'text-teal font-semibold') {
+  const parts = text.split(/(#[\p{L}\p{N}_]+)/u);
+  return parts.map((part, index) => {
+    if (part.startsWith('#')) {
+      return (
+        <span key={index} className={hashtagClass}>
+          {part}
+        </span>
+      );
+    }
+    return part;
+  });
+}
+
 export default function ActivityDetailModal({
   isOpen,
   onClose,
@@ -304,7 +318,7 @@ export default function ActivityDetailModal({
 
           {/* Full description in Noto Naskh Arabic, text-base md:text-lg, leading-loose */}
           <div className="pt-2 text-ink font-naskh text-base md:text-lg leading-loose whitespace-pre-line text-start">
-            {activity.description[locale]}
+            {renderTextWithHashtags(activity.description[locale], 'text-teal font-semibold')}
           </div>
         </div>
 

@@ -372,6 +372,144 @@ Bouachir, thank you for this wonderful beginning. 🇩🇿
     location: { ar: 'بوعشير', fr: 'Bouachir', en: 'Bouachir' },
   },
   {
+    id: 'act-bni-metran',
+    category: {
+      ar: 'مداومة انتخابية',
+      fr: 'Permanence Électorale',
+      en: 'Campaign Office',
+    },
+    year: '2026',
+    title: {
+      ar: 'افتتاح مداومة بني متران',
+      fr: 'Inauguration de la permanence de Beni Metrane',
+      en: 'Inauguration of Beni Metrane Campaign Office',
+    },
+    description: {
+      ar: `افتتاح مداومة #بني_متران بحضور المترشحين، أعضاء مديرية الحملة والمواطنين.
+
+🌿 القائمة الحرة البديل 101
+#البديل
+#القائمة_الحرة_البديل_101
+#انتخابات_المجلس_الشعبي_لبلدية_الطاهير
+#بوشرقة #الطاهير`,
+      fr: `Inauguration de la permanence de #بني_متران en présence des candidats, des membres de la direction de campagne et des citoyens.
+
+🌿 Liste Libre Al-Badil 101
+#البديل
+#القائمة_الحرة_البديل_101
+#انتخابات_المجلس_الشعبي_لبلدية_الطاهير
+#بوشرقة #الطاهير`,
+      en: `Inauguration of #بني_متران campaign office in the presence of candidates, campaign directorate members, and citizens.
+
+🌿 Free List Al-Badil 101
+#البديل
+#القائمة_الحرة_البديل_101
+#انتخابات_المجلس_الشعبي_لبلدية_الطاهير
+#بوشرقة #الطاهير`,
+    },
+    image: '/images/tajamo3at/bni_metran.jpeg',
+    imageAlt: {
+      ar: 'افتتاح مداومة بني متران',
+      fr: 'Inauguration de la permanence de Beni Metrane',
+      en: 'Inauguration of Beni Metrane Campaign Office',
+    },
+    imagePlaceholder: 'Beni Metrane Campaign Office',
+    location: { ar: 'بني متران', fr: 'Beni Metrane', en: 'Beni Metrane' },
+  },
+  {
+    id: 'act-bouchareka',
+    category: {
+      ar: 'مداومة انتخابية',
+      fr: 'Permanence Électorale',
+      en: 'Campaign Office',
+    },
+    year: '2026',
+    title: {
+      ar: 'افتتاح مداومة بوشرقة السفلى الفيرمة',
+      fr: 'Inauguration de la permanence de Bouchareka Essoufla El-Firma',
+      en: 'Inauguration of Lower Bouchareka El-Firma Campaign Office',
+    },
+    description: {
+      ar: `افتتاح مداومة #بوشرقة_السفلى_الفيرمة بحضور المترشحين، أعضاء مديرية الحملة والمواطنين.
+
+🌿 القائمة الحرة البديل 101
+#البديل
+#القائمة_الحرة_البديل_101
+#انتخابات_المجلس_الشعبي_لبلدية_الطاهير
+#بوشرقة #الطاهير`,
+      fr: `Inauguration de la permanence de #بوشرقة_السفلى_الفيرمة en présence des candidats, des membres de la direction de campagne et des citoyens.
+
+🌿 Liste Libre Al-Badil 101
+#البديل
+#القائمة_الحرة_البديل_101
+#انتخابات_المجلس_الشعبي_لبلدية_الطاهير
+#بوشرقة #الطاهير`,
+      en: `Inauguration of #بوشرقة_السفلى_الفيرمة campaign office in the presence of candidates, campaign directorate members, and citizens.
+
+🌿 Free List Al-Badil 101
+#البديل
+#القائمة_الحرة_البديل_101
+#انتخابات_المجلس_الشعبي_لبلدية_الطاهير
+#بوشرقة #الطاهير`,
+    },
+    image: '/images/tajamo3at/bouchareka_soufla_firma.jpeg',
+    imageAlt: {
+      ar: 'افتتاح مداومة بوشرقة السفلى الفيرمة',
+      fr: 'Inauguration de la permanence de Bouchareka Essoufla El-Firma',
+      en: 'Inauguration of Lower Bouchareka El-Firma Campaign Office',
+    },
+    imagePlaceholder: 'Bouchareka Campaign Office',
+    location: { ar: 'بوشرقة السفلى - الفيرمة', fr: 'Bouchareka Essoufla - El Firma', en: 'Lower Bouchareka - El Firma' },
+  },
+  {
+    id: 'act-tacifet',
+    category: {
+      ar: 'مداومة انتخابية',
+      fr: 'Permanence Électorale',
+      en: 'Campaign Office',
+    },
+    year: '2026',
+    title: {
+      ar: 'افتتاح مداومة تاسيفت الكبرى',
+      fr: 'Inauguration de la permanence de Tassift El-Koubra',
+      en: 'Inauguration of Greater Tassift Campaign Office',
+    },
+    description: {
+      ar: `افتتاح مداومة #تاسيفت_الكبرى بحضور المترشحين، أعضاء مديرية الحملة والمواطنين.
+
+🌿 القائمة الحرة البديل 101
+
+#البديل
+#القائمة_الحرة_البديل_101
+#انتخابات_المجلس_الشعبي_لبلدية_الطاهير
+#تاسيفت #الطاهير`,
+      fr: `Inauguration de la permanence de #تاسيفت_الكبرى en présence des candidats, des membres de la direction de campagne et des citoyens.
+
+🌿 Liste Libre Al-Badil 101
+
+#البديل
+#القائمة_الحرة_البديل_101
+#انتخابات_المجلس_الشعبي_لبلدية_الطاهير
+#تاسيفت #الطاهير`,
+      en: `Inauguration of #تاسيفت_الكبرى campaign office in the presence of candidates, campaign directorate members, and citizens.
+
+🌿 Free List Al-Badil 101
+
+#البديل
+#القائمة_الحرة_البديل_101
+#انتخابات_المجلس_الشعبي_لبلدية_الطاهير
+#تاسيفت #الطاهير`,
+    },
+    image: '/images/tajamo3at/tacifet_elkoubra.jpeg',
+    imageAlt: {
+      ar: 'افتتاح مداومة تاسيفت الكبرى',
+      fr: 'Inauguration de la permanence de Tassift El-Koubra',
+      en: 'Inauguration of Greater Tassift Campaign Office',
+    },
+    imagePlaceholder: 'Tassift Campaign Office',
+    location: { ar: 'تاسيفت الكبرى', fr: 'Tassift El-Koubra', en: 'Greater Tassift' },
+  },
+  {
     id: 'act-1',
     category: {
       ar: 'التهيئة الحضرية',

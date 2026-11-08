@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useI18n } from '@/lib/i18n';
 import { activities, Activity } from '@/data/content';
 import { ChevronLeft, ChevronRight, MapPin, Calendar, ArrowUpRight } from 'lucide-react';
-import ActivityDetailModal from './ActivityDetailModal';
+import ActivityDetailModal, { renderTextWithHashtags } from './ActivityDetailModal';
 
 export default function ActivitiesCarousel() {
   const { locale, dir, t } = useI18n();
@@ -139,10 +139,10 @@ export default function ActivitiesCarousel() {
                     <div>
                       <p
                         className={`text-sand/75 text-xs sm:text-sm leading-relaxed whitespace-pre-line ${
-                          isExpanded ? '' : 'line-clamp-4'
+                          isExpanded ? '' : 'line-clamp-3'
                         }`}
                       >
-                        {act.description[locale]}
+                        {renderTextWithHashtags(act.description[locale], 'text-wheat font-semibold')}
                       </p>
                       {isLong && (
                         <button
