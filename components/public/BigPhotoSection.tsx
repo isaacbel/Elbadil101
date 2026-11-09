@@ -18,11 +18,12 @@ export default function BigPhotoSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative w-full aspect-[21/9] sm:aspect-[24/9] rounded-3xl overflow-hidden shadow-editorial border border-line bg-deep">
           <Image
-            src="/images/banner-field.svg"
+            src="/images/terrain-communication.jpeg"
             alt={altTexts[locale] || altTexts.ar}
             fill
-            className="object-cover transition-transform duration-700 hover:scale-[1.02]"
+            className="object-cover object-center transition-transform duration-700 hover:scale-[1.02]"
             priority={false}
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1280px"
           />
         </div>
       </div>
